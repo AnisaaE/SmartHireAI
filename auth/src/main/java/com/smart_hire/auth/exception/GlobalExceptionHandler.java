@@ -17,18 +17,20 @@ public class GlobalExceptionHandler {
                 ? exception.getBindingResult().getFieldError().getDefaultMessage()
                 : "Validation failed";
 
-        return ResponseEntity.badRequest().body(new ApiErrorResponse(message));
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, message);
     }
 
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<ApiErrorResponse> handleInvalidCredentials(InvalidCredentialsException exception) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ApiErrorResponse(exception.getMessage()));
+        return buildErrorResponse(HttpStatus.UNAUTHORIZED, exception.getMessage());
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ApiErrorResponse> handleAccessDenied(AccessDeniedException exception) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(new ApiErrorResponse(exception.getMessage()));
+        return buildErrorResponse(HttpStatus.FORBIDDEN, exception.getMessage());
+    }
+
+    private ResponseEntity<ApiErrorResponse> buildErrorResponse(HttpStatus status, String message) {
+        return ResponseEntity.status(status).body(new ApiErrorResponse(message));
     }
 }
