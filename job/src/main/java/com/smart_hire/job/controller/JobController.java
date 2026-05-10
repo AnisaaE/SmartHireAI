@@ -55,6 +55,7 @@ public class JobController {
             @PathVariable Long id,
             @Valid @RequestBody UpdateJobRequest request
     ) {
-        return ResponseEntity.ok(jobService.updateJob(id, request));
+        JobDetailResponse updatedJob = jobService.updateJob(id, request);
+        return ResponseEntity.ok(updatedJob);
     }
 }
