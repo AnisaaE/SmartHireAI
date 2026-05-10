@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/documents")
 class DocumentController {
@@ -27,6 +29,11 @@ class DocumentController {
     @GetMapping("/{id}")
     DocumentMetadataResponse getDocumentMetadata(@PathVariable String id) {
         return sampleMetadata(id);
+    }
+
+    @GetMapping("/owner/{userId}")
+    List<DocumentMetadataResponse> listDocumentsByOwner(@PathVariable String userId) {
+        return List.of(sampleMetadata("doc-1"));
     }
 
     private DocumentMetadataResponse sampleMetadata(String id) {
