@@ -1,6 +1,7 @@
 package com.smart_hire.job.controller;
 
 import com.smart_hire.job.dto.CreateJobRequest;
+import com.smart_hire.job.dto.JobDetailResponse;
 import com.smart_hire.job.dto.JobSummaryResponse;
 import com.smart_hire.job.service.JobService;
 import org.junit.jupiter.api.Test;
@@ -64,5 +65,27 @@ class JobControllerTest {
                 .andExpect(jsonPath("$[1].status").value("DRAFT"));
 
         verify(jobService).getAllJobs();
+    }
+
+    @Test
+    void shouldReturnJobDetailsWhenJobExists() throws Exception {
+        doReturn(new JobDetailResponse(
+                1L,
+                5L,
+                "Senior Java Developer",
+                "Build backend services",
+                "Istanbul",
+                "FULL_TIME",
+                "OPEN"
+        )).when(jobService).getJobById(1L);
+
+        mockMvc.perform(get("/api/jobs/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.title").value("Senior Java Developer"))
+                .andExpect(jsonPath("$.description").value("Build backend services"))
+                .andExpect(jsonPath("$.status").value("OPEN"));
+
+        verify(jobService).getJobById(1L);
     }
 }
