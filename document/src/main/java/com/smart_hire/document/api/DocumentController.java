@@ -66,7 +66,7 @@ class DocumentController {
 
     @PutMapping("/{id}/reprocess")
     DocumentReprocessResponse reprocessDocument(@PathVariable String id) {
-        return new DocumentReprocessResponse(id, "REPROCESSED");
+        return reprocessedDocument(id);
     }
 
     private DocumentMetadataResponse sampleMetadata(String id) {
@@ -91,5 +91,9 @@ class DocumentController {
 
     private DocumentContentResponse updatedContent(String id, UpdateDocumentContentRequest request) {
         return new DocumentContentResponse(id, request.rawTextContent());
+    }
+
+    private DocumentReprocessResponse reprocessedDocument(String id) {
+        return new DocumentReprocessResponse(id, "REPROCESSED");
     }
 }
