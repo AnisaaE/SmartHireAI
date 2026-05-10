@@ -38,7 +38,7 @@ class DocumentController {
 
     @GetMapping("/cv/{candidateId}")
     DocumentMetadataResponse getActiveCv(@PathVariable String candidateId) {
-        return sampleMetadata("doc-1");
+        return sampleActiveCv(candidateId);
     }
 
     private DocumentMetadataResponse sampleMetadata(String id) {
@@ -47,5 +47,9 @@ class DocumentController {
 
     private List<DocumentMetadataResponse> sampleDocumentsByOwner(String userId) {
         return List.of(sampleMetadata("doc-1"));
+    }
+
+    private DocumentMetadataResponse sampleActiveCv(String candidateId) {
+        return sampleMetadata("doc-1");
     }
 }
