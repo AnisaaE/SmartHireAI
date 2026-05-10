@@ -3,6 +3,7 @@ package com.smart_hire.job.service;
 import com.smart_hire.job.dto.CreateJobRequest;
 import com.smart_hire.job.dto.JobDetailResponse;
 import com.smart_hire.job.dto.JobSummaryResponse;
+import com.smart_hire.job.dto.UpdateJobRequest;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface JobService {
     JobDetailResponse getJobById(Long id);
 
     List<JobSummaryResponse> getJobsByRecruiterId(Long recruiterId);
+
+    JobDetailResponse updateJob(Long id, UpdateJobRequest request);
 }
