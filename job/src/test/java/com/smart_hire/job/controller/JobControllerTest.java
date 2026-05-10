@@ -16,8 +16,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -173,5 +175,17 @@ class JobControllerTest {
                 .andExpect(jsonPath("$.status").value("CLOSED"));
 
         verify(jobService).updateJobStatus(1L, new UpdateJobStatusRequest("CLOSED"));
+    }
+
+    @Test
+    void shouldDeleteJobWhenJobExists() throws Exception {
+        doNothing()
+                .when(jobService)
+                .deleteJobById(1L);
+
+        mockMvc.perform(delete("/api/jobs/1"))
+                .andExpect(status().isNoContent());
+
+        verify(jobService).deleteJobById(1L);
     }
 }
