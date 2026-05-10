@@ -4,6 +4,7 @@ import com.smart_hire.job.dto.CreateJobRequest;
 import com.smart_hire.job.dto.JobDetailResponse;
 import com.smart_hire.job.dto.JobSummaryResponse;
 import com.smart_hire.job.dto.UpdateJobRequest;
+import com.smart_hire.job.dto.UpdateJobStatusRequest;
 import com.smart_hire.job.service.JobService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,5 +147,31 @@ class JobControllerTest {
                 "Remote",
                 "FULL_TIME"
         ));
+    }
+
+    @Test
+    void shouldReturnUpdatedJobWhenStatusPayloadIsValid() throws Exception {
+        doReturn(new JobDetailResponse(
+                1L,
+                5L,
+                "Lead Java Developer",
+                "Lead backend delivery",
+                "Remote",
+                "FULL_TIME",
+                "CLOSED"
+        )).when(jobService).updateJobStatus(1L, new UpdateJobStatusRequest("CLOSED"));
+
+        mockMvc.perform(put("/api/jobs/1/status")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "status": "CLOSED"
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.status").value("CLOSED"));
+
+        verify(jobService).updateJobStatus(1L, new UpdateJobStatusRequest("CLOSED"));
     }
 }
