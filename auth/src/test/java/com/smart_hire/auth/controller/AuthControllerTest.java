@@ -4,6 +4,7 @@ import com.smart_hire.auth.config.SecurityConfig;
 import com.smart_hire.auth.dto.LoginRequest;
 import com.smart_hire.auth.dto.LoginResponse;
 import com.smart_hire.auth.dto.RegisterRequest;
+import com.smart_hire.auth.exception.InvalidCredentialsException;
 import com.smart_hire.auth.service.AuthService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -94,5 +96,35 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.valid").value(true));
 
         verify(authService).validateToken(eq("jwt-token-value"));
+    }
+
+    @Test
+    void shouldReturnUnauthorizedWhenLoginFails() throws Exception {
+        doThrow(new InvalidCredentialsException("Invalid username or password"))
+                .when(authService)
+                .login(any(LoginRequest.class));
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "username": "jane.doe",
+                                  "password": "wrong-password"
+                                }
+                                """))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.message").value("Invalid username or password"));
+    }
+
+    @Test
+    void shouldReturnForbiddenWhenValidateEndpointRejectsTokenAccess() throws Exception {
+        doThrow(new org.springframework.security.access.AccessDeniedException("Forbidden"))
+                .when(authService)
+                .validateToken("blocked-token");
+
+        mockMvc.perform(get("/api/auth/validate")
+                        .header("Authorization", "Bearer blocked-token"))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.message").value("Forbidden"));
     }
 }
