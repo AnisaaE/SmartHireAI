@@ -41,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found: " + id));
 
-        return new UserResponse(user.getId(), user.getUsername());
+        return mapToUserResponse(user);
     }
 
     private void validateUsernameAvailability(String username) {
@@ -59,5 +59,9 @@ public class AuthServiceImpl implements AuthService {
 
     private String issueAccessToken(String username) {
         return "jwt-token-value";
+    }
+
+    private UserResponse mapToUserResponse(User user) {
+        return new UserResponse(user.getId(), user.getUsername());
     }
 }
