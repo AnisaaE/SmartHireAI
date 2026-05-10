@@ -20,6 +20,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(AuthApiPaths.REGISTER_ENDPOINT).permitAll()
+                        .requestMatchers(AuthApiPaths.LOGIN_ENDPOINT).permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults());
 

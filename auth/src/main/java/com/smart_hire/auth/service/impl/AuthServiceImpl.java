@@ -1,6 +1,8 @@
 package com.smart_hire.auth.service.impl;
 
 import com.smart_hire.auth.domain.User;
+import com.smart_hire.auth.dto.LoginRequest;
+import com.smart_hire.auth.dto.LoginResponse;
 import com.smart_hire.auth.dto.RegisterRequest;
 import com.smart_hire.auth.exception.UsernameAlreadyExistsException;
 import com.smart_hire.auth.repository.UserRepository;
@@ -20,6 +22,11 @@ public class AuthServiceImpl implements AuthService {
     public User register(RegisterRequest request) {
         validateUsernameAvailability(request.username());
         return userRepository.save(buildUser(request));
+    }
+
+    @Override
+    public LoginResponse login(LoginRequest request) {
+        return new LoginResponse("jwt-token-value");
     }
 
     private void validateUsernameAvailability(String username) {

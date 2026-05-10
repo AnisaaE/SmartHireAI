@@ -1,5 +1,7 @@
 package com.smart_hire.auth.controller;
 
+import com.smart_hire.auth.dto.LoginRequest;
+import com.smart_hire.auth.dto.LoginResponse;
 import com.smart_hire.auth.dto.RegisterRequest;
 import jakarta.validation.Valid;
 import com.smart_hire.auth.service.AuthService;
@@ -22,5 +24,10 @@ public class AuthController {
     public ResponseEntity<Void> register(@Valid @RequestBody RegisterRequest request) {
         authService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping(AuthApiPaths.LOGIN_PATH)
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
+        return ResponseEntity.ok(authService.login(request));
     }
 }
