@@ -1,6 +1,8 @@
 package com.smart_hire.document.api;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,5 +22,10 @@ class DocumentController {
             @RequestParam String title,
             @RequestParam MultipartFile file
     ) {
+    }
+
+    @GetMapping("/{id}")
+    DocumentMetadataResponse getDocumentMetadata(@PathVariable String id) {
+        return new DocumentMetadataResponse(id, "candidate-1", "CV", "Java Developer CV");
     }
 }
