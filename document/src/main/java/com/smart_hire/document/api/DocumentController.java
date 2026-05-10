@@ -26,6 +26,10 @@ class DocumentController {
 
     @GetMapping("/{id}")
     DocumentMetadataResponse getDocumentMetadata(@PathVariable String id) {
+        return sampleMetadata(id);
+    }
+
+    private DocumentMetadataResponse sampleMetadata(String id) {
         return new DocumentMetadataResponse(id, "candidate-1", "CV", "Java Developer CV");
     }
 }
