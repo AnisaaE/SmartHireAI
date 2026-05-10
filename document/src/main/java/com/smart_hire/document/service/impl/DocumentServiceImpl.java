@@ -18,8 +18,17 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public DocumentRecord uploadDocument(String ownerId, String type, String title, MultipartFile file) {
         String rawTextContent = documentTextExtractor.extract(file);
+        return documentRepository.save(buildDocumentRecord(ownerId, type, title, file, rawTextContent));
+    }
 
-        DocumentRecord documentRecord = new DocumentRecord(
+    private DocumentRecord buildDocumentRecord(
+            String ownerId,
+            String type,
+            String title,
+            MultipartFile file,
+            String rawTextContent
+    ) {
+        return new DocumentRecord(
                 null,
                 ownerId,
                 type,
@@ -27,7 +36,5 @@ public class DocumentServiceImpl implements DocumentService {
                 file.getOriginalFilename(),
                 rawTextContent
         );
-
-        return documentRepository.save(documentRecord);
     }
 }
