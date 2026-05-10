@@ -49,6 +49,11 @@ public class AuthServiceImpl implements AuthService {
         return mapToUserResponse(userRepository.save(user));
     }
 
+    @Override
+    public void deleteUserById(Long id) {
+        userRepository.delete(getExistingUser(id));
+    }
+
     private void validateUsernameAvailability(String username) {
         if (userRepository.existsByUsername(username)) {
             throw new UsernameAlreadyExistsException("Username already registered: " + username);
