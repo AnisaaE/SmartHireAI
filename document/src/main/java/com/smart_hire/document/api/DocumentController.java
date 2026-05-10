@@ -33,10 +33,14 @@ class DocumentController {
 
     @GetMapping("/owner/{userId}")
     List<DocumentMetadataResponse> listDocumentsByOwner(@PathVariable String userId) {
-        return List.of(sampleMetadata("doc-1"));
+        return sampleDocumentsByOwner(userId);
     }
 
     private DocumentMetadataResponse sampleMetadata(String id) {
         return new DocumentMetadataResponse(id, "candidate-1", "CV", "Java Developer CV");
+    }
+
+    private List<DocumentMetadataResponse> sampleDocumentsByOwner(String userId) {
+        return List.of(sampleMetadata("doc-1"));
     }
 }
