@@ -88,4 +88,21 @@ class JobControllerTest {
 
         verify(jobService).getJobById(1L);
     }
+
+    @Test
+    void shouldReturnRecruiterJobsWhenRecruiterHasJobs() throws Exception {
+        doReturn(List.of(
+                new JobSummaryResponse(3L, 9L, "Platform Engineer", "OPEN"),
+                new JobSummaryResponse(4L, 9L, "QA Engineer", "DRAFT")
+        )).when(jobService).getJobsByRecruiterId(9L);
+
+        mockMvc.perform(get("/api/jobs/recruiter/9"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(3))
+                .andExpect(jsonPath("$[0].recruiterId").value(9))
+                .andExpect(jsonPath("$[1].id").value(4))
+                .andExpect(jsonPath("$[1].title").value("QA Engineer"));
+
+        verify(jobService).getJobsByRecruiterId(9L);
+    }
 }
