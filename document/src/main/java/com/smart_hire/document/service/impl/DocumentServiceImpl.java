@@ -23,7 +23,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public DocumentRecord getDocumentMetadata(String id) {
-        return documentRepository.findById(id).orElseThrow();
+        return getDocumentById(id);
     }
 
     private DocumentRecord buildDocumentRecord(
@@ -41,5 +41,9 @@ public class DocumentServiceImpl implements DocumentService {
                 file.getOriginalFilename(),
                 rawTextContent
         );
+    }
+
+    private DocumentRecord getDocumentById(String id) {
+        return documentRepository.findById(id).orElseThrow();
     }
 }
