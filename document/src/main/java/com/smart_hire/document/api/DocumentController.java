@@ -43,7 +43,7 @@ class DocumentController {
 
     @GetMapping("/content/{id}")
     DocumentContentResponse getDocumentContent(@PathVariable String id) {
-        return sampleContent(id);
+        return sampleDocumentContent(id);
     }
 
     private DocumentMetadataResponse sampleMetadata(String id) {
@@ -58,7 +58,7 @@ class DocumentController {
         return sampleMetadata("doc-1");
     }
 
-    private DocumentContentResponse sampleContent(String id) {
+    private DocumentContentResponse sampleDocumentContent(String id) {
         return new DocumentContentResponse(id, "Extracted resume text");
     }
 }
