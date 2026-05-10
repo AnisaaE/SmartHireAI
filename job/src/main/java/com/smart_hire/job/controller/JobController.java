@@ -4,6 +4,7 @@ import com.smart_hire.job.dto.CreateJobRequest;
 import com.smart_hire.job.dto.JobDetailResponse;
 import com.smart_hire.job.dto.JobSummaryResponse;
 import com.smart_hire.job.dto.UpdateJobRequest;
+import com.smart_hire.job.dto.UpdateJobStatusRequest;
 import com.smart_hire.job.service.JobService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -57,5 +58,13 @@ public class JobController {
     ) {
         JobDetailResponse updatedJob = jobService.updateJob(id, request);
         return ResponseEntity.ok(updatedJob);
+    }
+
+    @PutMapping(JobApiPaths.JOB_STATUS_PATH)
+    public ResponseEntity<JobDetailResponse> updateJobStatus(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateJobStatusRequest request
+    ) {
+        return ResponseEntity.ok(jobService.updateJobStatus(id, request));
     }
 }
