@@ -2,6 +2,7 @@ package com.smart_hire.document.api;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,11 @@ class DocumentController {
 
     @PostMapping("/upload")
     @ResponseStatus(HttpStatus.CREATED)
-    void uploadDocument(String ownerId, String type, String title, MultipartFile file) {
+    void uploadDocument(
+            @RequestParam String ownerId,
+            @RequestParam String type,
+            @RequestParam String title,
+            @RequestParam MultipartFile file
+    ) {
     }
 }
