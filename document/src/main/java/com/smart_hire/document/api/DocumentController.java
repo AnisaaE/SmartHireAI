@@ -1,109 +1,93 @@
 package com.smart_hire.document.api;
 
+import com.smart_hire.document.service.DocumentRecord;
+import com.smart_hire.document.service.DocumentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/documents")
-class DocumentController {
+@RequiredArgsConstructor
+public class DocumentController {
+
+    private final DocumentService documentService;
 
     @PostMapping("/upload")
     @ResponseStatus(HttpStatus.CREATED)
-    void uploadDocument(
+    public DocumentMetadataResponse uploadDocument(
             @RequestParam String ownerId,
             @RequestParam String type,
             @RequestParam String title,
             @RequestParam MultipartFile file
     ) {
+        DocumentRecord document = documentService.uploadDocument(ownerId, type, title, file);
+        return toMetadataResponse(document);
     }
 
     @GetMapping("/{id}")
-    DocumentMetadataResponse getDocumentMetadata(@PathVariable String id) {
-        return sampleMetadata(id);
+    public DocumentMetadataResponse getDocumentMetadata(@PathVariable String id) {
+        return toMetadataResponse(documentService.getDocumentMetadata(id));
     }
 
     @GetMapping("/owner/{userId}")
-    List<DocumentMetadataResponse> listDocumentsByOwner(@PathVariable String userId) {
-        return sampleDocumentsByOwner(userId);
+    public List<DocumentMetadataResponse> listDocumentsByOwner(@PathVariable String userId) {
+        return documentService.listDocumentsByOwner(userId).stream()
+                .map(this::toMetadataResponse)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/cv/{candidateId}")
-    DocumentMetadataResponse getActiveCv(@PathVariable String candidateId) {
-        return sampleActiveCv(candidateId);
+    public DocumentMetadataResponse getActiveCv(@PathVariable String candidateId) {
+        return toMetadataResponse(documentService.getActiveCv(candidateId));
     }
 
     @GetMapping("/content/{id}")
-    DocumentContentResponse getDocumentContent(@PathVariable String id) {
-        return sampleDocumentContent(id);
+    public DocumentContentResponse getDocumentContent(@PathVariable String id) {
+        return new DocumentContentResponse(id, documentService.getDocumentContent(id));
     }
 
     @PutMapping("/{id}")
-    DocumentMetadataResponse updateDocumentMetadata(
+    public DocumentMetadataResponse updateDocumentMetadata(
             @PathVariable String id,
             @RequestBody UpdateDocumentMetadataRequest request
     ) {
-        return updatedMetadata(id, request);
+        return toMetadataResponse(documentService.updateDocumentMetadata(id, request.title(), request.type()));
     }
 
     @PutMapping("/{id}/content")
-    DocumentContentResponse updateDocumentContent(
+    public DocumentContentResponse updateDocumentContent(
             @PathVariable String id,
             @RequestBody UpdateDocumentContentRequest request
     ) {
-        return updatedContent(id, request);
+        return new DocumentContentResponse(id, documentService.updateDocumentContent(id, request.rawTextContent()).rawTextContent());
     }
 
     @PutMapping("/{id}/reprocess")
-    DocumentReprocessResponse reprocessDocument(@PathVariable String id) {
-        return reprocessedDocument(id);
+    public DocumentReprocessResponse reprocessDocument(@PathVariable String id) {
+        return new DocumentReprocessResponse(id, documentService.reprocessDocument(id).status());
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteDocument(@PathVariable String id) {
-        performDelete(id);
+    public void deleteDocument(@PathVariable String id) {
+        documentService.deleteDocument(id);
     }
 
-    private DocumentMetadataResponse sampleMetadata(String id) {
-        return new DocumentMetadataResponse(id, "candidate-1", "CV", "Java Developer CV");
-    }
-
-    private List<DocumentMetadataResponse> sampleDocumentsByOwner(String userId) {
-        return List.of(sampleMetadata("doc-1"));
-    }
-
-    private DocumentMetadataResponse sampleActiveCv(String candidateId) {
-        return sampleMetadata("doc-1");
-    }
-
-    private DocumentContentResponse sampleDocumentContent(String id) {
-        return new DocumentContentResponse(id, "Extracted resume text");
-    }
-
-    private DocumentMetadataResponse updatedMetadata(String id, UpdateDocumentMetadataRequest request) {
-        return new DocumentMetadataResponse(id, "candidate-1", request.type(), request.title());
-    }
-
-    private DocumentContentResponse updatedContent(String id, UpdateDocumentContentRequest request) {
-        return new DocumentContentResponse(id, request.rawTextContent());
-    }
-
-    private DocumentReprocessResponse reprocessedDocument(String id) {
-        return new DocumentReprocessResponse(id, "REPROCESSED");
-    }
-
-    private void performDelete(String id) {
+    private DocumentMetadataResponse toMetadataResponse(DocumentRecord document) {
+        return new DocumentMetadataResponse(document.id(), document.ownerId(), document.type(), document.title());
     }
 }

@@ -33,7 +33,11 @@ class DocumentServiceGetMetadataTest {
                 "CV",
                 "Java Developer CV",
                 "resume.pdf",
-                "Extracted resume text"
+                "Extracted resume text",
+                new byte[0],
+                "ACTIVE",
+                java.time.Instant.now(),
+                java.time.Instant.now()
         );
 
         when(documentRepository.findById("doc-1")).thenReturn(Optional.of(expected));

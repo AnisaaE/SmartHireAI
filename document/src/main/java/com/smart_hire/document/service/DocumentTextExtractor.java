@@ -5,4 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 public interface DocumentTextExtractor {
 
     String extract(MultipartFile file);
+
+    String extract(byte[] fileBytes, String originalFilename);
 }
