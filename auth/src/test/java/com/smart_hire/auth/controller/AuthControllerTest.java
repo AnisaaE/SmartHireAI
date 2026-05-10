@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,5 +40,19 @@ class AuthControllerTest {
                 .andExpect(status().isCreated());
 
         verify(authService).register(any(RegisterRequest.class));
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenRegisterRequestMissesPassword() throws Exception {
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "username": "jane.doe"
+                                }
+                                """))
+                .andExpect(status().isBadRequest());
+
+        verify(authService, never()).register(any(RegisterRequest.class));
     }
 }

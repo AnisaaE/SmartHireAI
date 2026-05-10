@@ -1,8 +1,7 @@
 package com.smart_hire.auth.service;
 
-import com.smart_hire.auth.domain.UserRole;
 import com.smart_hire.auth.dto.RegisterRequest;
-import com.smart_hire.auth.exception.EmailAlreadyExistsException;
+import com.smart_hire.auth.exception.UsernameAlreadyExistsException;
 import com.smart_hire.auth.repository.UserRepository;
 import com.smart_hire.auth.service.impl.AuthServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -31,19 +30,17 @@ class AuthServiceImplTest {
     private AuthServiceImpl authService;
 
     @Test
-    void shouldFailWhenRegisteringUserWithExistingEmail() {
+    void shouldFailWhenRegisteringUserWithExistingUsername() {
         RegisterRequest request = new RegisterRequest(
                 "jane.doe",
-                "Password123!",
-                "jane.doe@smarthire.dev",
-                UserRole.CANDIDATE
+                "Password123!"
         );
 
-        when(userRepository.existsByEmail(request.email())).thenReturn(true);
+        when(userRepository.existsByUsername(request.username())).thenReturn(true);
 
         assertThatThrownBy(() -> authService.register(request))
-                .isInstanceOf(EmailAlreadyExistsException.class)
-                .hasMessage("Email already registered: " + request.email());
+                .isInstanceOf(UsernameAlreadyExistsException.class)
+                .hasMessage("Username already registered: " + request.username());
 
         verify(userRepository, never()).save(any());
         verify(passwordEncoder, never()).encode(any());
