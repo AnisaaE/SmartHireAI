@@ -19,18 +19,19 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public User register(RegisterRequest request) {
         validateUsernameAvailability(request.username());
-
-        User user = User.builder()
-                .username(request.username())
-                .password(passwordEncoder.encode(request.password()))
-                .build();
-
-        return userRepository.save(user);
+        return userRepository.save(buildUser(request));
     }
 
     private void validateUsernameAvailability(String username) {
         if (userRepository.existsByUsername(username)) {
             throw new UsernameAlreadyExistsException("Username already registered: " + username);
         }
+    }
+
+    private User buildUser(RegisterRequest request) {
+        return User.builder()
+                .username(request.username())
+                .password(passwordEncoder.encode(request.password()))
+                .build();
     }
 }
