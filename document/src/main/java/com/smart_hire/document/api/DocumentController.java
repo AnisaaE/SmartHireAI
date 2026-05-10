@@ -61,7 +61,7 @@ class DocumentController {
             @PathVariable String id,
             @RequestBody UpdateDocumentContentRequest request
     ) {
-        return new DocumentContentResponse(id, request.rawTextContent());
+        return updatedContent(id, request);
     }
 
     private DocumentMetadataResponse sampleMetadata(String id) {
@@ -82,5 +82,9 @@ class DocumentController {
 
     private DocumentMetadataResponse updatedMetadata(String id, UpdateDocumentMetadataRequest request) {
         return new DocumentMetadataResponse(id, "candidate-1", request.type(), request.title());
+    }
+
+    private DocumentContentResponse updatedContent(String id, UpdateDocumentContentRequest request) {
+        return new DocumentContentResponse(id, request.rawTextContent());
     }
 }
