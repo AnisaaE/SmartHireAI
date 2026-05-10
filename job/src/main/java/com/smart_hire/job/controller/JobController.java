@@ -30,6 +30,7 @@ public class JobController {
 
     @GetMapping
     public ResponseEntity<List<JobSummaryResponse>> getAllJobs() {
-        return ResponseEntity.ok(jobService.getAllJobs());
+        List<JobSummaryResponse> jobs = jobService.getAllJobs();
+        return ResponseEntity.ok(jobs);
     }
 }
