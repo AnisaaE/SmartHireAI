@@ -1,6 +1,7 @@
 package com.smart_hire.job.controller;
 
 import com.smart_hire.job.dto.CreateJobRequest;
+import com.smart_hire.job.dto.JobDetailResponse;
 import com.smart_hire.job.dto.JobSummaryResponse;
 import com.smart_hire.job.service.JobService;
 import jakarta.validation.Valid;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,5 +34,10 @@ public class JobController {
     public ResponseEntity<List<JobSummaryResponse>> getAllJobs() {
         List<JobSummaryResponse> jobs = jobService.getAllJobs();
         return ResponseEntity.ok(jobs);
+    }
+
+    @GetMapping(JobApiPaths.JOB_BY_ID_PATH)
+    public ResponseEntity<JobDetailResponse> getJobById(@PathVariable Long id) {
+        return ResponseEntity.ok(jobService.getJobById(id));
     }
 }
