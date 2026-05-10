@@ -4,6 +4,7 @@ import com.smart_hire.auth.config.SecurityConfig;
 import com.smart_hire.auth.dto.LoginRequest;
 import com.smart_hire.auth.dto.LoginResponse;
 import com.smart_hire.auth.dto.RegisterRequest;
+import com.smart_hire.auth.dto.UpdateUserRequest;
 import com.smart_hire.auth.dto.UserResponse;
 import com.smart_hire.auth.exception.InvalidCredentialsException;
 import com.smart_hire.auth.service.AuthService;
@@ -23,8 +24,10 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 
 @WebMvcTest(AuthController.class)
 @Import(SecurityConfig.class)
@@ -141,5 +144,26 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.username").value("jane.doe"));
 
         verify(authService).getUserById(7L);
+    }
+
+    @Test
+    void shouldUpdateUsernameWhenAuthenticatedUserSendsValidPayload() throws Exception {
+        doReturn(new UserResponse(7L, "jane.updated"))
+                .when(authService)
+                .updateUser(7L, new UpdateUserRequest("jane.updated"));
+
+        mockMvc.perform(put("/api/auth/users/7")
+                        .with(user("jane.doe"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "username": "jane.updated"
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(7))
+                .andExpect(jsonPath("$.username").value("jane.updated"));
+
+        verify(authService).updateUser(7L, new UpdateUserRequest("jane.updated"));
     }
 }
