@@ -14,9 +14,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -78,5 +80,19 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.token").value("jwt-token-value"));
 
         verify(authService).login(any(LoginRequest.class));
+    }
+
+    @Test
+    void shouldReturnValidResponseWhenTokenCanBeValidated() throws Exception {
+        doReturn(true)
+                .when(authService)
+                .validateToken("jwt-token-value");
+
+        mockMvc.perform(get("/api/auth/validate")
+                        .header("Authorization", "Bearer jwt-token-value"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.valid").value(true));
+
+        verify(authService).validateToken(eq("jwt-token-value"));
     }
 }
