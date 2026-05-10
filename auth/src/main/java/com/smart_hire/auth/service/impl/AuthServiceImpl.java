@@ -18,9 +18,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public User register(RegisterRequest request) {
-        if (userRepository.existsByEmail(request.email())) {
-            throw new EmailAlreadyExistsException("Email already registered: " + request.email());
-        }
+        validateEmailAvailability(request.email());
 
         User user = User.builder()
                 .username(request.username())
@@ -30,5 +28,11 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         return userRepository.save(user);
+    }
+
+    private void validateEmailAvailability(String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new EmailAlreadyExistsException("Email already registered: " + email);
+        }
     }
 }
