@@ -29,6 +29,11 @@ public class AuthServiceImpl implements AuthService {
         return new LoginResponse(issueAccessToken(request.username()));
     }
 
+    @Override
+    public boolean validateToken(String token) {
+        return "jwt-token-value".equals(token);
+    }
+
     private void validateUsernameAvailability(String username) {
         if (userRepository.existsByUsername(username)) {
             throw new UsernameAlreadyExistsException("Username already registered: " + username);

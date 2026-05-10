@@ -10,4 +10,6 @@ public interface AuthService {
     User register(RegisterRequest request);
 
     LoginResponse login(LoginRequest request);
+
+    boolean validateToken(String token);
 }

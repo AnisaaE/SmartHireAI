@@ -21,6 +21,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(AuthApiPaths.REGISTER_ENDPOINT).permitAll()
                         .requestMatchers(AuthApiPaths.LOGIN_ENDPOINT).permitAll()
+                        .requestMatchers(AuthApiPaths.VALIDATE_ENDPOINT).permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults());
 
