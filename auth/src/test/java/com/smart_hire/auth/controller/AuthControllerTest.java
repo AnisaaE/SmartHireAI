@@ -21,7 +21,9 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -165,5 +167,18 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.username").value("jane.updated"));
 
         verify(authService).updateUser(7L, new UpdateUserRequest("jane.updated"));
+    }
+
+    @Test
+    void shouldDeleteUserWhenAuthenticatedUserRequestsDeletion() throws Exception {
+        doNothing()
+                .when(authService)
+                .deleteUserById(7L);
+
+        mockMvc.perform(delete("/api/auth/users/7")
+                        .with(user("jane.doe")))
+                .andExpect(status().isNoContent());
+
+        verify(authService).deleteUserById(7L);
     }
 }
