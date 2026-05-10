@@ -1,6 +1,8 @@
 package com.smart_hire.auth.controller;
 
 import com.smart_hire.auth.config.SecurityConfig;
+import com.smart_hire.auth.dto.LoginRequest;
+import com.smart_hire.auth.dto.LoginResponse;
 import com.smart_hire.auth.dto.RegisterRequest;
 import com.smart_hire.auth.service.AuthService;
 import org.junit.jupiter.api.Test;
@@ -12,9 +14,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AuthController.class)
@@ -54,5 +58,25 @@ class AuthControllerTest {
                 .andExpect(status().isBadRequest());
 
         verify(authService, never()).register(any(RegisterRequest.class));
+    }
+
+    @Test
+    void shouldReturnTokenWhenLoginRequestIsValid() throws Exception {
+        doReturn(new LoginResponse("jwt-token-value"))
+                .when(authService)
+                .login(any(LoginRequest.class));
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "username": "jane.doe",
+                                  "password": "Password123!"
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token").value("jwt-token-value"));
+
+        verify(authService).login(any(LoginRequest.class));
     }
 }
