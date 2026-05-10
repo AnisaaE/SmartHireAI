@@ -2,7 +2,7 @@ package com.smart_hire.auth.service.impl;
 
 import com.smart_hire.auth.domain.User;
 import com.smart_hire.auth.dto.RegisterRequest;
-import com.smart_hire.auth.exception.EmailAlreadyExistsException;
+import com.smart_hire.auth.exception.UsernameAlreadyExistsException;
 import com.smart_hire.auth.repository.UserRepository;
 import com.smart_hire.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -18,21 +18,19 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public User register(RegisterRequest request) {
-        validateEmailAvailability(request.email());
+        validateUsernameAvailability(request.username());
 
         User user = User.builder()
                 .username(request.username())
                 .password(passwordEncoder.encode(request.password()))
-                .email(request.email())
-                .role(request.role())
                 .build();
 
         return userRepository.save(user);
     }
 
-    private void validateEmailAvailability(String email) {
-        if (userRepository.existsByEmail(email)) {
-            throw new EmailAlreadyExistsException("Email already registered: " + email);
+    private void validateUsernameAvailability(String username) {
+        if (userRepository.existsByUsername(username)) {
+            throw new UsernameAlreadyExistsException("Username already registered: " + username);
         }
     }
 }
