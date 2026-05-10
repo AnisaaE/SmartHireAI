@@ -41,6 +41,11 @@ class DocumentController {
         return sampleActiveCv(candidateId);
     }
 
+    @GetMapping("/content/{id}")
+    DocumentContentResponse getDocumentContent(@PathVariable String id) {
+        return sampleContent(id);
+    }
+
     private DocumentMetadataResponse sampleMetadata(String id) {
         return new DocumentMetadataResponse(id, "candidate-1", "CV", "Java Developer CV");
     }
@@ -51,5 +56,9 @@ class DocumentController {
 
     private DocumentMetadataResponse sampleActiveCv(String candidateId) {
         return sampleMetadata("doc-1");
+    }
+
+    private DocumentContentResponse sampleContent(String id) {
+        return new DocumentContentResponse(id, "Extracted resume text");
     }
 }
