@@ -38,11 +38,12 @@ public class AuthController {
     public ResponseEntity<TokenValidationResponse> validate(
             @RequestHeader("Authorization") String authorizationHeader
     ) {
-        String token = extractBearerToken(authorizationHeader);
-        return ResponseEntity.ok(new TokenValidationResponse(authService.validateToken(token)));
+        return ResponseEntity.ok(new TokenValidationResponse(
+                authService.validateToken(extractTokenFromHeader(authorizationHeader))
+        ));
     }
 
-    private String extractBearerToken(String authorizationHeader) {
+    private String extractTokenFromHeader(String authorizationHeader) {
         return authorizationHeader.replace("Bearer ", "");
     }
 }
