@@ -51,7 +51,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void deleteUserById(Long id) {
-        userRepository.delete(getExistingUser(id));
+        deleteUser(getExistingUser(id));
     }
 
     private void validateUsernameAvailability(String username) {
@@ -78,5 +78,9 @@ public class AuthServiceImpl implements AuthService {
     private User getExistingUser(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found: " + id));
+    }
+
+    private void deleteUser(User user) {
+        userRepository.delete(user);
     }
 }
