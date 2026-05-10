@@ -73,6 +73,7 @@ class DocumentController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteDocument(@PathVariable String id) {
+        performDelete(id);
     }
 
     private DocumentMetadataResponse sampleMetadata(String id) {
@@ -101,5 +102,8 @@ class DocumentController {
 
     private DocumentReprocessResponse reprocessedDocument(String id) {
         return new DocumentReprocessResponse(id, "REPROCESSED");
+    }
+
+    private void performDelete(String id) {
     }
 }
