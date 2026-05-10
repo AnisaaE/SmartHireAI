@@ -4,7 +4,9 @@ import com.smart_hire.auth.domain.User;
 import com.smart_hire.auth.dto.LoginRequest;
 import com.smart_hire.auth.dto.LoginResponse;
 import com.smart_hire.auth.dto.RegisterRequest;
+import com.smart_hire.auth.dto.UserResponse;
 import com.smart_hire.auth.exception.UsernameAlreadyExistsException;
+import com.smart_hire.auth.exception.UserNotFoundException;
 import com.smart_hire.auth.repository.UserRepository;
 import com.smart_hire.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,14 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public boolean validateToken(String token) {
         return "jwt-token-value".equals(token);
+    }
+
+    @Override
+    public UserResponse getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + id));
+
+        return new UserResponse(user.getId(), user.getUsername());
     }
 
     private void validateUsernameAvailability(String username) {
