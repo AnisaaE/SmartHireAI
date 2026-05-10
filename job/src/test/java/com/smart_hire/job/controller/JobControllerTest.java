@@ -3,6 +3,7 @@ package com.smart_hire.job.controller;
 import com.smart_hire.job.dto.CreateJobRequest;
 import com.smart_hire.job.dto.JobDetailResponse;
 import com.smart_hire.job.dto.JobSummaryResponse;
+import com.smart_hire.job.dto.UpdateJobRequest;
 import com.smart_hire.job.service.JobService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -104,5 +106,45 @@ class JobControllerTest {
                 .andExpect(jsonPath("$[1].title").value("QA Engineer"));
 
         verify(jobService).getJobsByRecruiterId(9L);
+    }
+
+    @Test
+    void shouldReturnUpdatedJobWhenUpdatePayloadIsValid() throws Exception {
+        doReturn(new JobDetailResponse(
+                1L,
+                5L,
+                "Lead Java Developer",
+                "Lead backend delivery",
+                "Remote",
+                "FULL_TIME",
+                "OPEN"
+        )).when(jobService).updateJob(1L, new UpdateJobRequest(
+                "Lead Java Developer",
+                "Lead backend delivery",
+                "Remote",
+                "FULL_TIME"
+        ));
+
+        mockMvc.perform(put("/api/jobs/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "title": "Lead Java Developer",
+                                  "description": "Lead backend delivery",
+                                  "location": "Remote",
+                                  "employmentType": "FULL_TIME"
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.title").value("Lead Java Developer"))
+                .andExpect(jsonPath("$.location").value("Remote"));
+
+        verify(jobService).updateJob(1L, new UpdateJobRequest(
+                "Lead Java Developer",
+                "Lead backend delivery",
+                "Remote",
+                "FULL_TIME"
+        ));
     }
 }
