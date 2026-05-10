@@ -60,6 +60,7 @@ SmartHireAI is a microservices-based recruitment platform that uses local LLMs t
 - `POST /api/documents/upload` - Upload a PDF document
 - `GET /api/documents/{id}` - Get document metadata
 - `GET /api/documents/owner/{userId}` - List all documents owned by a user
+- `GET /api/documents/cv/{candidateId}` - Get the active CV document for a candidate
 - `GET /api/documents/content/{id}` - Retrieve extracted raw text for AI consumption
 - `PUT /api/documents/{id}` - Update document metadata such as title, tags, or document type
 - `PUT /api/documents/{id}/content` - Replace extracted text after re-processing or manual correction
@@ -71,7 +72,65 @@ SmartHireAI is a microservices-based recruitment platform that uses local LLMs t
 - `PUT /content` is useful when OCR or parser output needs correction
 - `PUT /reprocess` is important when extraction logic or prompt settings improve over time
 
-### 2.3. AI Analysis Service
+### 2.3. Job Service
+
+**Role:** Manages job postings created by recruiters and exposes them for candidate browsing and application.
+
+**Key Features**
+
+- Recruiter job creation and editing
+- Public or authenticated job listing
+- Job lifecycle management
+- Job ownership by recruiter
+
+**Core Endpoints**
+
+- `POST /api/jobs` - Create a new job posting
+- `GET /api/jobs` - List available jobs for candidates
+- `GET /api/jobs/{id}` - Get job details
+- `GET /api/jobs/recruiter/{recruiterId}` - List jobs created by a recruiter
+- `PUT /api/jobs/{id}` - Update job posting details
+- `PUT /api/jobs/{id}/status` - Open, close, archive, or publish a job
+- `DELETE /api/jobs/{id}` - Remove or archive a job posting
+
+**Recommended Status Values**
+
+- `DRAFT`
+- `OPEN`
+- `CLOSED`
+- `ARCHIVED`
+
+### 2.4. Application Service
+
+**Role:** Connects candidates to jobs through explicit applications and keeps the recruitment process traceable.
+
+**Key Features**
+
+- Candidate applies to a specific job
+- One candidate can apply to many jobs
+- Each application references the CV used for that job
+- Recruiters can track candidate progress per job
+
+**Core Endpoints**
+
+- `POST /api/applications` - Apply to a specific job
+- `GET /api/applications/{id}` - Get application details
+- `GET /api/applications/job/{jobId}` - List all applications for a job
+- `GET /api/applications/candidate/{candidateId}` - List all applications made by a candidate
+- `PUT /api/applications/{id}` - Update application fields such as selected CV or cover letter
+- `PUT /api/applications/{id}/status` - Update recruitment status for that application
+- `DELETE /api/applications/{id}` - Withdraw or remove an application
+
+**Recommended Status Values**
+
+- `APPLIED`
+- `UNDER_REVIEW`
+- `SHORTLISTED`
+- `REJECTED`
+- `HIRED`
+- `WITHDRAWN`
+
+### 2.5. AI Analysis Service
 
 **Role:** Matches job descriptions with candidate CVs and returns ranked results.
 
@@ -80,11 +139,11 @@ SmartHireAI is a microservices-based recruitment platform that uses local LLMs t
 - Multi-step analysis pipeline
 - Candidate filtering, scoring, and ranking
 - Result caching in Redis
-- Re-runnable analyses when job requirements or CV pool changes
+- Re-runnable analyses when job requirements or applicant pool changes
 
 **Core Endpoints**
 
-- `POST /api/analysis/start` - Start analysis for one job document and a set of candidate CV documents
+- `POST /api/analysis/start` - Start analysis for one job and its submitted applications
 - `GET /api/analysis/{analysisId}` - Get analysis metadata and status
 - `GET /api/analysis/report/{jobId}` - Fetch ranked results for a job
 - `PUT /api/analysis/{analysisId}` - Update analysis configuration such as scoring weights or evaluation criteria
@@ -105,7 +164,7 @@ SmartHireAI is a microservices-based recruitment platform that uses local LLMs t
 - `GET /api/analysis/{analysisId}/candidates` - Inspect per-candidate scores and reasoning
 - `DELETE /api/analysis/{analysisId}/cache` - Clear only cache without deleting the analysis record
 
-### 2.4. Dispatcher Service
+### 2.6. Dispatcher Service
 
 **Role:** Single entry point for clients, routing requests to downstream services and enforcing security policies.
 
@@ -120,6 +179,8 @@ SmartHireAI is a microservices-based recruitment platform that uses local LLMs t
 
 - `/api/auth/**`
 - `/api/documents/**`
+- `/api/jobs/**`
+- `/api/applications/**`
 - `/api/analysis/**`
 
 ---
@@ -137,6 +198,33 @@ SmartHireAI is a microservices-based recruitment platform that uses local LLMs t
 - `UserRole role`
 - `Boolean active`
 - `LocalDateTime createdAt`
+- `LocalDateTime updatedAt`
+
+### PostgreSQL - Job Service
+
+**Job**
+
+- `Long id`
+- `Long recruiterId`
+- `String title`
+- `String description`
+- `String location`
+- `String employmentType`
+- `String status`
+- `String jobDocumentId`
+- `LocalDateTime createdAt`
+- `LocalDateTime updatedAt`
+
+### PostgreSQL - Application Service
+
+**Application**
+
+- `Long id`
+- `Long jobId`
+- `Long candidateId`
+- `String cvDocumentId`
+- `String status`
+- `LocalDateTime appliedAt`
 - `LocalDateTime updatedAt`
 
 ### MongoDB - Document Service
@@ -160,9 +248,9 @@ SmartHireAI is a microservices-based recruitment platform that uses local LLMs t
 
 - `String analysisId`
 - `String jobId`
-- `List<String> candidateIds`
-- `Map<String, Double> candidateScores`
-- `Map<String, String> candidateReasoning`
+- `List<Long> applicationIds`
+- `Map<Long, Double> applicationScores`
+- `Map<Long, String> applicationReasoning`
 - `String status`
 - `String summary`
 - `LocalDateTime createdAt`
@@ -183,9 +271,20 @@ SmartHireAI is a microservices-based recruitment platform that uses local LLMs t
 - Only the owner or recruiter/admin should update or delete a document
 - Deleting a job description should either block or invalidate related analyses
 
+### Jobs
+
+- Only the recruiter owner or admin should update or close a job
+- Closed or archived jobs should not accept new applications
+
+### Applications
+
+- A candidate should not be able to apply to the same job twice unless the product explicitly allows re-application
+- Each application should reference the exact CV version used at apply time
+- Recruiters should only see applications for their own jobs
+
 ### Analysis
 
-- `POST /start` should validate that one `JOB` document and only `CV` candidates are submitted
+- `POST /start` should validate that the target job exists and that only applications for that job are analyzed
 - `PUT /restart` should generate a fresh result timestamp and clear stale cached state
 - `DELETE` should also remove related cache keys
 
@@ -194,14 +293,15 @@ SmartHireAI is a microservices-based recruitment platform that uses local LLMs t
 ## 5. System Workflow
 
 1. A recruiter registers or logs in through the Auth Service.
-2. The recruiter uploads one job description and multiple CVs through the Document Service.
-3. The Document Service extracts and stores text content and metadata.
-4. The recruiter triggers analysis through the Dispatcher.
-5. The AI Analysis Service fetches document content from the Document Service.
-6. The LLM pipeline filters, scores, and ranks the candidates.
-7. The ranked report is stored and returned to the recruiter.
-8. If documents change later, the recruiter can reprocess documents or restart analysis using the `PUT` endpoints.
-9. If outdated records are no longer needed, the recruiter or admin can clean them up using the `DELETE` endpoints.
+2. A recruiter creates a job posting through the Job Service and can optionally upload a job description document through the Document Service.
+3. The Document Service extracts and stores text content and metadata for both job descriptions and candidate CVs.
+4. A candidate registers or logs in, browses open jobs, uploads or selects a CV, and applies to a specific job through the Application Service.
+5. When the recruiter triggers analysis through the Dispatcher, the system automatically loads all applications for that job and their linked CV documents from the database.
+6. The AI Analysis Service fetches the job description and candidate document content from the Document Service.
+7. The LLM pipeline filters, scores, and ranks the candidates.
+8. The ranked report is stored and returned to the recruiter.
+9. If documents change later, the recruiter can reprocess documents or restart analysis using the `PUT` endpoints.
+10. If outdated records are no longer needed, the recruiter or admin can clean them up using the `DELETE` endpoints.
 
 ---
 
@@ -221,6 +321,17 @@ If the goal is a usable first production version, these endpoints are the minimu
 - `PUT /api/documents/{id}`
 - `PUT /api/documents/{id}/reprocess`
 - `DELETE /api/documents/{id}`
+- `POST /api/jobs`
+- `GET /api/jobs`
+- `GET /api/jobs/{id}`
+- `PUT /api/jobs/{id}`
+- `PUT /api/jobs/{id}/status`
+- `DELETE /api/jobs/{id}`
+- `POST /api/applications`
+- `GET /api/applications/job/{jobId}`
+- `GET /api/applications/candidate/{candidateId}`
+- `PUT /api/applications/{id}/status`
+- `DELETE /api/applications/{id}`
 - `POST /api/analysis/start`
 - `GET /api/analysis/{analysisId}`
 - `GET /api/analysis/report/{jobId}`
@@ -232,6 +343,8 @@ If the goal is a usable first production version, these endpoints are the minimu
 ## 7. Implementation Notes
 
 - Prefer soft delete for users and possibly for documents if audit history matters
+- `Application` is the core entity that connects candidate, job, and CV
+- A candidate should apply to a specific job, not be globally attached to every recruiter search
 - Analysis status tracking is important because LLM processing is not always immediate
 - Reprocess and restart endpoints are practical necessities, not just nice-to-have features
 - If analysis history matters long-term, Redis alone may not be enough and a persistent store should be added
@@ -246,7 +359,7 @@ All contributors should follow a strict TDD workflow:
 2. **Green** - Implement the minimal code needed to pass the test
 3. **Refactor** - Improve naming, structure, and error handling without changing behavior
 
-**Suggested Commit Convention**
+**Commit Convention**
 
 - `test: [RED] <message>`
 - `feat: [GREEN] <message>`
