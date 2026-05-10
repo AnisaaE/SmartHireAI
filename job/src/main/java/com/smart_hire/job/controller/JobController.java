@@ -71,8 +71,12 @@ public class JobController {
     }
 
     @DeleteMapping(JobApiPaths.JOB_BY_ID_PATH)
-    public ResponseEntity<Void> deleteJob(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteJobById(@PathVariable Long id) {
         jobService.deleteJobById(id);
+        return noContentResponse();
+    }
+
+    private ResponseEntity<Void> noContentResponse() {
         return ResponseEntity.noContent().build();
     }
 }
