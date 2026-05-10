@@ -56,6 +56,14 @@ class DocumentController {
         return updatedMetadata(id, request);
     }
 
+    @PutMapping("/{id}/content")
+    DocumentContentResponse updateDocumentContent(
+            @PathVariable String id,
+            @RequestBody UpdateDocumentContentRequest request
+    ) {
+        return new DocumentContentResponse(id, request.rawTextContent());
+    }
+
     private DocumentMetadataResponse sampleMetadata(String id) {
         return new DocumentMetadataResponse(id, "candidate-1", "CV", "Java Developer CV");
     }
