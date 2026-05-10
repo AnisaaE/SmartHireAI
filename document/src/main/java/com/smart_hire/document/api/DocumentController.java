@@ -64,6 +64,11 @@ class DocumentController {
         return updatedContent(id, request);
     }
 
+    @PutMapping("/{id}/reprocess")
+    DocumentReprocessResponse reprocessDocument(@PathVariable String id) {
+        return new DocumentReprocessResponse(id, "REPROCESSED");
+    }
+
     private DocumentMetadataResponse sampleMetadata(String id) {
         return new DocumentMetadataResponse(id, "candidate-1", "CV", "Java Developer CV");
     }
