@@ -39,17 +39,12 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public UserResponse getUserById(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found: " + id));
-
-        return mapToUserResponse(user);
+        return mapToUserResponse(getExistingUser(id));
     }
 
     @Override
     public UserResponse updateUser(Long id, UpdateUserRequest request) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found: " + id));
-
+        User user = getExistingUser(id);
         user.updateUsername(request.username());
         return mapToUserResponse(userRepository.save(user));
     }
@@ -73,5 +68,10 @@ public class AuthServiceImpl implements AuthService {
 
     private UserResponse mapToUserResponse(User user) {
         return new UserResponse(user.getId(), user.getUsername());
+    }
+
+    private User getExistingUser(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + id));
     }
 }
