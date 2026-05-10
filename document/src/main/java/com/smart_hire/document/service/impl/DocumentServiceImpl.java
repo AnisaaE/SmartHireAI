@@ -21,6 +21,11 @@ public class DocumentServiceImpl implements DocumentService {
         return documentRepository.save(buildDocumentRecord(ownerId, type, title, file, rawTextContent));
     }
 
+    @Override
+    public DocumentRecord getDocumentMetadata(String id) {
+        return documentRepository.findById(id).orElseThrow();
+    }
+
     private DocumentRecord buildDocumentRecord(
             String ownerId,
             String type,
