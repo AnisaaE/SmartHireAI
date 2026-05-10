@@ -5,6 +5,7 @@ import com.smart_hire.auth.dto.LoginRequest;
 import com.smart_hire.auth.dto.LoginResponse;
 import com.smart_hire.auth.dto.RegisterRequest;
 import com.smart_hire.auth.dto.UserResponse;
+import com.smart_hire.auth.dto.UpdateUserRequest;
 import com.smart_hire.auth.exception.UsernameAlreadyExistsException;
 import com.smart_hire.auth.exception.UserNotFoundException;
 import com.smart_hire.auth.repository.UserRepository;
@@ -42,6 +43,15 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new UserNotFoundException("User not found: " + id));
 
         return mapToUserResponse(user);
+    }
+
+    @Override
+    public UserResponse updateUser(Long id, UpdateUserRequest request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + id));
+
+        user.updateUsername(request.username());
+        return mapToUserResponse(userRepository.save(user));
     }
 
     private void validateUsernameAvailability(String username) {
