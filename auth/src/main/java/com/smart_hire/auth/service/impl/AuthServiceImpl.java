@@ -26,7 +26,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginResponse login(LoginRequest request) {
-        return new LoginResponse("jwt-token-value");
+        return new LoginResponse(issueAccessToken(request.username()));
     }
 
     private void validateUsernameAvailability(String username) {
@@ -40,5 +40,9 @@ public class AuthServiceImpl implements AuthService {
                 .username(request.username())
                 .password(passwordEncoder.encode(request.password()))
                 .build();
+    }
+
+    private String issueAccessToken(String username) {
+        return "jwt-token-value";
     }
 }
