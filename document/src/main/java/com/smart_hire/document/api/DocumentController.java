@@ -36,6 +36,11 @@ class DocumentController {
         return sampleDocumentsByOwner(userId);
     }
 
+    @GetMapping("/cv/{candidateId}")
+    DocumentMetadataResponse getActiveCv(@PathVariable String candidateId) {
+        return sampleMetadata("doc-1");
+    }
+
     private DocumentMetadataResponse sampleMetadata(String id) {
         return new DocumentMetadataResponse(id, "candidate-1", "CV", "Java Developer CV");
     }
