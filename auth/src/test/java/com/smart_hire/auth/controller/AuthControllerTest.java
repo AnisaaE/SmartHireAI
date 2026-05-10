@@ -4,6 +4,7 @@ import com.smart_hire.auth.config.SecurityConfig;
 import com.smart_hire.auth.dto.LoginRequest;
 import com.smart_hire.auth.dto.LoginResponse;
 import com.smart_hire.auth.dto.RegisterRequest;
+import com.smart_hire.auth.dto.UserResponse;
 import com.smart_hire.auth.exception.InvalidCredentialsException;
 import com.smart_hire.auth.service.AuthService;
 import org.junit.jupiter.api.Test;
@@ -126,5 +127,19 @@ class AuthControllerTest {
                         .header("Authorization", "Bearer blocked-token"))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.message").value("Forbidden"));
+    }
+
+    @Test
+    void shouldReturnUserProfileWhenUserExists() throws Exception {
+        doReturn(new UserResponse(7L, "jane.doe"))
+                .when(authService)
+                .getUserById(7L);
+
+        mockMvc.perform(get("/api/auth/users/7"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(7))
+                .andExpect(jsonPath("$.username").value("jane.doe"));
+
+        verify(authService).getUserById(7L);
     }
 }
