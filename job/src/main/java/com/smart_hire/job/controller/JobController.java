@@ -38,6 +38,7 @@ public class JobController {
 
     @GetMapping(JobApiPaths.JOB_BY_ID_PATH)
     public ResponseEntity<JobDetailResponse> getJobById(@PathVariable Long id) {
-        return ResponseEntity.ok(jobService.getJobById(id));
+        JobDetailResponse job = jobService.getJobById(id);
+        return ResponseEntity.ok(job);
     }
 }
