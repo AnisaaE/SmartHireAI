@@ -41,4 +41,9 @@ public class JobController {
         JobDetailResponse job = jobService.getJobById(id);
         return ResponseEntity.ok(job);
     }
+
+    @GetMapping(JobApiPaths.JOBS_BY_RECRUITER_PATH)
+    public ResponseEntity<List<JobSummaryResponse>> getJobsByRecruiterId(@PathVariable Long recruiterId) {
+        return ResponseEntity.ok(jobService.getJobsByRecruiterId(recruiterId));
+    }
 }

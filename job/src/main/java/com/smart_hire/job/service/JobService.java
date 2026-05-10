@@ -13,4 +13,6 @@ public interface JobService {
     List<JobSummaryResponse> getAllJobs();
 
     JobDetailResponse getJobById(Long id);
+
+    List<JobSummaryResponse> getJobsByRecruiterId(Long recruiterId);
 }
