@@ -27,7 +27,7 @@ public class ApplicationController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(ApplicationApiPaths.APPLICATION_BY_ID_PATH)
     public ResponseEntity<ApplicationDetailResponse> getApplicationById(@PathVariable Long id) {
         return ResponseEntity.ok(applicationService.getApplicationById(id));
     }
