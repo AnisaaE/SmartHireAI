@@ -15,11 +15,15 @@ class AuthGatewayController {
 
     @PostMapping("/api/auth/register")
     ResponseEntity<String> register(@RequestBody String body, HttpServletRequest request) {
-        return gatewayProxyService.forwardPost(gatewayProxyService.authBaseUrl(), request.getRequestURI(), body);
+        return forwardPublicAuthRequest(body, request);
     }
 
     @PostMapping("/api/auth/login")
     ResponseEntity<String> login(@RequestBody String body, HttpServletRequest request) {
+        return forwardPublicAuthRequest(body, request);
+    }
+
+    private ResponseEntity<String> forwardPublicAuthRequest(String body, HttpServletRequest request) {
         return gatewayProxyService.forwardPost(gatewayProxyService.authBaseUrl(), request.getRequestURI(), body);
     }
 }
