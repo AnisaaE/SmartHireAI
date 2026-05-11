@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 @RestController
 @RequestMapping("/api/analysis")
@@ -58,5 +59,21 @@ public class AnalysisController {
     @PutMapping("/{analysisId}/restart")
     public AnalysisResponse restartAnalysis(@PathVariable String analysisId) {
         return AnalysisResponseMapper.toResponse(analysisService.restartAnalysis(analysisId));
+    }
+
+    @PutMapping("/{analysisId}/status")
+    public AnalysisResponse updateStatus(
+            @PathVariable String analysisId,
+            @RequestBody UpdateAnalysisStatusRequest request
+    ) {
+        return AnalysisResponseMapper.toResponse(
+                analysisService.updateStatus(analysisId, request.status())
+        );
+    }
+
+    @DeleteMapping("/{analysisId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAnalysis(@PathVariable String analysisId) {
+        analysisService.deleteAnalysis(analysisId);
     }
 }

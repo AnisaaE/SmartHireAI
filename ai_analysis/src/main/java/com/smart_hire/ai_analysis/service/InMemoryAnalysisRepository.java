@@ -25,4 +25,9 @@ public class InMemoryAnalysisRepository implements AnalysisRepository {
                 .findFirst()
                 .orElse(null);
     }
+
+    @Override
+    public void deleteById(String analysisId) {
+        storage.remove(analysisId);
+    }
 }

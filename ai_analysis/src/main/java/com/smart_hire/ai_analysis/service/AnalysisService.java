@@ -13,4 +13,8 @@ public interface AnalysisService {
     AnalysisResult updateAnalysis(String analysisId, UpdateAnalysisCommand command);
 
     AnalysisResult restartAnalysis(String analysisId);
+
+    AnalysisResult updateStatus(String analysisId, String status);
+
+    void deleteAnalysis(String analysisId);
 }

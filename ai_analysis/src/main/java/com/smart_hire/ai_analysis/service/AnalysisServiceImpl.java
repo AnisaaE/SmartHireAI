@@ -88,6 +88,24 @@ public class AnalysisServiceImpl implements AnalysisService {
         return analysisRepository.save(restarted);
     }
 
+    @Override
+    public AnalysisResult updateStatus(String analysisId, String status) {
+        AnalysisResult existing = getAnalysis(analysisId);
+        AnalysisResult updated = copyResult(
+                existing,
+                existing.analysisId(),
+                status,
+                existing.createdAt(),
+                nowSupplier.get()
+        );
+        return analysisRepository.save(updated);
+    }
+
+    @Override
+    public void deleteAnalysis(String analysisId) {
+        analysisRepository.deleteById(analysisId);
+    }
+
     private AnalysisResult copyResult(
             AnalysisResult source,
             String analysisId,

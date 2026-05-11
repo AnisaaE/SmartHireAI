@@ -7,4 +7,6 @@ public interface AnalysisRepository {
     AnalysisResult findById(String analysisId);
 
     AnalysisResult findByJobId(String jobId);
+
+    void deleteById(String analysisId);
 }
