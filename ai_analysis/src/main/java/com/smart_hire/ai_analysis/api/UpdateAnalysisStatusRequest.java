@@ -1,4 +1,6 @@
 package com.smart_hire.ai_analysis.api;
 
-public record UpdateAnalysisStatusRequest(String status) {
+import jakarta.validation.constraints.NotBlank;
+
+public record UpdateAnalysisStatusRequest(@NotBlank(message = "must not be blank") String status) {
 }

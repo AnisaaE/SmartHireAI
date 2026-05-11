@@ -1,8 +1,9 @@
 package com.smart_hire.ai_analysis.api;
 
 import com.smart_hire.ai_analysis.service.AnalysisService;
-import com.smart_hire.ai_analysis.service.CandidateAnalysis;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 @RestController
 @RequestMapping("/api/analysis")
@@ -25,7 +25,7 @@ public class AnalysisController {
 
     @PostMapping("/start")
     @ResponseStatus(HttpStatus.CREATED)
-    public AnalysisResponse startAnalysis(@RequestBody StartAnalysisRequest request) {
+    public AnalysisResponse startAnalysis(@Valid @RequestBody StartAnalysisRequest request) {
         return AnalysisResponseMapper.toResponse(analysisService.startAnalysis(request.toCommand()));
     }
 
@@ -49,7 +49,7 @@ public class AnalysisController {
     @PutMapping("/{analysisId}")
     public AnalysisResponse updateAnalysis(
             @PathVariable String analysisId,
-            @RequestBody UpdateAnalysisRequest request
+            @Valid @RequestBody UpdateAnalysisRequest request
     ) {
         return AnalysisResponseMapper.toResponse(
                 analysisService.updateAnalysis(analysisId, request.toCommand())
@@ -64,7 +64,7 @@ public class AnalysisController {
     @PutMapping("/{analysisId}/status")
     public AnalysisResponse updateStatus(
             @PathVariable String analysisId,
-            @RequestBody UpdateAnalysisStatusRequest request
+            @Valid @RequestBody UpdateAnalysisStatusRequest request
     ) {
         return AnalysisResponseMapper.toResponse(
                 analysisService.updateStatus(analysisId, request.status())

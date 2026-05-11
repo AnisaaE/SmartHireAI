@@ -5,8 +5,8 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.Supplier;
+import java.util.UUID;
 
 public class AnalysisServiceImpl implements AnalysisService {
 
@@ -26,34 +26,27 @@ public class AnalysisServiceImpl implements AnalysisService {
 
     @Override
     public AnalysisResult startAnalysis(StartAnalysisCommand command) {
-        List<CandidateAnalysis> rankedCandidates = scoringEngine.analyze(command).stream()
-                .sorted(Comparator.comparingDouble(CandidateAnalysis::score).reversed())
-                .toList();
-        Instant now = nowSupplier.get();
-
-        AnalysisResult result = new AnalysisResult(
-                UUID.randomUUID().toString(),
-                command.jobId(),
-                rankedCandidates.stream().map(CandidateAnalysis::applicationId).toList(),
-                buildScoreMap(rankedCandidates),
-                buildReasoningMap(rankedCandidates),
-                AnalysisStatus.COMPLETED.name(),
-                buildSummary(rankedCandidates),
-                now,
-                now
-        );
-
+        AnalysisResult result = createResult(UUID.randomUUID().toString(), command, nowSupplier.get());
+        analysisRepository.saveCommand(result.analysisId(), command);
         return analysisRepository.save(result);
     }
 
     @Override
     public AnalysisResult getAnalysis(String analysisId) {
-        return analysisRepository.findById(analysisId);
+        AnalysisResult result = analysisRepository.findById(analysisId);
+        if (result == null) {
+            throw new AnalysisNotFoundException(analysisId);
+        }
+        return result;
     }
 
     @Override
     public AnalysisResult getReport(String jobId) {
-        return analysisRepository.findByJobId(jobId);
+        AnalysisResult result = analysisRepository.findByJobId(jobId);
+        if (result == null) {
+            throw new AnalysisNotFoundException(jobId);
+        }
+        return result;
     }
 
     @Override
@@ -64,6 +57,15 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Override
     public AnalysisResult updateAnalysis(String analysisId, UpdateAnalysisCommand command) {
         AnalysisResult existing = getAnalysis(analysisId);
+        StartAnalysisCommand existingCommand = getStoredCommand(analysisId);
+        StartAnalysisCommand updatedCommand = new StartAnalysisCommand(
+                existingCommand.jobId(),
+                existingCommand.jobTitle(),
+                existingCommand.applications(),
+                command.configuration(),
+                existingCommand.jobDescription()
+        );
+        analysisRepository.saveCommand(analysisId, updatedCommand);
         AnalysisResult updated = copyResult(
                 existing,
                 existing.analysisId(),
@@ -76,15 +78,12 @@ public class AnalysisServiceImpl implements AnalysisService {
 
     @Override
     public AnalysisResult restartAnalysis(String analysisId) {
-        AnalysisResult existing = getAnalysis(analysisId);
+        getAnalysis(analysisId);
+        StartAnalysisCommand command = getStoredCommand(analysisId);
         Instant now = nowSupplier.get();
-        AnalysisResult restarted = copyResult(
-                existing,
-                analysisId + "-restarted",
-                AnalysisStatus.COMPLETED.name(),
-                now,
-                now
-        );
+        String restartedAnalysisId = analysisId + "-restarted";
+        AnalysisResult restarted = createResult(restartedAnalysisId, command, now);
+        analysisRepository.saveCommand(restartedAnalysisId, command);
         return analysisRepository.save(restarted);
     }
 
@@ -94,7 +93,7 @@ public class AnalysisServiceImpl implements AnalysisService {
         AnalysisResult updated = copyResult(
                 existing,
                 existing.analysisId(),
-                status,
+                AnalysisStatus.valueOf(status).name(),
                 existing.createdAt(),
                 nowSupplier.get()
         );
@@ -103,7 +102,26 @@ public class AnalysisServiceImpl implements AnalysisService {
 
     @Override
     public void deleteAnalysis(String analysisId) {
+        getAnalysis(analysisId);
         analysisRepository.deleteById(analysisId);
+    }
+
+    private AnalysisResult createResult(String analysisId, StartAnalysisCommand command, Instant now) {
+        List<CandidateAnalysis> rankedCandidates = scoringEngine.analyze(command).stream()
+                .sorted(Comparator.comparingDouble(CandidateAnalysis::score).reversed())
+                .toList();
+
+        return new AnalysisResult(
+                analysisId,
+                command.jobId(),
+                rankedCandidates.stream().map(CandidateAnalysis::applicationId).toList(),
+                buildScoreMap(rankedCandidates),
+                buildReasoningMap(rankedCandidates),
+                AnalysisStatus.COMPLETED.name(),
+                buildSummary(rankedCandidates),
+                now,
+                now
+        );
     }
 
     private AnalysisResult copyResult(
@@ -124,6 +142,14 @@ public class AnalysisServiceImpl implements AnalysisService {
                 createdAt,
                 updatedAt
         );
+    }
+
+    private StartAnalysisCommand getStoredCommand(String analysisId) {
+        StartAnalysisCommand command = analysisRepository.findCommandById(analysisId);
+        if (command == null) {
+            throw new AnalysisNotFoundException(analysisId);
+        }
+        return command;
     }
 
     private Map<Long, Double> buildScoreMap(List<CandidateAnalysis> rankedCandidates) {

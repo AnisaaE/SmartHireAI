@@ -8,5 +8,9 @@ public interface AnalysisRepository {
 
     AnalysisResult findByJobId(String jobId);
 
+    void saveCommand(String analysisId, StartAnalysisCommand command);
+
+    StartAnalysisCommand findCommandById(String analysisId);
+
     void deleteById(String analysisId);
 }
