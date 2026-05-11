@@ -4,6 +4,7 @@ import com.smart_hire.application.dto.ApplicationDetailResponse;
 import com.smart_hire.application.dto.CreateApplicationRequest;
 import com.smart_hire.application.dto.ApplicationSummaryResponse;
 import com.smart_hire.application.dto.UpdateApplicationRequest;
+import com.smart_hire.application.dto.UpdateApplicationStatusRequest;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface ApplicationService {
     List<ApplicationSummaryResponse> getApplicationsByCandidateId(Long candidateId);
 
     ApplicationDetailResponse updateApplication(Long id, UpdateApplicationRequest request);
+
+    ApplicationDetailResponse updateApplicationStatus(Long id, UpdateApplicationStatusRequest request);
 }

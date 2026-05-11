@@ -4,6 +4,7 @@ import com.smart_hire.application.dto.ApplicationDetailResponse;
 import com.smart_hire.application.dto.ApplicationSummaryResponse;
 import com.smart_hire.application.dto.CreateApplicationRequest;
 import com.smart_hire.application.dto.UpdateApplicationRequest;
+import com.smart_hire.application.dto.UpdateApplicationStatusRequest;
 import com.smart_hire.application.service.ApplicationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -54,5 +55,13 @@ public class ApplicationController {
     ) {
         ApplicationDetailResponse updatedApplication = applicationService.updateApplication(id, request);
         return ResponseEntity.ok(updatedApplication);
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<ApplicationDetailResponse> updateApplicationStatus(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateApplicationStatusRequest request
+    ) {
+        return ResponseEntity.ok(applicationService.updateApplicationStatus(id, request));
     }
 }
