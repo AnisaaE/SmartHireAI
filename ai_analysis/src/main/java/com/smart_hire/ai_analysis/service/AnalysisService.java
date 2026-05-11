@@ -9,4 +9,8 @@ public interface AnalysisService {
     AnalysisResult getReport(String jobId);
 
     java.util.List<CandidateAnalysis> getCandidates(String analysisId);
+
+    AnalysisResult updateAnalysis(String analysisId, UpdateAnalysisCommand command);
+
+    AnalysisResult restartAnalysis(String analysisId);
 }

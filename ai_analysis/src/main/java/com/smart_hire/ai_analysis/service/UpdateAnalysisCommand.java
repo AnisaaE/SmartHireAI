@@ -1,0 +1,4 @@
+package com.smart_hire.ai_analysis.service;
+
+public record UpdateAnalysisCommand(AnalysisConfiguration configuration) {
+}

@@ -61,6 +61,41 @@ public class AnalysisServiceImpl implements AnalysisService {
         return getAnalysis(analysisId).toCandidateAnalyses();
     }
 
+    @Override
+    public AnalysisResult updateAnalysis(String analysisId, UpdateAnalysisCommand command) {
+        AnalysisResult existing = getAnalysis(analysisId);
+        AnalysisResult updated = new AnalysisResult(
+                existing.analysisId(),
+                existing.jobId(),
+                existing.applicationIds(),
+                existing.applicationScores(),
+                existing.applicationReasoning(),
+                existing.status(),
+                existing.summary(),
+                existing.createdAt(),
+                nowSupplier.get()
+        );
+        return analysisRepository.save(updated);
+    }
+
+    @Override
+    public AnalysisResult restartAnalysis(String analysisId) {
+        AnalysisResult existing = getAnalysis(analysisId);
+        Instant now = nowSupplier.get();
+        AnalysisResult restarted = new AnalysisResult(
+                analysisId + "-restarted",
+                existing.jobId(),
+                existing.applicationIds(),
+                existing.applicationScores(),
+                existing.applicationReasoning(),
+                AnalysisStatus.COMPLETED.name(),
+                existing.summary(),
+                now,
+                now
+        );
+        return analysisRepository.save(restarted);
+    }
+
     private Map<Long, Double> buildScoreMap(List<CandidateAnalysis> rankedCandidates) {
         Map<Long, Double> scores = new LinkedHashMap<>();
         for (CandidateAnalysis candidate : rankedCandidates) {
