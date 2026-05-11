@@ -17,4 +17,9 @@ class AuthGatewayController {
     ResponseEntity<String> register(@RequestBody String body, HttpServletRequest request) {
         return gatewayProxyService.forwardPost(gatewayProxyService.authBaseUrl(), request.getRequestURI(), body);
     }
+
+    @PostMapping("/api/auth/login")
+    ResponseEntity<String> login(@RequestBody String body, HttpServletRequest request) {
+        return gatewayProxyService.forwardPost(gatewayProxyService.authBaseUrl(), request.getRequestURI(), body);
+    }
 }
