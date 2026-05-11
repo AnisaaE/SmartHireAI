@@ -17,4 +17,12 @@ public class InMemoryAnalysisRepository implements AnalysisRepository {
     public AnalysisResult findById(String analysisId) {
         return storage.get(analysisId);
     }
+
+    @Override
+    public AnalysisResult findByJobId(String jobId) {
+        return storage.values().stream()
+                .filter(result -> result.jobId().equals(jobId))
+                .findFirst()
+                .orElse(null);
+    }
 }

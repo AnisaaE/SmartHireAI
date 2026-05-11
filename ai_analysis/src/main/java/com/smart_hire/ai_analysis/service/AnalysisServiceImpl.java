@@ -51,6 +51,25 @@ public class AnalysisServiceImpl implements AnalysisService {
         return analysisRepository.findById(analysisId);
     }
 
+    @Override
+    public AnalysisResult getReport(String jobId) {
+        return analysisRepository.findByJobId(jobId);
+    }
+
+    @Override
+    public List<CandidateAnalysis> getCandidates(String analysisId) {
+        AnalysisResult result = getAnalysis(analysisId);
+
+        return result.applicationIds().stream()
+                .map(applicationId -> new CandidateAnalysis(
+                        applicationId,
+                        null,
+                        result.applicationScores().getOrDefault(applicationId, 0.0),
+                        result.applicationReasoning().get(applicationId)
+                ))
+                .toList();
+    }
+
     private Map<Long, Double> buildScoreMap(List<CandidateAnalysis> rankedCandidates) {
         Map<Long, Double> scores = new LinkedHashMap<>();
         for (CandidateAnalysis candidate : rankedCandidates) {

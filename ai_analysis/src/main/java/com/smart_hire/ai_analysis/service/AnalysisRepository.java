@@ -5,4 +5,6 @@ public interface AnalysisRepository {
     AnalysisResult save(AnalysisResult analysisResult);
 
     AnalysisResult findById(String analysisId);
+
+    AnalysisResult findByJobId(String jobId);
 }
