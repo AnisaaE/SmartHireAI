@@ -28,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -77,6 +78,36 @@ class DispatcherGatewayIntegrationTest {
 
         assertThat(STUB_SERVER.recordedRequests()).hasSize(1);
         assertThat(STUB_SERVER.recordedRequests().getFirst().path()).isEqualTo("/api/auth/register");
+    }
+
+    @Test
+    void shouldForwardPublicLoginRequestToAuthService() throws Exception {
+        STUB_SERVER.stub(
+                "POST",
+                "/api/auth/login",
+                200,
+                """
+                {"token":"jwt-token"}
+                """,
+                Map.of("Content-Type", "application/json")
+        );
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(APPLICATION_JSON)
+                        .content("""
+                        {
+                          "username": "recruiter1",
+                          "password": "secret123"
+                        }
+                        """)
+                        .accept(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        {"token":"jwt-token"}
+                        """));
+
+        assertThat(STUB_SERVER.recordedRequests()).hasSize(1);
+        assertThat(STUB_SERVER.recordedRequests().getFirst().path()).isEqualTo("/api/auth/login");
     }
 
     private record RecordedRequest(String method, String path, String body, HttpHeaders headers) {
