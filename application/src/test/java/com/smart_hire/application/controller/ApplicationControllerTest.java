@@ -1,7 +1,8 @@
 package com.smart_hire.application.controller;
 
-import com.smart_hire.application.dto.CreateApplicationRequest;
 import com.smart_hire.application.dto.ApplicationDetailResponse;
+import com.smart_hire.application.dto.ApplicationSummaryResponse;
+import com.smart_hire.application.dto.CreateApplicationRequest;
 import com.smart_hire.application.service.ApplicationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -61,5 +64,25 @@ class ApplicationControllerTest {
                 .andExpect(jsonPath("$.status").value("APPLIED"));
 
         verify(applicationService).getApplicationById(7L);
+    }
+
+    @Test
+    void shouldReturnApplicationsForJobWhenJobHasApplications() throws Exception {
+        doReturn(List.of(
+                new ApplicationSummaryResponse(7L, 12L, 34L, "APPLIED"),
+                new ApplicationSummaryResponse(8L, 12L, 55L, "UNDER_REVIEW")
+        )).when(applicationService).getApplicationsByJobId(12L);
+
+        mockMvc.perform(get("/api/applications/job/12"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(7))
+                .andExpect(jsonPath("$[0].jobId").value(12))
+                .andExpect(jsonPath("$[0].candidateId").value(34))
+                .andExpect(jsonPath("$[0].status").value("APPLIED"))
+                .andExpect(jsonPath("$[1].id").value(8))
+                .andExpect(jsonPath("$[1].candidateId").value(55))
+                .andExpect(jsonPath("$[1].status").value("UNDER_REVIEW"));
+
+        verify(applicationService).getApplicationsByJobId(12L);
     }
 }
