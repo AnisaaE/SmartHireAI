@@ -85,4 +85,24 @@ class ApplicationControllerTest {
 
         verify(applicationService).getApplicationsByJobId(12L);
     }
+
+    @Test
+    void shouldReturnApplicationsForCandidateWhenCandidateHasApplications() throws Exception {
+        doReturn(List.of(
+                new ApplicationSummaryResponse(7L, 12L, 34L, "APPLIED"),
+                new ApplicationSummaryResponse(9L, 18L, 34L, "SHORTLISTED")
+        )).when(applicationService).getApplicationsByCandidateId(34L);
+
+        mockMvc.perform(get("/api/applications/candidate/34"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(7))
+                .andExpect(jsonPath("$[0].jobId").value(12))
+                .andExpect(jsonPath("$[0].candidateId").value(34))
+                .andExpect(jsonPath("$[0].status").value("APPLIED"))
+                .andExpect(jsonPath("$[1].id").value(9))
+                .andExpect(jsonPath("$[1].jobId").value(18))
+                .andExpect(jsonPath("$[1].status").value("SHORTLISTED"));
+
+        verify(applicationService).getApplicationsByCandidateId(34L);
+    }
 }
