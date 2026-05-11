@@ -52,6 +52,7 @@ public class ApplicationController {
             @PathVariable Long id,
             @Valid @RequestBody UpdateApplicationRequest request
     ) {
-        return ResponseEntity.ok(applicationService.updateApplication(id, request));
+        ApplicationDetailResponse updatedApplication = applicationService.updateApplication(id, request);
+        return ResponseEntity.ok(updatedApplication);
     }
 }
