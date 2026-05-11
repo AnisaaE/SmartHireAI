@@ -4,6 +4,7 @@ import com.smart_hire.application.dto.ApplicationDetailResponse;
 import com.smart_hire.application.dto.ApplicationSummaryResponse;
 import com.smart_hire.application.dto.CreateApplicationRequest;
 import com.smart_hire.application.dto.UpdateApplicationRequest;
+import com.smart_hire.application.dto.UpdateApplicationStatusRequest;
 import com.smart_hire.application.service.ApplicationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,5 +134,31 @@ class ApplicationControllerTest {
                 .andExpect(jsonPath("$.status").value("APPLIED"));
 
         verify(applicationService).updateApplication(7L, new UpdateApplicationRequest("cv-doc-202"));
+    }
+
+    @Test
+    void shouldReturnUpdatedApplicationWhenStatusPayloadIsValid() throws Exception {
+        doReturn(new ApplicationDetailResponse(
+                7L,
+                12L,
+                34L,
+                "cv-doc-202",
+                "UNDER_REVIEW"
+        )).when(applicationService).updateApplicationStatus(7L, new UpdateApplicationStatusRequest(
+                "UNDER_REVIEW"
+        ));
+
+        mockMvc.perform(put("/api/applications/7/status")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "status": "UNDER_REVIEW"
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(7))
+                .andExpect(jsonPath("$.status").value("UNDER_REVIEW"));
+
+        verify(applicationService).updateApplicationStatus(7L, new UpdateApplicationStatusRequest("UNDER_REVIEW"));
     }
 }
