@@ -57,7 +57,7 @@ public class ApplicationController {
         return ResponseEntity.ok(updatedApplication);
     }
 
-    @PutMapping("/{id}/status")
+    @PutMapping(ApplicationApiPaths.APPLICATION_STATUS_PATH)
     public ResponseEntity<ApplicationDetailResponse> updateApplicationStatus(
             @PathVariable Long id,
             @Valid @RequestBody UpdateApplicationStatusRequest request
