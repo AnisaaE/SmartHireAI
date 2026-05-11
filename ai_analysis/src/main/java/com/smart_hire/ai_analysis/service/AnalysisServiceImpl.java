@@ -58,16 +58,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
     @Override
     public List<CandidateAnalysis> getCandidates(String analysisId) {
-        AnalysisResult result = getAnalysis(analysisId);
-
-        return result.applicationIds().stream()
-                .map(applicationId -> new CandidateAnalysis(
-                        applicationId,
-                        null,
-                        result.applicationScores().getOrDefault(applicationId, 0.0),
-                        result.applicationReasoning().get(applicationId)
-                ))
-                .toList();
+        return getAnalysis(analysisId).toCandidateAnalyses();
     }
 
     private Map<Long, Double> buildScoreMap(List<CandidateAnalysis> rankedCandidates) {

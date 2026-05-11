@@ -15,4 +15,15 @@ public record AnalysisResult(
         Instant createdAt,
         Instant updatedAt
 ) {
+
+    public List<CandidateAnalysis> toCandidateAnalyses() {
+        return applicationIds.stream()
+                .map(applicationId -> new CandidateAnalysis(
+                        applicationId,
+                        null,
+                        applicationScores.getOrDefault(applicationId, 0.0),
+                        applicationReasoning.get(applicationId)
+                ))
+                .toList();
+    }
 }
