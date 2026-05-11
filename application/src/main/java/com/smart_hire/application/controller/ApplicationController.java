@@ -3,6 +3,7 @@ package com.smart_hire.application.controller;
 import com.smart_hire.application.dto.ApplicationDetailResponse;
 import com.smart_hire.application.dto.ApplicationSummaryResponse;
 import com.smart_hire.application.dto.CreateApplicationRequest;
+import com.smart_hire.application.dto.UpdateApplicationRequest;
 import com.smart_hire.application.service.ApplicationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,5 +45,13 @@ public class ApplicationController {
     @GetMapping(ApplicationApiPaths.APPLICATIONS_BY_CANDIDATE_PATH)
     public ResponseEntity<List<ApplicationSummaryResponse>> getApplicationsByCandidateId(@PathVariable Long candidateId) {
         return ResponseEntity.ok(applicationService.getApplicationsByCandidateId(candidateId));
+    }
+
+    @PutMapping(ApplicationApiPaths.APPLICATION_BY_ID_PATH)
+    public ResponseEntity<ApplicationDetailResponse> updateApplication(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateApplicationRequest request
+    ) {
+        return ResponseEntity.ok(applicationService.updateApplication(id, request));
     }
 }
