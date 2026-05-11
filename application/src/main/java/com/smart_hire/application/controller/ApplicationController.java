@@ -40,7 +40,7 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.getApplicationsByJobId(jobId));
     }
 
-    @GetMapping("/candidate/{candidateId}")
+    @GetMapping(ApplicationApiPaths.APPLICATIONS_BY_CANDIDATE_PATH)
     public ResponseEntity<List<ApplicationSummaryResponse>> getApplicationsByCandidateId(@PathVariable Long candidateId) {
         return ResponseEntity.ok(applicationService.getApplicationsByCandidateId(candidateId));
     }
