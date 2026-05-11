@@ -26,6 +26,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -108,6 +109,29 @@ class DispatcherGatewayIntegrationTest {
 
         assertThat(STUB_SERVER.recordedRequests()).hasSize(1);
         assertThat(STUB_SERVER.recordedRequests().getFirst().path()).isEqualTo("/api/auth/login");
+    }
+
+    @Test
+    void shouldForwardPublicJobsListingRequestToJobService() throws Exception {
+        STUB_SERVER.stub(
+                "GET",
+                "/api/jobs",
+                200,
+                """
+                [{"id":101,"title":"Platform Engineer"}]
+                """,
+                Map.of("Content-Type", "application/json")
+        );
+
+        mockMvc.perform(get("/api/jobs")
+                        .accept(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        [{"id":101,"title":"Platform Engineer"}]
+                        """));
+
+        assertThat(STUB_SERVER.recordedRequests()).hasSize(1);
+        assertThat(STUB_SERVER.recordedRequests().getFirst().path()).isEqualTo("/api/jobs");
     }
 
     private record RecordedRequest(String method, String path, String body, HttpHeaders headers) {
