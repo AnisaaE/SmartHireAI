@@ -134,6 +134,15 @@ class DispatcherGatewayIntegrationTest {
         assertThat(STUB_SERVER.recordedRequests().getFirst().path()).isEqualTo("/api/jobs");
     }
 
+    @Test
+    void shouldRejectProtectedDocumentRequestWithoutBearerToken() throws Exception {
+        mockMvc.perform(get("/api/documents/doc-77")
+                        .accept(APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+
+        assertThat(STUB_SERVER.recordedRequests()).isEmpty();
+    }
+
     private record RecordedRequest(String method, String path, String body, HttpHeaders headers) {
     }
 
