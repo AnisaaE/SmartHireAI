@@ -46,6 +46,11 @@ public class AnalysisServiceImpl implements AnalysisService {
         return analysisRepository.save(result);
     }
 
+    @Override
+    public AnalysisResult getAnalysis(String analysisId) {
+        return analysisRepository.findById(analysisId);
+    }
+
     private Map<Long, Double> buildScoreMap(List<CandidateAnalysis> rankedCandidates) {
         Map<Long, Double> scores = new LinkedHashMap<>();
         for (CandidateAnalysis candidate : rankedCandidates) {

@@ -12,4 +12,9 @@ public class InMemoryAnalysisRepository implements AnalysisRepository {
         storage.put(analysisResult.analysisId(), analysisResult);
         return analysisResult;
     }
+
+    @Override
+    public AnalysisResult findById(String analysisId) {
+        return storage.get(analysisId);
+    }
 }
