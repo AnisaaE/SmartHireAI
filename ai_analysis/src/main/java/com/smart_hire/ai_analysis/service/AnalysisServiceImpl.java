@@ -64,14 +64,10 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Override
     public AnalysisResult updateAnalysis(String analysisId, UpdateAnalysisCommand command) {
         AnalysisResult existing = getAnalysis(analysisId);
-        AnalysisResult updated = new AnalysisResult(
+        AnalysisResult updated = copyResult(
+                existing,
                 existing.analysisId(),
-                existing.jobId(),
-                existing.applicationIds(),
-                existing.applicationScores(),
-                existing.applicationReasoning(),
                 existing.status(),
-                existing.summary(),
                 existing.createdAt(),
                 nowSupplier.get()
         );
@@ -82,18 +78,34 @@ public class AnalysisServiceImpl implements AnalysisService {
     public AnalysisResult restartAnalysis(String analysisId) {
         AnalysisResult existing = getAnalysis(analysisId);
         Instant now = nowSupplier.get();
-        AnalysisResult restarted = new AnalysisResult(
+        AnalysisResult restarted = copyResult(
+                existing,
                 analysisId + "-restarted",
-                existing.jobId(),
-                existing.applicationIds(),
-                existing.applicationScores(),
-                existing.applicationReasoning(),
                 AnalysisStatus.COMPLETED.name(),
-                existing.summary(),
                 now,
                 now
         );
         return analysisRepository.save(restarted);
+    }
+
+    private AnalysisResult copyResult(
+            AnalysisResult source,
+            String analysisId,
+            String status,
+            Instant createdAt,
+            Instant updatedAt
+    ) {
+        return new AnalysisResult(
+                analysisId,
+                source.jobId(),
+                source.applicationIds(),
+                source.applicationScores(),
+                source.applicationReasoning(),
+                status,
+                source.summary(),
+                createdAt,
+                updatedAt
+        );
     }
 
     private Map<Long, Double> buildScoreMap(List<CandidateAnalysis> rankedCandidates) {
