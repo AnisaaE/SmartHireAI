@@ -35,7 +35,7 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.getApplicationById(id));
     }
 
-    @GetMapping("/job/{jobId}")
+    @GetMapping(ApplicationApiPaths.APPLICATIONS_BY_JOB_PATH)
     public ResponseEntity<List<ApplicationSummaryResponse>> getApplicationsByJobId(@PathVariable Long jobId) {
         return ResponseEntity.ok(applicationService.getApplicationsByJobId(jobId));
     }
