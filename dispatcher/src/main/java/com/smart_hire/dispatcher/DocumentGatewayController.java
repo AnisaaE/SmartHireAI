@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 class DocumentGatewayController {
 
+    static final String DOCUMENT_BY_ID_PATH = "/api/documents/{id}";
+
     private final RequestAuthorizationSupport requestAuthorizationSupport;
 
-    @GetMapping("/api/documents/{id}")
+    @GetMapping(DOCUMENT_BY_ID_PATH)
     ResponseEntity<Void> getDocument(@PathVariable String id, HttpServletRequest request) {
         if (!requestAuthorizationSupport.hasBearerToken(request)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
