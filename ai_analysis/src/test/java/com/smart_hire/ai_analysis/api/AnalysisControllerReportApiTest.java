@@ -4,6 +4,7 @@ import com.smart_hire.ai_analysis.service.AnalysisResult;
 import com.smart_hire.ai_analysis.service.AnalysisService;
 import com.smart_hire.ai_analysis.service.CandidateAnalysis;
 import com.smart_hire.ai_analysis.service.StartAnalysisCommand;
+import com.smart_hire.ai_analysis.service.UpdateAnalysisCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MockMvc;
@@ -63,6 +64,25 @@ class AnalysisControllerReportApiTest {
         @Override
         public List<CandidateAnalysis> getCandidates(String analysisId) {
             return List.of(new CandidateAnalysis(401L, "cv-401", 88.0, "Strong backend background"));
+        }
+
+        @Override
+        public AnalysisResult updateAnalysis(String analysisId, UpdateAnalysisCommand command) {
+            return sampleResult();
+        }
+
+        @Override
+        public AnalysisResult restartAnalysis(String analysisId) {
+            return sampleResult();
+        }
+
+        @Override
+        public AnalysisResult updateStatus(String analysisId, String status) {
+            return sampleResult();
+        }
+
+        @Override
+        public void deleteAnalysis(String analysisId) {
         }
 
         private AnalysisResult sampleResult() {

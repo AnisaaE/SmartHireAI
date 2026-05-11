@@ -3,8 +3,9 @@ package com.smart_hire.ai_analysis.api;
 import com.smart_hire.ai_analysis.service.AnalysisConfiguration;
 import com.smart_hire.ai_analysis.service.AnalysisResult;
 import com.smart_hire.ai_analysis.service.AnalysisService;
-import com.smart_hire.ai_analysis.service.ApplicationSnapshot;
+import com.smart_hire.ai_analysis.service.CandidateAnalysis;
 import com.smart_hire.ai_analysis.service.StartAnalysisCommand;
+import com.smart_hire.ai_analysis.service.UpdateAnalysisCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MockMvc;
@@ -79,6 +80,35 @@ class AnalysisControllerStartAndGetApiTest {
         @Override
         public AnalysisResult getAnalysis(String analysisId) {
             return sampleResult("job-77");
+        }
+
+        @Override
+        public AnalysisResult getReport(String jobId) {
+            return sampleResult(jobId);
+        }
+
+        @Override
+        public List<CandidateAnalysis> getCandidates(String analysisId) {
+            return List.of();
+        }
+
+        @Override
+        public AnalysisResult updateAnalysis(String analysisId, UpdateAnalysisCommand command) {
+            return sampleResult("job-77");
+        }
+
+        @Override
+        public AnalysisResult restartAnalysis(String analysisId) {
+            return sampleResult("job-77");
+        }
+
+        @Override
+        public AnalysisResult updateStatus(String analysisId, String status) {
+            return sampleResult("job-77");
+        }
+
+        @Override
+        public void deleteAnalysis(String analysisId) {
         }
 
         private AnalysisResult sampleResult(String jobId) {

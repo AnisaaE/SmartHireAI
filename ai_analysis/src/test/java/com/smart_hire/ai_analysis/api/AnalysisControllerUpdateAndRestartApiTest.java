@@ -87,6 +87,15 @@ class AnalysisControllerUpdateAndRestartApiTest {
             return sampleResult("analysis-77-restarted");
         }
 
+        @Override
+        public AnalysisResult updateStatus(String analysisId, String status) {
+            return sampleResult(analysisId);
+        }
+
+        @Override
+        public void deleteAnalysis(String analysisId) {
+        }
+
         private AnalysisResult sampleResult(String analysisId) {
             return new AnalysisResult(
                     analysisId,
