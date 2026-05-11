@@ -21,4 +21,6 @@ public interface ApplicationService {
     ApplicationDetailResponse updateApplication(Long id, UpdateApplicationRequest request);
 
     ApplicationDetailResponse updateApplicationStatus(Long id, UpdateApplicationStatusRequest request);
+
+    void deleteApplicationById(Long id);
 }

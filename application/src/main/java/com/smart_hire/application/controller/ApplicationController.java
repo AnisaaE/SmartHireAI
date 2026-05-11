@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,5 +64,11 @@ public class ApplicationController {
             @Valid @RequestBody UpdateApplicationStatusRequest request
     ) {
         return ResponseEntity.ok(applicationService.updateApplicationStatus(id, request));
+    }
+
+    @DeleteMapping(ApplicationApiPaths.APPLICATION_BY_ID_PATH)
+    public ResponseEntity<Void> deleteApplicationById(@PathVariable Long id) {
+        applicationService.deleteApplicationById(id);
+        return ResponseEntity.noContent().build();
     }
 }
