@@ -13,4 +13,6 @@ public interface ApplicationService {
     ApplicationDetailResponse getApplicationById(Long id);
 
     List<ApplicationSummaryResponse> getApplicationsByJobId(Long jobId);
+
+    List<ApplicationSummaryResponse> getApplicationsByCandidateId(Long candidateId);
 }
