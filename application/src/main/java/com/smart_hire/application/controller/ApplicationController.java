@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/applications")
+@RequestMapping(ApplicationApiPaths.BASE_PATH)
 @RequiredArgsConstructor
 public class ApplicationController {
 
