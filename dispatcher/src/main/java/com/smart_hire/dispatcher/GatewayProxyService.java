@@ -21,29 +21,27 @@ class GatewayProxyService {
     }
 
     ResponseEntity<String> forwardPost(String baseUrl, String path, String body) {
-        ResponseEntity<String> response = RestClient.builder()
+        return mapResponse(RestClient.builder()
                 .baseUrl(baseUrl)
                 .build()
                 .post()
                 .uri(path)
                 .body(body)
                 .retrieve()
-                .toEntity(String.class);
-
-        return ResponseEntity.status(HttpStatus.valueOf(response.getStatusCode().value()))
-                .headers(response.getHeaders())
-                .body(response.getBody());
+                .toEntity(String.class));
     }
 
     ResponseEntity<String> forwardGet(String baseUrl, String path) {
-        ResponseEntity<String> response = RestClient.builder()
+        return mapResponse(RestClient.builder()
                 .baseUrl(baseUrl)
                 .build()
                 .get()
                 .uri(path)
                 .retrieve()
-                .toEntity(String.class);
+                .toEntity(String.class));
+    }
 
+    private ResponseEntity<String> mapResponse(ResponseEntity<String> response) {
         return ResponseEntity.status(HttpStatus.valueOf(response.getStatusCode().value()))
                 .headers(response.getHeaders())
                 .body(response.getBody());
