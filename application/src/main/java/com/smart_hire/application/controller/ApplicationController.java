@@ -69,6 +69,10 @@ public class ApplicationController {
     @DeleteMapping(ApplicationApiPaths.APPLICATION_BY_ID_PATH)
     public ResponseEntity<Void> deleteApplicationById(@PathVariable Long id) {
         applicationService.deleteApplicationById(id);
+        return noContentResponse();
+    }
+
+    private ResponseEntity<Void> noContentResponse() {
         return ResponseEntity.noContent().build();
     }
 }
