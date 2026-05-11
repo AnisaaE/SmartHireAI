@@ -3,6 +3,7 @@ package com.smart_hire.application.controller;
 import com.smart_hire.application.dto.ApplicationDetailResponse;
 import com.smart_hire.application.dto.ApplicationSummaryResponse;
 import com.smart_hire.application.dto.CreateApplicationRequest;
+import com.smart_hire.application.dto.UpdateApplicationRequest;
 import com.smart_hire.application.service.ApplicationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -104,5 +106,32 @@ class ApplicationControllerTest {
                 .andExpect(jsonPath("$[1].status").value("SHORTLISTED"));
 
         verify(applicationService).getApplicationsByCandidateId(34L);
+    }
+
+    @Test
+    void shouldReturnUpdatedApplicationWhenUpdatePayloadIsValid() throws Exception {
+        doReturn(new ApplicationDetailResponse(
+                7L,
+                12L,
+                34L,
+                "cv-doc-202",
+                "APPLIED"
+        )).when(applicationService).updateApplication(7L, new UpdateApplicationRequest(
+                "cv-doc-202"
+        ));
+
+        mockMvc.perform(put("/api/applications/7")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "cvDocumentId": "cv-doc-202"
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(7))
+                .andExpect(jsonPath("$.cvDocumentId").value("cv-doc-202"))
+                .andExpect(jsonPath("$.status").value("APPLIED"));
+
+        verify(applicationService).updateApplication(7L, new UpdateApplicationRequest("cv-doc-202"));
     }
 }
