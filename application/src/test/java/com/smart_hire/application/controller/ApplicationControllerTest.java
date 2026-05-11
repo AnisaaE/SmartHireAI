@@ -16,8 +16,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -160,5 +162,17 @@ class ApplicationControllerTest {
                 .andExpect(jsonPath("$.status").value("UNDER_REVIEW"));
 
         verify(applicationService).updateApplicationStatus(7L, new UpdateApplicationStatusRequest("UNDER_REVIEW"));
+    }
+
+    @Test
+    void shouldDeleteApplicationWhenApplicationExists() throws Exception {
+        doNothing()
+                .when(applicationService)
+                .deleteApplicationById(7L);
+
+        mockMvc.perform(delete("/api/applications/7"))
+                .andExpect(status().isNoContent());
+
+        verify(applicationService).deleteApplicationById(7L);
     }
 }
