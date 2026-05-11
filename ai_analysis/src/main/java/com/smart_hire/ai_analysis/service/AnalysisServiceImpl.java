@@ -31,30 +31,44 @@ public class AnalysisServiceImpl implements AnalysisService {
                 .toList();
         Instant now = nowSupplier.get();
 
-        Map<Long, Double> scores = new LinkedHashMap<>();
-        Map<Long, String> reasoning = new LinkedHashMap<>();
-        for (CandidateAnalysis candidate : rankedCandidates) {
-            scores.put(candidate.applicationId(), candidate.score());
-            reasoning.put(candidate.applicationId(), candidate.reasoning());
-        }
-
-        Long topApplicationId = rankedCandidates.isEmpty() ? null : rankedCandidates.getFirst().applicationId();
-        double topScore = rankedCandidates.isEmpty() ? 0.0 : rankedCandidates.getFirst().score();
-
         AnalysisResult result = new AnalysisResult(
                 UUID.randomUUID().toString(),
                 command.jobId(),
                 rankedCandidates.stream().map(CandidateAnalysis::applicationId).toList(),
-                scores,
-                reasoning,
-                "COMPLETED",
-                topApplicationId == null
-                        ? "No candidates available for analysis"
-                        : "Top candidate: application %d with score %.2f".formatted(topApplicationId, topScore),
+                buildScoreMap(rankedCandidates),
+                buildReasoningMap(rankedCandidates),
+                AnalysisStatus.COMPLETED.name(),
+                buildSummary(rankedCandidates),
                 now,
                 now
         );
 
         return analysisRepository.save(result);
+    }
+
+    private Map<Long, Double> buildScoreMap(List<CandidateAnalysis> rankedCandidates) {
+        Map<Long, Double> scores = new LinkedHashMap<>();
+        for (CandidateAnalysis candidate : rankedCandidates) {
+            scores.put(candidate.applicationId(), candidate.score());
+        }
+        return scores;
+    }
+
+    private Map<Long, String> buildReasoningMap(List<CandidateAnalysis> rankedCandidates) {
+        Map<Long, String> reasoning = new LinkedHashMap<>();
+        for (CandidateAnalysis candidate : rankedCandidates) {
+            reasoning.put(candidate.applicationId(), candidate.reasoning());
+        }
+        return reasoning;
+    }
+
+    private String buildSummary(List<CandidateAnalysis> rankedCandidates) {
+        if (rankedCandidates.isEmpty()) {
+            return "No candidates available for analysis";
+        }
+
+        CandidateAnalysis topCandidate = rankedCandidates.getFirst();
+        return "Top candidate: application %d with score %.2f"
+                .formatted(topCandidate.applicationId(), topCandidate.score());
     }
 }
