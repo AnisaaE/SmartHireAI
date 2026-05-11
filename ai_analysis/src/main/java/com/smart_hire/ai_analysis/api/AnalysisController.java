@@ -1,9 +1,6 @@
 package com.smart_hire.ai_analysis.api;
 
-import com.smart_hire.ai_analysis.service.AnalysisResult;
 import com.smart_hire.ai_analysis.service.AnalysisService;
-import com.smart_hire.ai_analysis.service.ApplicationSnapshot;
-import com.smart_hire.ai_analysis.service.StartAnalysisCommand;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,25 +23,11 @@ public class AnalysisController {
     @PostMapping("/start")
     @ResponseStatus(HttpStatus.CREATED)
     public AnalysisResponse startAnalysis(@RequestBody StartAnalysisRequest request) {
-        return toResponse(analysisService.startAnalysis(request.toCommand()));
+        return AnalysisResponseMapper.toResponse(analysisService.startAnalysis(request.toCommand()));
     }
 
     @GetMapping("/{analysisId}")
     public AnalysisResponse getAnalysis(@PathVariable String analysisId) {
-        return toResponse(analysisService.getAnalysis(analysisId));
-    }
-
-    private AnalysisResponse toResponse(AnalysisResult result) {
-        return new AnalysisResponse(
-                result.analysisId(),
-                result.jobId(),
-                result.applicationIds(),
-                result.applicationScores(),
-                result.applicationReasoning(),
-                result.status(),
-                result.summary(),
-                result.createdAt(),
-                result.updatedAt()
-        );
+        return AnalysisResponseMapper.toResponse(analysisService.getAnalysis(analysisId));
     }
 }
