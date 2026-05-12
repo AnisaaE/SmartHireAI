@@ -1,0 +1,20 @@
+.input-group { display: flex; flex-direction: column; gap: 6px; }
+.input-label { font-size: 0.8125rem; font-weight: 500; color: var(--text-secondary); }
+.input-wrapper { position: relative; display: flex; align-items: center; }
+.input-field {
+  width: 100%; padding: 11px 14px; background: var(--input-bg); color: var(--text-primary);
+  border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 0.875rem;
+  transition: all var(--transition-fast); outline: none;
+}
+.input-field.has-icon { padding-left: 40px; }
+.input-field:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-muted); }
+.input-field::placeholder { color: var(--text-muted); }
+.input-icon { position: absolute; left: 12px; color: var(--text-muted); pointer-events: none; }
+.input-toggle {
+  position: absolute; right: 10px; background: none; border: none;
+  color: var(--text-muted); padding: 4px; display: flex;
+}
+.input-toggle:hover { color: var(--text-secondary); }
+.input-error .input-field { border-color: var(--danger); }
+.input-error .input-field:focus { box-shadow: 0 0 0 3px var(--danger-muted); }
+.input-error-text { font-size: 0.75rem; color: var(--danger); }

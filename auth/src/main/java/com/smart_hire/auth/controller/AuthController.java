@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(AuthApiPaths.BASE_PATH)
 @RequiredArgsConstructor
@@ -46,6 +48,11 @@ public class AuthController {
         return ResponseEntity.ok(new TokenValidationResponse(
                 authService.validateToken(extractTokenFromHeader(authorizationHeader))
         ));
+    }
+
+    @GetMapping(AuthApiPaths.USERS_PATH)
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        return ResponseEntity.ok(authService.getAllUsers());
     }
 
     @GetMapping(AuthApiPaths.USER_BY_ID_PATH)

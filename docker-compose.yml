@@ -1,49 +1,40 @@
+version: "3.9"
+
 services:
-  postgres:
+  auth-db:
     image: postgres:16
-    container_name: smarthire-postgres
+    container_name: smarthire-auth-db
     environment:
+      POSTGRES_DB: smarthire_auth
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./docker/postgres/init:/docker-entrypoint-initdb.d
+      - auth_postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d smarthire_auth"]
       interval: 10s
       timeout: 5s
-      retries: 10
+      retries: 5
 
-  mongo:
-    image: mongo:7
-    container_name: smarthire-mongo
+  auth-service:
+    build:
+      context: ./auth
+    container_name: smarthire-auth-service
+    environment:
+      DB_URL: jdbc:postgresql://auth-db:5432/smarthire_auth
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DDL_AUTO: update
+      JWT_SECRET: change-this-secret-key-before-production-change-this-secret-key
+      JWT_ACCESS_TOKEN_EXPIRATION_MS: 3600000
+      SERVER_PORT: 8081
     ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
-    healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-
-  redis:
-    image: redis:7
-    container_name: smarthire-redis
-    ports:
-      - "6379:6379"
-    command: ["redis-server", "--appendonly", "yes"]
-    volumes:
-      - redis_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
+      - "8081:8081"
+    depends_on:
+      auth-db:
+        condition: service_healthy
 
 volumes:
-  postgres_data:
-  mongo_data:
-  redis_data:
+  auth_postgres_data:

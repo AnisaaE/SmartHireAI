@@ -16,6 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -146,6 +148,25 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.username").value("jane.doe"));
 
         verify(authService).getUserById(7L);
+    }
+
+    @Test
+    void shouldReturnAllUsers() throws Exception {
+        doReturn(List.of(
+                new UserResponse(7L, "jane.doe"),
+                new UserResponse(8L, "john.doe")
+        ))
+                .when(authService)
+                .getAllUsers();
+
+        mockMvc.perform(get("/api/auth/users"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(7))
+                .andExpect(jsonPath("$[0].username").value("jane.doe"))
+                .andExpect(jsonPath("$[1].id").value(8))
+                .andExpect(jsonPath("$[1].username").value("john.doe"));
+
+        verify(authService).getAllUsers();
     }
 
     @Test

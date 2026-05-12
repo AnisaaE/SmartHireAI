@@ -3,7 +3,6 @@ package com.smart_hire.auth.config;
 import com.smart_hire.auth.controller.AuthApiPaths;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,9 +21,9 @@ public class SecurityConfig {
                         .requestMatchers(AuthApiPaths.REGISTER_ENDPOINT).permitAll()
                         .requestMatchers(AuthApiPaths.LOGIN_ENDPOINT).permitAll()
                         .requestMatchers(AuthApiPaths.VALIDATE_ENDPOINT).permitAll()
+                        .requestMatchers(AuthApiPaths.USERS_ENDPOINT).permitAll()
                         .requestMatchers("/api/auth/users/*").permitAll()
-                        .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults());
+                        .anyRequest().authenticated());
 
         return http.build();
     }
