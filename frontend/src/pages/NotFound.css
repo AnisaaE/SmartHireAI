@@ -1,0 +1,10 @@
+.notfound-page {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 16px; text-align: center;
+}
+.notfound-code {
+  font-size: 6rem; font-weight: 800; background: var(--gradient-primary);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; line-height: 1;
+}
+.notfound-text { font-size: 1.125rem; color: var(--text-secondary); margin-bottom: 8px; }

@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  auth-db:
+    image: postgres:16
+    container_name: smarthire-auth-db
+    environment:
+      POSTGRES_DB: smarthire_auth
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - auth_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d smarthire_auth"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  auth-service:
+    build:
+      context: ./auth
+    container_name: smarthire-auth-service
+    environment:
+      DB_URL: jdbc:postgresql://auth-db:5432/smarthire_auth
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DDL_AUTO: update
+      JWT_SECRET: change-this-secret-key-before-production-change-this-secret-key
+      JWT_ACCESS_TOKEN_EXPIRATION_MS: 3600000
+      SERVER_PORT: 8081
+    ports:
+      - "8081:8081"
+    depends_on:
+      auth-db:
+        condition: service_healthy
+
+volumes:
+  auth_postgres_data:

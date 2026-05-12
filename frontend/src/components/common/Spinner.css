@@ -1,0 +1,9 @@
+.spinner-container { display: flex; justify-content: center; align-items: center; }
+.spinner {
+  border: 3px solid var(--border); border-top-color: var(--accent);
+  border-radius: 50%; animation: spin 0.7s linear infinite;
+}
+.page-loader {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 16px; min-height: 300px; color: var(--text-muted); font-size: 0.875rem;
+}
