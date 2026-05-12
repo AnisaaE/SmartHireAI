@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.smart_hire.job.controller.JobControllerTest" time="5.303" tests="7" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="21"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+    <property name="sun.jnu.encoding" value="Cp1251"/>
+    <property name="java.class.path" value="C:\Users\anisa\SmartHireAI\job\target\test-classes;C:\Users\anisa\SmartHireAI\job\target\classes;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter-web\3.3.5\spring-boot-starter-web-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter\3.3.5\spring-boot-starter-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot\3.3.5\spring-boot-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-autoconfigure\3.3.5\spring-boot-autoconfigure-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter-logging\3.3.5\spring-boot-starter-logging-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\ch\qos\logback\logback-classic\1.5.11\logback-classic-1.5.11.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\ch\qos\logback\logback-core\1.5.11\logback-core-1.5.11.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\apache\logging\log4j\log4j-to-slf4j\2.23.1\log4j-to-slf4j-2.23.1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\apache\logging\log4j\log4j-api\2.23.1\log4j-api-2.23.1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\slf4j\jul-to-slf4j\2.0.16\jul-to-slf4j-2.0.16.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\jakarta\annotation\jakarta.annotation-api\2.1.1\jakarta.annotation-api-2.1.1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\yaml\snakeyaml\2.2\snakeyaml-2.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter-json\3.3.5\spring-boot-starter-json-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\fasterxml\jackson\core\jackson-databind\2.17.2\jackson-databind-2.17.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\fasterxml\jackson\core\jackson-annotations\2.17.2\jackson-annotations-2.17.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\fasterxml\jackson\core\jackson-core\2.17.2\jackson-core-2.17.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\fasterxml\jackson\datatype\jackson-datatype-jdk8\2.17.2\jackson-datatype-jdk8-2.17.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\fasterxml\jackson\datatype\jackson-datatype-jsr310\2.17.2\jackson-datatype-jsr310-2.17.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\fasterxml\jackson\module\jackson-module-parameter-names\2.17.2\jackson-module-parameter-names-2.17.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter-tomcat\3.3.5\spring-boot-starter-tomcat-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\apache\tomcat\embed\tomcat-embed-core\10.1.31\tomcat-embed-core-10.1.31.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\apache\tomcat\embed\tomcat-embed-websocket\10.1.31\tomcat-embed-websocket-10.1.31.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-web\6.1.14\spring-web-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-beans\6.1.14\spring-beans-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\io\micrometer\micrometer-observation\1.13.6\micrometer-observation-1.13.6.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\io\micrometer\micrometer-commons\1.13.6\micrometer-commons-1.13.6.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-webmvc\6.1.14\spring-webmvc-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-aop\6.1.14\spring-aop-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-context\6.1.14\spring-context-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-expression\6.1.14\spring-expression-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter-validation\3.3.5\spring-boot-starter-validation-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\apache\tomcat\embed\tomcat-embed-el\10.1.31\tomcat-embed-el-10.1.31.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\hibernate\validator\hibernate-validator\8.0.1.Final\hibernate-validator-8.0.1.Final.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\jakarta\validation\jakarta.validation-api\3.0.2\jakarta.validation-api-3.0.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\jboss\logging\jboss-logging\3.5.3.Final\jboss-logging-3.5.3.Final.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\fasterxml\classmate\1.7.0\classmate-1.7.0.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter-data-jpa\3.3.5\spring-boot-starter-data-jpa-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter-aop\3.3.5\spring-boot-starter-aop-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\aspectj\aspectjweaver\1.9.22.1\aspectjweaver-1.9.22.1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter-jdbc\3.3.5\spring-boot-starter-jdbc-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\zaxxer\HikariCP\5.1.0\HikariCP-5.1.0.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-jdbc\6.1.14\spring-jdbc-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\hibernate\orm\hibernate-core\6.5.3.Final\hibernate-core-6.5.3.Final.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\jakarta\persistence\jakarta.persistence-api\3.1.0\jakarta.persistence-api-3.1.0.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\jakarta\transaction\jakarta.transaction-api\2.0.1\jakarta.transaction-api-2.0.1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\hibernate\common\hibernate-commons-annotations\6.0.6.Final\hibernate-commons-annotations-6.0.6.Final.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\io\smallrye\jandex\3.1.2\jandex-3.1.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\net\bytebuddy\byte-buddy\1.14.19\byte-buddy-1.14.19.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\glassfish\jaxb\jaxb-runtime\4.0.5\jaxb-runtime-4.0.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\glassfish\jaxb\jaxb-core\4.0.5\jaxb-core-4.0.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\eclipse\angus\angus-activation\2.0.2\angus-activation-2.0.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\glassfish\jaxb\txw2\4.0.5\txw2-4.0.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\sun\istack\istack-commons-runtime\4.1.2\istack-commons-runtime-4.1.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\jakarta\inject\jakarta.inject-api\2.0.1\jakarta.inject-api-2.0.1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\antlr\antlr4-runtime\4.13.0\antlr4-runtime-4.13.0.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\data\spring-data-jpa\3.3.5\spring-data-jpa-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\data\spring-data-commons\3.3.5\spring-data-commons-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-orm\6.1.14\spring-orm-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-tx\6.1.14\spring-tx-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\slf4j\slf4j-api\2.0.16\slf4j-api-2.0.16.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-aspects\6.1.14\spring-aspects-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\postgresql\postgresql\42.7.4\postgresql-42.7.4.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\checkerframework\checker-qual\3.42.0\checker-qual-3.42.0.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\projectlombok\lombok\1.18.34\lombok-1.18.34.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter-test\3.3.5\spring-boot-starter-test-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-test\3.3.5\spring-boot-test-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-test-autoconfigure\3.3.5\spring-boot-test-autoconfigure-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\jayway\jsonpath\json-path\2.9.0\json-path-2.9.0.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\jakarta\xml\bind\jakarta.xml.bind-api\4.0.2\jakarta.xml.bind-api-4.0.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\jakarta\activation\jakarta.activation-api\2.1.3\jakarta.activation-api-2.1.3.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\net\minidev\json-smart\2.5.1\json-smart-2.5.1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\net\minidev\accessors-smart\2.5.1\accessors-smart-2.5.1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\ow2\asm\asm\9.6\asm-9.6.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\assertj\assertj-core\3.25.3\assertj-core-3.25.3.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\awaitility\awaitility\4.2.2\awaitility-4.2.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\hamcrest\hamcrest\2.2\hamcrest-2.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\junit\jupiter\junit-jupiter\5.10.5\junit-jupiter-5.10.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\junit\jupiter\junit-jupiter-api\5.10.5\junit-jupiter-api-5.10.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\junit\platform\junit-platform-commons\1.10.5\junit-platform-commons-1.10.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\junit\jupiter\junit-jupiter-params\5.10.5\junit-jupiter-params-5.10.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\junit\jupiter\junit-jupiter-engine\5.10.5\junit-jupiter-engine-5.10.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\junit\platform\junit-platform-engine\1.10.5\junit-platform-engine-1.10.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\mockito\mockito-core\5.11.0\mockito-core-5.11.0.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\net\bytebuddy\byte-buddy-agent\1.14.19\byte-buddy-agent-1.14.19.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\mockito\mockito-junit-jupiter\5.11.0\mockito-junit-jupiter-5.11.0.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\skyscreamer\jsonassert\1.5.3\jsonassert-1.5.3.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\vaadin\external\google\android-json\0.0.20131108.vaadin1\android-json-0.0.20131108.vaadin1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-core\6.1.14\spring-core-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-jcl\6.1.14\spring-jcl-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-test\6.1.14\spring-test-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\xmlunit\xmlunit-core\2.9.1\xmlunit-core-2.9.1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\h2database\h2\2.2.224\h2-2.2.224.jar;"/>
+    <property name="java.vm.vendor" value="Eclipse Adoptium"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="user.variant" value=""/>
+    <property name="java.vendor.url" value="https://adoptium.net/"/>
+    <property name="user.timezone" value="Europe/Istanbul"/>
+    <property name="org.jboss.logging.provider" value="slf4j"/>
+    <property name="os.name" value="Windows 11"/>
+    <property name="java.vm.specification.version" value="21"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Eclipse Adoptium\jdk-21.0.4.7-hotspot\bin"/>
+    <property name="sun.java.command" value="C:\Users\anisa\AppData\Local\Temp\surefire2264348081265972814\surefirebooter-20260512141241727_3.jar C:\Users\anisa\AppData\Local\Temp\surefire2264348081265972814 2026-05-12T14-12-41_051-jvmRun1 surefire-20260512141241727_1tmp surefire_0-20260512141241727_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="C:\Users\anisa\SmartHireAI\job\target\test-classes;C:\Users\anisa\SmartHireAI\job\target\classes;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter-web\3.3.5\spring-boot-starter-web-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter\3.3.5\spring-boot-starter-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot\3.3.5\spring-boot-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-autoconfigure\3.3.5\spring-boot-autoconfigure-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter-logging\3.3.5\spring-boot-starter-logging-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\ch\qos\logback\logback-classic\1.5.11\logback-classic-1.5.11.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\ch\qos\logback\logback-core\1.5.11\logback-core-1.5.11.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\apache\logging\log4j\log4j-to-slf4j\2.23.1\log4j-to-slf4j-2.23.1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\apache\logging\log4j\log4j-api\2.23.1\log4j-api-2.23.1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\slf4j\jul-to-slf4j\2.0.16\jul-to-slf4j-2.0.16.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\jakarta\annotation\jakarta.annotation-api\2.1.1\jakarta.annotation-api-2.1.1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\yaml\snakeyaml\2.2\snakeyaml-2.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter-json\3.3.5\spring-boot-starter-json-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\fasterxml\jackson\core\jackson-databind\2.17.2\jackson-databind-2.17.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\fasterxml\jackson\core\jackson-annotations\2.17.2\jackson-annotations-2.17.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\fasterxml\jackson\core\jackson-core\2.17.2\jackson-core-2.17.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\fasterxml\jackson\datatype\jackson-datatype-jdk8\2.17.2\jackson-datatype-jdk8-2.17.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\fasterxml\jackson\datatype\jackson-datatype-jsr310\2.17.2\jackson-datatype-jsr310-2.17.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\fasterxml\jackson\module\jackson-module-parameter-names\2.17.2\jackson-module-parameter-names-2.17.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter-tomcat\3.3.5\spring-boot-starter-tomcat-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\apache\tomcat\embed\tomcat-embed-core\10.1.31\tomcat-embed-core-10.1.31.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\apache\tomcat\embed\tomcat-embed-websocket\10.1.31\tomcat-embed-websocket-10.1.31.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-web\6.1.14\spring-web-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-beans\6.1.14\spring-beans-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\io\micrometer\micrometer-observation\1.13.6\micrometer-observation-1.13.6.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\io\micrometer\micrometer-commons\1.13.6\micrometer-commons-1.13.6.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-webmvc\6.1.14\spring-webmvc-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-aop\6.1.14\spring-aop-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-context\6.1.14\spring-context-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-expression\6.1.14\spring-expression-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter-validation\3.3.5\spring-boot-starter-validation-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\apache\tomcat\embed\tomcat-embed-el\10.1.31\tomcat-embed-el-10.1.31.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\hibernate\validator\hibernate-validator\8.0.1.Final\hibernate-validator-8.0.1.Final.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\jakarta\validation\jakarta.validation-api\3.0.2\jakarta.validation-api-3.0.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\jboss\logging\jboss-logging\3.5.3.Final\jboss-logging-3.5.3.Final.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\fasterxml\classmate\1.7.0\classmate-1.7.0.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter-data-jpa\3.3.5\spring-boot-starter-data-jpa-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter-aop\3.3.5\spring-boot-starter-aop-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\aspectj\aspectjweaver\1.9.22.1\aspectjweaver-1.9.22.1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter-jdbc\3.3.5\spring-boot-starter-jdbc-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\zaxxer\HikariCP\5.1.0\HikariCP-5.1.0.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-jdbc\6.1.14\spring-jdbc-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\hibernate\orm\hibernate-core\6.5.3.Final\hibernate-core-6.5.3.Final.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\jakarta\persistence\jakarta.persistence-api\3.1.0\jakarta.persistence-api-3.1.0.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\jakarta\transaction\jakarta.transaction-api\2.0.1\jakarta.transaction-api-2.0.1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\hibernate\common\hibernate-commons-annotations\6.0.6.Final\hibernate-commons-annotations-6.0.6.Final.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\io\smallrye\jandex\3.1.2\jandex-3.1.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\net\bytebuddy\byte-buddy\1.14.19\byte-buddy-1.14.19.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\glassfish\jaxb\jaxb-runtime\4.0.5\jaxb-runtime-4.0.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\glassfish\jaxb\jaxb-core\4.0.5\jaxb-core-4.0.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\eclipse\angus\angus-activation\2.0.2\angus-activation-2.0.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\glassfish\jaxb\txw2\4.0.5\txw2-4.0.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\sun\istack\istack-commons-runtime\4.1.2\istack-commons-runtime-4.1.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\jakarta\inject\jakarta.inject-api\2.0.1\jakarta.inject-api-2.0.1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\antlr\antlr4-runtime\4.13.0\antlr4-runtime-4.13.0.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\data\spring-data-jpa\3.3.5\spring-data-jpa-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\data\spring-data-commons\3.3.5\spring-data-commons-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-orm\6.1.14\spring-orm-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-tx\6.1.14\spring-tx-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\slf4j\slf4j-api\2.0.16\slf4j-api-2.0.16.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-aspects\6.1.14\spring-aspects-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\postgresql\postgresql\42.7.4\postgresql-42.7.4.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\checkerframework\checker-qual\3.42.0\checker-qual-3.42.0.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\projectlombok\lombok\1.18.34\lombok-1.18.34.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-starter-test\3.3.5\spring-boot-starter-test-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-test\3.3.5\spring-boot-test-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\boot\spring-boot-test-autoconfigure\3.3.5\spring-boot-test-autoconfigure-3.3.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\jayway\jsonpath\json-path\2.9.0\json-path-2.9.0.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\jakarta\xml\bind\jakarta.xml.bind-api\4.0.2\jakarta.xml.bind-api-4.0.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\jakarta\activation\jakarta.activation-api\2.1.3\jakarta.activation-api-2.1.3.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\net\minidev\json-smart\2.5.1\json-smart-2.5.1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\net\minidev\accessors-smart\2.5.1\accessors-smart-2.5.1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\ow2\asm\asm\9.6\asm-9.6.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\assertj\assertj-core\3.25.3\assertj-core-3.25.3.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\awaitility\awaitility\4.2.2\awaitility-4.2.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\hamcrest\hamcrest\2.2\hamcrest-2.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\junit\jupiter\junit-jupiter\5.10.5\junit-jupiter-5.10.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\junit\jupiter\junit-jupiter-api\5.10.5\junit-jupiter-api-5.10.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\junit\platform\junit-platform-commons\1.10.5\junit-platform-commons-1.10.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\junit\jupiter\junit-jupiter-params\5.10.5\junit-jupiter-params-5.10.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\junit\jupiter\junit-jupiter-engine\5.10.5\junit-jupiter-engine-5.10.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\junit\platform\junit-platform-engine\1.10.5\junit-platform-engine-1.10.5.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\mockito\mockito-core\5.11.0\mockito-core-5.11.0.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\net\bytebuddy\byte-buddy-agent\1.14.19\byte-buddy-agent-1.14.19.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\mockito\mockito-junit-jupiter\5.11.0\mockito-junit-jupiter-5.11.0.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\skyscreamer\jsonassert\1.5.3\jsonassert-1.5.3.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\vaadin\external\google\android-json\0.0.20131108.vaadin1\android-json-0.0.20131108.vaadin1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-core\6.1.14\spring-core-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-jcl\6.1.14\spring-jcl-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\springframework\spring-test\6.1.14\spring-test-6.1.14.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\org\xmlunit\xmlunit-core\2.9.1\xmlunit-core-2.9.1.jar;C:\Users\anisa\SmartHireAI\job\.m2repo\com\h2database\h2\2.2.224\h2-2.2.224.jar;"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="C:\Users\anisa"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2024-07-16"/>
+    <property name="java.home" value="C:\Program Files\Eclipse Adoptium\jdk-21.0.4.7-hotspot"/>
+    <property name="file.separator" value="\"/>
+    <property name="basedir" value="C:\Users\anisa\SmartHireAI\job"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="FILE_LOG_CHARSET" value="UTF-8"/>
+    <property name="java.awt.headless" value="true"/>
+    <property name="surefire.real.class.path" value="C:\Users\anisa\AppData\Local\Temp\surefire2264348081265972814\surefirebooter-20260512141241727_3.jar"/>
+    <property name="user.script" value=""/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="21.0.4+7-LTS"/>
+    <property name="user.name" value="anisa"/>
+    <property name="stdout.encoding" value="Cp1251"/>
+    <property name="path.separator" value=";"/>
+    <property name="os.version" value="10.0"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Temurin-21.0.4+7"/>
+    <property name="localRepository" value="C:\Users\anisa\SmartHireAI\job\.m2repo"/>
+    <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
+    <property name="java.io.tmpdir" value="C:\Users\anisa\AppData\Local\Temp\"/>
+    <property name="java.version" value="21.0.4"/>
+    <property name="user.dir" value="C:\Users\anisa\SmartHireAI\job"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="PID" value="29676"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="CONSOLE_LOG_CHARSET" value="UTF-8"/>
+    <property name="native.encoding" value="Cp1251"/>
+    <property name="java.library.path" value="C:\Program Files\Eclipse Adoptium\jdk-21.0.4.7-hotspot\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Users\anisa\.codex\tmp\arg0\codex-arg0e2a2uk;C:\Users\anisa\AppData\Local\Programs\Microsoft VS Code;C:\Program Files\Eclipse Adoptium\jdk-21.0.4.7-hotspot\bin;C:\Program Files\Eclipse Adoptium\jdk-21.0.4.7-hotspot\bin;C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\dotnet\;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\nodejs;C:\Users\anisa\AppData\Roaming\nvm;C:\Program Files\Eclipse Adoptium\jdk-21.0.4.7-hotspot\bin;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Users\anisa\Downloads\apache-maven-3.9.12-bin\apache-maven-3.9.12\bin;C:\Users\anisa\Downloads\winlibs-x86_64-posix-seh-gcc-15.2.0-mingw-w64msvcrt-13.0.0-r4\mingw64\bin;C:\Program Files\k6\;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\anisa\AppData\Local\Microsoft\WindowsApps;C:\Users\anisa\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\anisa\AppData\Local\GitHubDesktop\bin;C:\Users\anisa\.dotnet\tools;C:\Users\anisa\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\Terraform;C:\Users\anisa\AppData\Roaming\npm;C:\Users\anisa\Downloads\winlibs-x86_64-posix-seh-gcc-15.2.0-mingw-w64msvcrt-13.0.0-r4\mingw64\bin;C:\Users\anisa\AppData\Local\Programs\cursor\resources\app\bin;C:\Users\anisa\AppData\Local\Python\bin;C:\Users\anisa\AppData\Local\Programs\Ollama;C:\Users\anisa\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-8.1-full_build\bin;;c:\Users\anisa\.vscode\extensions\openai.chatgpt-26.506.31421-win32-x64\bin\windows-x86_64;."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="Cp1251"/>
+    <property name="java.vendor" value="Eclipse Adoptium"/>
+    <property name="java.vm.version" value="21.0.4+7-LTS"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="maven.repo.local" value=".m2repo"/>
+    <property name="java.class.version" value="65.0"/>
+    <property name="LOGGED_APPLICATION_NAME" value="[job-service] "/>
+  </properties>
+  <testcase name="shouldDeleteJobWhenJobExists" classname="com.smart_hire.job.controller.JobControllerTest" time="0.239">
+    <system-out><![CDATA[14:12:42.927 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.smart_hire.job.controller.JobControllerTest]: JobControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+14:12:43.132 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.smart_hire.job.JobApplication for test class com.smart_hire.job.controller.JobControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.3.5)
+
+2026-05-12T14:12:43.804+03:00  INFO 29676 --- [job-service] [           main] c.s.job.controller.JobControllerTest     : Starting JobControllerTest using Java 21.0.4 with PID 29676 (started by anisa in C:\Users\anisa\SmartHireAI\job)
+2026-05-12T14:12:43.806+03:00  INFO 29676 --- [job-service] [           main] c.s.job.controller.JobControllerTest     : No active profile set, falling back to 1 default profile: "default"
+2026-05-12T14:12:43.807+03:00 DEBUG 29676 --- [job-service] [           main] o.s.boot.SpringApplication               : Loading source class com.smart_hire.job.JobApplication
+2026-05-12T14:12:43.829+03:00 DEBUG 29676 --- [job-service] [           main] o.s.w.c.s.GenericWebApplicationContext   : Refreshing org.springframework.web.context.support.GenericWebApplicationContext@5488b5c5
+2026-05-12T14:12:46.659+03:00 DEBUG 29676 --- [job-service] [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : 9 mappings in 'requestMappingHandlerMapping'
+2026-05-12T14:12:46.715+03:00 DEBUG 29676 --- [job-service] [           main] o.s.b.a.AutoConfigurationPackages        : @EnableAutoConfiguration was declared on a class in the package 'com.smart_hire.job'. Automatic @Repository and @Entity scanning is enabled.
+2026-05-12T14:12:46.862+03:00 DEBUG 29676 --- [job-service] [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2026-05-12T14:12:46.963+03:00 DEBUG 29676 --- [job-service] [           main] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2026-05-12T14:12:47.041+03:00 DEBUG 29676 --- [job-service] [           main] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2026-05-12T14:12:47.102+03:00 DEBUG 29676 --- [job-service] [           main] o.s.b.w.s.ServletContextInitializerBeans : Mapping filters: characterEncodingFilter urls=[/*] order=-2147483648, formContentFilter urls=[/*] order=-9900, requestContextFilter urls=[/*] order=-105
+2026-05-12T14:12:47.102+03:00 DEBUG 29676 --- [job-service] [           main] o.s.b.w.s.ServletContextInitializerBeans : Mapping servlets: 
+2026-05-12T14:12:47.115+03:00 DEBUG 29676 --- [job-service] [           main] s.b.w.s.f.OrderedCharacterEncodingFilter : Filter 'characterEncodingFilter' configured for use
+2026-05-12T14:12:47.116+03:00 DEBUG 29676 --- [job-service] [           main] o.s.b.w.s.f.OrderedFormContentFilter     : Filter 'formContentFilter' configured for use
+2026-05-12T14:12:47.116+03:00 DEBUG 29676 --- [job-service] [           main] o.s.b.w.s.f.OrderedRequestContextFilter  : Filter 'requestContextFilter' configured for use
+2026-05-12T14:12:47.127+03:00  INFO 29676 --- [job-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-05-12T14:12:47.127+03:00  INFO 29676 --- [job-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-05-12T14:12:47.130+03:00  INFO 29676 --- [job-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2026-05-12T14:12:47.179+03:00 DEBUG 29676 --- [job-service] [           main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+
+============================
+CONDITIONS EVALUATION REPORT
+============================
+
+
+Positive matches:
+-----------------
+
+   ErrorMvcAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'jakarta.servlet.Servlet', 'org.springframework.web.servlet.DispatcherServlet' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+
+   ErrorMvcAutoConfiguration#basicErrorController matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.web.servlet.error.ErrorController; SearchStrategy: current) did not find any beans (OnBeanCondition)
+
+   ErrorMvcAutoConfiguration#errorAttributes matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.web.servlet.error.ErrorAttributes; SearchStrategy: current) did not find any beans (OnBeanCondition)
+
+   ErrorMvcAutoConfiguration.WhitelabelErrorViewConfiguration matched:
+      - @ConditionalOnProperty (server.error.whitelabel.enabled) matched (OnPropertyCondition)
+      - ErrorTemplate Missing did not find error template view (ErrorMvcAutoConfiguration.ErrorTemplateMissingCondition)
+
+   ErrorMvcAutoConfiguration.WhitelabelErrorViewConfiguration#beanNameViewResolver matched:
+      - @ConditionalOnMissingBean (types: org.springframework.web.servlet.view.BeanNameViewResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   ErrorMvcAutoConfiguration.WhitelabelErrorViewConfiguration#defaultErrorView matched:
+      - @ConditionalOnMissingBean (names: error; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   HttpEncodingAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.web.filter.CharacterEncodingFilter' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+      - @ConditionalOnProperty (server.servlet.encoding.enabled) matched (OnPropertyCondition)
+
+   HttpEncodingAutoConfiguration#characterEncodingFilter matched:
+      - @ConditionalOnMissingBean (types: org.springframework.web.filter.CharacterEncodingFilter; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   HttpMessageConvertersAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.http.converter.HttpMessageConverter' (OnClassCondition)
+      - NoneNestedConditions 0 matched 1 did not; NestedCondition on HttpMessageConvertersAutoConfiguration.NotReactiveWebApplicationCondition.ReactiveWebApplication did not find reactive web application classes (HttpMessageConvertersAutoConfiguration.NotReactiveWebApplicationCondition)
+
+   HttpMessageConvertersAutoConfiguration#messageConverters matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.autoconfigure.http.HttpMessageConverters; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   HttpMessageConvertersAutoConfiguration.StringHttpMessageConverterConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.http.converter.StringHttpMessageConverter' (OnClassCondition)
+
+   HttpMessageConvertersAutoConfiguration.StringHttpMessageConverterConfiguration#stringHttpMessageConverter matched:
+      - @ConditionalOnMissingBean (types: org.springframework.http.converter.StringHttpMessageConverter; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JacksonAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'com.fasterxml.jackson.databind.ObjectMapper' (OnClassCondition)
+
+   JacksonAutoConfiguration.Jackson2ObjectMapperBuilderCustomizerConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.http.converter.json.Jackson2ObjectMapperBuilder' (OnClassCondition)
+
+   JacksonAutoConfiguration.JacksonObjectMapperBuilderConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.http.converter.json.Jackson2ObjectMapperBuilder' (OnClassCondition)
+
+   JacksonAutoConfiguration.JacksonObjectMapperBuilderConfiguration#jacksonObjectMapperBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.http.converter.json.Jackson2ObjectMapperBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JacksonAutoConfiguration.JacksonObjectMapperConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.http.converter.json.Jackson2ObjectMapperBuilder' (OnClassCondition)
+
+   JacksonAutoConfiguration.JacksonObjectMapperConfiguration#jacksonObjectMapper matched:
+      - @ConditionalOnMissingBean (types: com.fasterxml.jackson.databind.ObjectMapper; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JacksonAutoConfiguration.ParameterNamesModuleConfiguration matched:
+      - @ConditionalOnClass found required class 'com.fasterxml.jackson.module.paramnames.ParameterNamesModule' (OnClassCondition)
+
+   JacksonAutoConfiguration.ParameterNamesModuleConfiguration#parameterNamesModule matched:
+      - @ConditionalOnMissingBean (types: com.fasterxml.jackson.module.paramnames.ParameterNamesModule; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JacksonHttpMessageConvertersConfiguration.MappingJackson2HttpMessageConverterConfiguration matched:
+      - @ConditionalOnClass found required class 'com.fasterxml.jackson.databind.ObjectMapper' (OnClassCondition)
+      - @ConditionalOnProperty (spring.mvc.converters.preferred-json-mapper=jackson) matched (OnPropertyCondition)
+      - @ConditionalOnBean (types: com.fasterxml.jackson.databind.ObjectMapper; SearchStrategy: all) found bean 'jacksonObjectMapper' (OnBeanCondition)
+
+   JacksonHttpMessageConvertersConfiguration.MappingJackson2HttpMessageConverterConfiguration#mappingJackson2HttpMessageConverter matched:
+      - @ConditionalOnMissingBean (types: org.springframework.http.converter.json.MappingJackson2HttpMessageConverter ignored: org.springframework.hateoas.server.mvc.TypeConstrainedMappingJackson2HttpMessageConverter,org.springframework.data.rest.webmvc.alps.AlpsJsonHttpMessageConverter; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MockMvcAutoConfiguration matched:
+      - found 'session' scope (OnWebApplicationCondition)
+
+   MockMvcAutoConfiguration#dispatcherServlet matched:
+      - @ConditionalOnMissingBean (types: org.springframework.web.servlet.DispatcherServlet; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MockMvcAutoConfiguration#dispatcherServletPath matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.autoconfigure.web.servlet.DispatcherServletPath; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MockMvcAutoConfiguration#mockMvc matched:
+      - @ConditionalOnMissingBean (types: org.springframework.test.web.servlet.MockMvc; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   MockMvcAutoConfiguration#mockMvcBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.test.web.servlet.MockMvcBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   NoOpCacheConfiguration matched:
+      - Cache org.springframework.boot.autoconfigure.cache.NoOpCacheConfiguration NONE cache type (CacheCondition)
+
+   SpringDataWebAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'org.springframework.data.web.PageableHandlerMethodArgumentResolver', 'org.springframework.web.servlet.config.annotation.WebMvcConfigurer' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+      - @ConditionalOnMissingBean (types: org.springframework.data.web.PageableHandlerMethodArgumentResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   SpringDataWebAutoConfiguration#pageableCustomizer matched:
+      - @ConditionalOnMissingBean (types: org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   SpringDataWebAutoConfiguration#sortCustomizer matched:
+      - @ConditionalOnMissingBean (types: org.springframework.data.web.config.SortHandlerMethodArgumentResolverCustomizer; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TaskExecutionAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor' (OnClassCondition)
+
+   TaskExecutorConfigurations.SimpleAsyncTaskExecutorBuilderConfiguration#simpleAsyncTaskExecutorBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.task.SimpleAsyncTaskExecutorBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+      - @ConditionalOnThreading found PLATFORM (OnThreadingCondition)
+
+   TaskExecutorConfigurations.TaskExecutorBuilderConfiguration#taskExecutorBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.task.TaskExecutorBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TaskExecutorConfigurations.TaskExecutorConfiguration matched:
+      - @ConditionalOnMissingBean (types: java.util.concurrent.Executor; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TaskExecutorConfigurations.TaskExecutorConfiguration#applicationTaskExecutor matched:
+      - @ConditionalOnThreading found PLATFORM (OnThreadingCondition)
+
+   TaskExecutorConfigurations.ThreadPoolTaskExecutorBuilderConfiguration#threadPoolTaskExecutorBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.task.TaskExecutorBuilder,org.springframework.boot.task.ThreadPoolTaskExecutorBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   ValidationAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'jakarta.validation.executable.ExecutableValidator' (OnClassCondition)
+      - @ConditionalOnResource found location classpath:META-INF/services/jakarta.validation.spi.ValidationProvider (OnResourceCondition)
+
+   ValidationAutoConfiguration#defaultValidator matched:
+      - @ConditionalOnMissingBean (types: jakarta.validation.Validator; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   ValidationAutoConfiguration#methodValidationPostProcessor matched:
+      - @ConditionalOnMissingBean (types: org.springframework.validation.beanvalidation.MethodValidationPostProcessor; SearchStrategy: current) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration matched:
+      - @ConditionalOnClass found required classes 'jakarta.servlet.Servlet', 'org.springframework.web.servlet.DispatcherServlet', 'org.springframework.web.servlet.config.annotation.WebMvcConfigurer' (OnClassCondition)
+      - found 'session' scope (OnWebApplicationCondition)
+      - @ConditionalOnMissingBean (types: org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration#formContentFilter matched:
+      - @ConditionalOnProperty (spring.mvc.formcontent.filter.enabled) matched (OnPropertyCondition)
+      - @ConditionalOnMissingBean (types: org.springframework.web.filter.FormContentFilter; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration.EnableWebMvcConfiguration#flashMapManager matched:
+      - @ConditionalOnMissingBean (names: flashMapManager; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration.EnableWebMvcConfiguration#localeResolver matched:
+      - @ConditionalOnMissingBean (names: localeResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration.EnableWebMvcConfiguration#themeResolver matched:
+      - @ConditionalOnMissingBean (names: themeResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter#defaultViewResolver matched:
+      - @ConditionalOnMissingBean (types: org.springframework.web.servlet.view.InternalResourceViewResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter#requestContextFilter matched:
+      - @ConditionalOnMissingBean (types: org.springframework.web.context.request.RequestContextListener,org.springframework.web.filter.RequestContextFilter; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter#viewResolver matched:
+      - @ConditionalOnBean (types: org.springframework.web.servlet.ViewResolver; SearchStrategy: all) found beans 'defaultViewResolver', 'beanNameViewResolver', 'mvcViewResolver'; @ConditionalOnMissingBean (names: viewResolver types: org.springframework.web.servlet.view.ContentNegotiatingViewResolver; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+
+Negative matches:
+-----------------
+
+   Cache2kCacheConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.cache2k.Cache2kBuilder' (OnClassCondition)
+
+   CacheAutoConfiguration:
+      Did not match:
+         - @ConditionalOnBean (types: org.springframework.cache.interceptor.CacheAspectSupport; SearchStrategy: all) did not find any beans of type org.springframework.cache.interceptor.CacheAspectSupport (OnBeanCondition)
+      Matched:
+         - @ConditionalOnClass found required class 'org.springframework.cache.CacheManager' (OnClassCondition)
+
+   CacheAutoConfiguration.CacheManagerEntityManagerFactoryDependsOnPostProcessor:
+      Did not match:
+         - Ancestor org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration did not match (ConditionEvaluationReport.AncestorsMatchedCondition)
+      Matched:
+         - @ConditionalOnClass found required class 'org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean' (OnClassCondition)
+
+   CaffeineCacheConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.github.benmanes.caffeine.cache.Caffeine' (OnClassCondition)
+
+   CouchbaseCacheConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.couchbase.client.java.Cluster' (OnClassCondition)
+
+   ErrorMvcAutoConfiguration.DefaultErrorViewResolverConfiguration#conventionErrorViewResolver:
+      Did not match:
+         - @ConditionalOnBean (types: org.springframework.web.servlet.DispatcherServlet; SearchStrategy: all) did not find any beans of type org.springframework.web.servlet.DispatcherServlet (OnBeanCondition)
+
+   FreeMarkerAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'freemarker.template.Configuration' (OnClassCondition)
+
+   GenericCacheConfiguration:
+      Did not match:
+         - Cache org.springframework.boot.autoconfigure.cache.GenericCacheConfiguration unknown cache type (CacheCondition)
+
+   GroovyTemplateAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'groovy.text.markup.MarkupTemplateEngine' (OnClassCondition)
+
+   GsonAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.google.gson.Gson' (OnClassCondition)
+
+   GsonHttpMessageConvertersConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.google.gson.Gson' (OnClassCondition)
+
+   HazelcastCacheConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.hazelcast.core.HazelcastInstance' (OnClassCondition)
+
+   HypermediaAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.hateoas.EntityModel' (OnClassCondition)
+
+   InfinispanCacheConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.infinispan.spring.embedded.provider.SpringEmbeddedCacheManager' (OnClassCondition)
+
+   JCacheCacheConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'javax.cache.Caching' (OnClassCondition)
+
+   JacksonHttpMessageConvertersConfiguration.MappingJackson2XmlHttpMessageConverterConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.fasterxml.jackson.dataformat.xml.XmlMapper' (OnClassCondition)
+
+   JsonbAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'jakarta.json.bind.Jsonb' (OnClassCondition)
+
+   JsonbHttpMessageConvertersConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'jakarta.json.bind.Jsonb' (OnClassCondition)
+
+   MessageSourceAutoConfiguration:
+      Did not match:
+         - ResourceBundle did not find bundle with basename messages (MessageSourceAutoConfiguration.ResourceBundleCondition)
+
+   MockMvcAutoConfiguration.WebTestClientMockMvcConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.web.reactive.function.client.WebClient' (OnClassCondition)
+
+   MockMvcSecurityConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors' (OnClassCondition)
+
+   MockMvcWebClientAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.gargoylesoftware.htmlunit.WebClient' (OnClassCondition)
+
+   MockMvcWebDriverAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.openqa.selenium.htmlunit.HtmlUnitDriver' (OnClassCondition)
+
+   MustacheAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'com.samskivert.mustache.Mustache' (OnClassCondition)
+
+   OAuth2ClientAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.security.config.annotation.web.configuration.EnableWebSecurity' (OnClassCondition)
+
+   OAuth2ResourceServerAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken' (OnClassCondition)
+
+   RedisCacheConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.data.redis.connection.RedisConnectionFactory' (OnClassCondition)
+
+   SecurityAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.security.authentication.DefaultAuthenticationEventPublisher' (OnClassCondition)
+
+   SecurityFilterAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.security.config.http.SessionCreationPolicy' (OnClassCondition)
+
+   SimpleCacheConfiguration:
+      Did not match:
+         - Cache org.springframework.boot.autoconfigure.cache.SimpleCacheConfiguration unknown cache type (CacheCondition)
+
+   TaskExecutorConfigurations.SimpleAsyncTaskExecutorBuilderConfiguration#simpleAsyncTaskExecutorBuilderVirtualThreads:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.boot.task.SimpleAsyncTaskExecutorBuilder; SearchStrategy: all) found beans of type 'org.springframework.boot.task.SimpleAsyncTaskExecutorBuilder' simpleAsyncTaskExecutorBuilder (OnBeanCondition)
+
+   TaskExecutorConfigurations.TaskExecutorConfiguration#applicationTaskExecutorVirtualThreads:
+      Did not match:
+         - @ConditionalOnThreading did not find VIRTUAL (OnThreadingCondition)
+
+   ThymeleafAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.thymeleaf.spring6.SpringTemplateEngine' (OnClassCondition)
+
+   UserDetailsServiceAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.security.authentication.AuthenticationManager' (OnClassCondition)
+
+   WebMvcAutoConfiguration#hiddenHttpMethodFilter:
+      Did not match:
+         - @ConditionalOnProperty (spring.mvc.hiddenmethod.filter.enabled) did not find property 'enabled' (OnPropertyCondition)
+
+   WebMvcAutoConfiguration.ProblemDetailsErrorHandlingConfiguration:
+      Did not match:
+         - @ConditionalOnProperty (spring.mvc.problemdetails.enabled=true) did not find property 'enabled' (OnPropertyCondition)
+
+   WebMvcAutoConfiguration.ResourceChainCustomizerConfiguration:
+      Did not match:
+         - @ConditionalOnEnabledResourceChain did not find class org.webjars.WebJarAssetLocator (OnEnabledResourceChainCondition)
+
+   WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter#beanNameViewResolver:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.web.servlet.view.BeanNameViewResolver; SearchStrategy: all) found beans of type 'org.springframework.web.servlet.view.BeanNameViewResolver' beanNameViewResolver (OnBeanCondition)
+
+   WebTestClientAutoConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.springframework.web.reactive.function.client.WebClient' (OnClassCondition)
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    None
+
+
+
+2026-05-12T14:12:47.186+03:00  INFO 29676 --- [job-service] [           main] c.s.job.controller.JobControllerTest     : Started JobControllerTest in 3.95 seconds (process running for 5.348)
+2026-05-12T14:12:47.352+03:00 DEBUG 29676 --- [job-service] [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.smart_hire.job.controller.JobController#deleteJobById(Long)
+2026-05-12T14:12:47.410+03:00 DEBUG 29676 --- [job-service] [           main] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-05-12T14:12:47.411+03:00 DEBUG 29676 --- [job-service] [           main] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Nothing to write: null body
+]]></system-out>
+    <system-err><![CDATA[WARNING: A Java agent has been loaded dynamically (C:\Users\anisa\SmartHireAI\job\.m2repo\net\bytebuddy\byte-buddy-agent\1.14.19\byte-buddy-agent-1.14.19.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+]]></system-err>
+  </testcase>
+  <testcase name="shouldReturnRecruiterJobsWhenRecruiterHasJobs" classname="com.smart_hire.job.controller.JobControllerTest" time="0.146">
+    <system-out><![CDATA[2026-05-12T14:12:47.458+03:00 DEBUG 29676 --- [job-service] [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.smart_hire.job.controller.JobController#getJobsByRecruiterId(Long)
+2026-05-12T14:12:47.466+03:00 DEBUG 29676 --- [job-service] [           main] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-05-12T14:12:47.476+03:00 DEBUG 29676 --- [job-service] [           main] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[JobSummaryResponse[id=3, recruiterId=9, title=Platform Engineer, status=OPEN], JobSummaryResponse[i (truncated)...]
+]]></system-out>
+  </testcase>
+  <testcase name="shouldReturnUpdatedJobWhenStatusPayloadIsValid" classname="com.smart_hire.job.controller.JobControllerTest" time="0.201">
+    <system-out><![CDATA[2026-05-12T14:12:47.604+03:00 DEBUG 29676 --- [job-service] [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.smart_hire.job.controller.JobController#updateJobStatus(Long, UpdateJobStatusRequest)
+2026-05-12T14:12:47.652+03:00 DEBUG 29676 --- [job-service] [           main] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [UpdateJobStatusRequest[status=CLOSED]]
+2026-05-12T14:12:47.783+03:00 DEBUG 29676 --- [job-service] [           main] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-05-12T14:12:47.794+03:00 DEBUG 29676 --- [job-service] [           main] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [JobDetailResponse[id=1, recruiterId=5, title=Lead Java Developer, description=Lead backend delivery, (truncated)...]
+]]></system-out>
+  </testcase>
+  <testcase name="shouldReturnUpdatedJobWhenUpdatePayloadIsValid" classname="com.smart_hire.job.controller.JobControllerTest" time="0.028">
+    <system-out><![CDATA[2026-05-12T14:12:47.810+03:00 DEBUG 29676 --- [job-service] [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.smart_hire.job.controller.JobController#updateJob(Long, UpdateJobRequest)
+2026-05-12T14:12:47.817+03:00 DEBUG 29676 --- [job-service] [           main] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [UpdateJobRequest[title=Lead Java Developer, description=Lead backend delivery, location=Remote, empl (truncated)...]
+2026-05-12T14:12:47.829+03:00 DEBUG 29676 --- [job-service] [           main] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-05-12T14:12:47.830+03:00 DEBUG 29676 --- [job-service] [           main] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [JobDetailResponse[id=1, recruiterId=5, title=Lead Java Developer, description=Lead backend delivery, (truncated)...]
+]]></system-out>
+  </testcase>
+  <testcase name="shouldReturnCreatedWhenCreateJobPayloadIsValid" classname="com.smart_hire.job.controller.JobControllerTest" time="0.063">
+    <system-out><![CDATA[2026-05-12T14:12:47.841+03:00 DEBUG 29676 --- [job-service] [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.smart_hire.job.controller.JobController#createJob(CreateJobRequest)
+2026-05-12T14:12:47.869+03:00 DEBUG 29676 --- [job-service] [           main] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [CreateJobRequest[recruiterId=5, title=Senior Java Developer, description=Build backend services, loc (truncated)...]
+2026-05-12T14:12:47.887+03:00 DEBUG 29676 --- [job-service] [           main] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-05-12T14:12:47.888+03:00 DEBUG 29676 --- [job-service] [           main] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Nothing to write: null body
+]]></system-out>
+  </testcase>
+  <testcase name="shouldReturnJobListWhenJobsExist" classname="com.smart_hire.job.controller.JobControllerTest" time="0.015">
+    <system-out><![CDATA[2026-05-12T14:12:47.910+03:00 DEBUG 29676 --- [job-service] [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.smart_hire.job.controller.JobController#getAllJobs()
+2026-05-12T14:12:47.912+03:00 DEBUG 29676 --- [job-service] [           main] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-05-12T14:12:47.912+03:00 DEBUG 29676 --- [job-service] [           main] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[JobSummaryResponse[id=1, recruiterId=5, title=Senior Java Developer, status=OPEN], JobSummaryRespon (truncated)...]
+]]></system-out>
+  </testcase>
+  <testcase name="shouldReturnJobDetailsWhenJobExists" classname="com.smart_hire.job.controller.JobControllerTest" time="0.013">
+    <system-out><![CDATA[2026-05-12T14:12:47.927+03:00 DEBUG 29676 --- [job-service] [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.smart_hire.job.controller.JobController#getJobById(Long)
+2026-05-12T14:12:47.929+03:00 DEBUG 29676 --- [job-service] [           main] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2026-05-12T14:12:47.930+03:00 DEBUG 29676 --- [job-service] [           main] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [JobDetailResponse[id=1, recruiterId=5, title=Senior Java Developer, description=Build backend servic (truncated)...]
+]]></system-out>
+  </testcase>
+</testsuite>

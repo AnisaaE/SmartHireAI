@@ -17,3 +17,10 @@ spring:
 
 server:
   port: 8085
+
+application:
+  integrations:
+    document-service:
+      base-url: http://localhost:8082
+    job-service:
+      base-url: http://localhost:8084
