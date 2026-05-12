@@ -1,0 +1,3 @@
+analysis:
+  engine: heuristic
+  storage: in-memory

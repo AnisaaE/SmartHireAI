@@ -1,3 +1,9 @@
 spring:
   application:
     name: document
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/smarthire_document}
+
+server:
+  port: 8082
