@@ -1,0 +1,47 @@
+package com.smart_hire.ai_analysis.service;
+
+import com.smart_hire.ai_analysis.config.AnalysisRuntimeProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
+
+public class RestDocumentTextClient implements DocumentTextClient {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestDocumentTextClient.class);
+
+    private final RestClient restClient;
+
+    public RestDocumentTextClient(AnalysisRuntimeProperties properties) {
+        this.restClient = RestClient.builder()
+                .baseUrl(properties.documentServiceBaseUrl())
+                .build();
+    }
+
+    @Override
+    public String getDocumentText(String documentId) {
+        if (documentId == null || documentId.isBlank()) {
+            return "";
+        }
+
+        try {
+            DocumentContentPayload payload = restClient.get()
+                    .uri("/api/documents/content/{id}", documentId)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .retrieve()
+                    .body(DocumentContentPayload.class);
+
+            return payload == null || payload.rawTextContent() == null ? "" : payload.rawTextContent();
+        }
+        catch (RestClientException exception) {
+            LOGGER.warn("Falling back to empty document text for {} because document-service call failed: {}",
+                    documentId,
+                    exception.getMessage());
+            return "";
+        }
+    }
+
+    private record DocumentContentPayload(String documentId, String rawTextContent) {
+    }
+}
