@@ -22,25 +22,26 @@ public class MongoDocumentRepositoryAdapter implements DocumentRepository {
 
     @Override
     public Optional<DocumentRecord> findById(String id) {
-        return mongoRepository.findById(id).map(this::toRecord);
+        return mongoRepository.findById(id)
+                .filter(entity -> !"DELETED".equalsIgnoreCase(entity.getStatus()))
+                .map(this::toRecord);
     }
 
     @Override
     public List<DocumentRecord> findByOwnerId(String ownerId) {
-        return mongoRepository.findAllByOwnerId(ownerId).stream()
+        return mongoRepository.findAllByOwnerIdAndStatusNot(ownerId, "DELETED").stream()
                 .map(this::toRecord)
                 .collect(Collectors.toList());
     }
 
     @Override
     public Optional<DocumentRecord> findActiveCv(String ownerId) {
-        return mongoRepository.findFirstByOwnerIdAndTypeOrderByUpdatedAtDesc(ownerId, "CV")
+        return mongoRepository.findFirstByOwnerIdAndTypeAndStatusInOrderByUpdatedAtDesc(
+                        ownerId,
+                        "CV",
+                        List.of("ACTIVE", "REPROCESSED")
+                )
                 .map(this::toRecord);
-    }
-
-    @Override
-    public void deleteById(String id) {
-        mongoRepository.deleteById(id);
     }
 
     private DocumentEntity toEntity(DocumentRecord record) {

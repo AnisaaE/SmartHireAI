@@ -17,3 +17,12 @@ spring:
 
 server:
   port: ${SERVER_PORT:8084}
+
+job:
+  integrations:
+    ai-analysis-service:
+      base-url: ${JOB_INTEGRATIONS_AI_ANALYSIS_SERVICE_BASE_URL:http://localhost:8083}
+    application-service:
+      base-url: ${JOB_INTEGRATIONS_APPLICATION_SERVICE_BASE_URL:http://localhost:8085}
+    auth-service:
+      base-url: ${JOB_INTEGRATIONS_AUTH_SERVICE_BASE_URL:http://localhost:8081}

@@ -8,8 +8,17 @@ C:\Users\nalan\OneDrive\Desktop\SmartHireAI\job\src\main\java\com\smart_hire\job
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\job\src\main\java\com\smart_hire\job\dto\UpdateJobStatusRequest.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\job\src\main\java\com\smart_hire\job\JobApplication.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\job\src\main\java\com\smart_hire\job\service\InvalidJobStatusException.java
+C:\Users\nalan\OneDrive\Desktop\SmartHireAI\job\src\main\java\com\smart_hire\job\service\InvalidRecruiterException.java
+C:\Users\nalan\OneDrive\Desktop\SmartHireAI\job\src\main\java\com\smart_hire\job\service\JobAnalysisClient.java
+C:\Users\nalan\OneDrive\Desktop\SmartHireAI\job\src\main\java\com\smart_hire\job\service\JobApplicationClient.java
+C:\Users\nalan\OneDrive\Desktop\SmartHireAI\job\src\main\java\com\smart_hire\job\service\JobAuthClient.java
+C:\Users\nalan\OneDrive\Desktop\SmartHireAI\job\src\main\java\com\smart_hire\job\service\JobDeletionConflictException.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\job\src\main\java\com\smart_hire\job\service\JobEntity.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\job\src\main\java\com\smart_hire\job\service\JobNotFoundException.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\job\src\main\java\com\smart_hire\job\service\JobRepository.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\job\src\main\java\com\smart_hire\job\service\JobService.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\job\src\main\java\com\smart_hire\job\service\JobServiceImpl.java
+C:\Users\nalan\OneDrive\Desktop\SmartHireAI\job\src\main\java\com\smart_hire\job\service\RecruiterNotFoundException.java
+C:\Users\nalan\OneDrive\Desktop\SmartHireAI\job\src\main\java\com\smart_hire\job\service\RestJobAnalysisClient.java
+C:\Users\nalan\OneDrive\Desktop\SmartHireAI\job\src\main\java\com\smart_hire\job\service\RestJobApplicationClient.java
+C:\Users\nalan\OneDrive\Desktop\SmartHireAI\job\src\main\java\com\smart_hire\job\service\RestJobAuthClient.java

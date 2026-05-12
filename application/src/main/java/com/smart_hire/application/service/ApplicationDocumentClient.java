@@ -10,7 +10,8 @@ public interface ApplicationDocumentClient {
             String id,
             String ownerId,
             String type,
-            String title
+            String title,
+            String status
     ) {
     }
 }

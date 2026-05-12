@@ -22,6 +22,8 @@ analysis:
   storage: ${ANALYSIS_STORAGE:redis}
   redis-key-prefix: ${ANALYSIS_REDIS_KEY_PREFIX:smarthire:analysis}
   result-ttl: ${ANALYSIS_RESULT_TTL:PT24H}
+  job-service-base-url: ${JOB_SERVICE_BASE_URL:http://localhost:8084}
+  application-service-base-url: ${APPLICATION_SERVICE_BASE_URL:http://localhost:8085}
   document-service-base-url: ${DOCUMENT_SERVICE_BASE_URL:http://localhost:8082}
   ollama-model: ${OLLAMA_MODEL:llama3}
   ollama-temperature: ${OLLAMA_TEMPERATURE:0.2}

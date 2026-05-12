@@ -2,11 +2,14 @@ C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\controller\ApplicationApiPaths.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\controller\ApplicationController.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\controller\ApplicationExceptionHandler.java
+C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\dto\ActiveDocumentDependencyStatusResponse.java
+C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\dto\ApplicationDependencyStatusResponse.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\dto\ApplicationDetailResponse.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\dto\ApplicationSummaryResponse.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\dto\CreateApplicationRequest.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\dto\UpdateApplicationRequest.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\dto\UpdateApplicationStatusRequest.java
+C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\service\ApplicationAuthClient.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\service\ApplicationDocumentClient.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\service\ApplicationEntity.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\service\ApplicationJobClient.java
@@ -14,9 +17,12 @@ C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\service\ApplicationRepository.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\service\ApplicationService.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\service\ApplicationServiceImpl.java
+C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\service\CandidateNotFoundException.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\service\DuplicateApplicationException.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\service\InvalidApplicationStatusException.java
+C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\service\InvalidCandidateException.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\service\InvalidCvDocumentException.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\service\JobUnavailableException.java
+C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\service\RestApplicationAuthClient.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\service\RestApplicationDocumentClient.java
 C:\Users\nalan\OneDrive\Desktop\SmartHireAI\application\src\main\java\com\smart_hire\application\service\RestApplicationJobClient.java

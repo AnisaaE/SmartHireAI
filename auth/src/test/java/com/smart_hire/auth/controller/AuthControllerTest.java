@@ -50,7 +50,9 @@ class AuthControllerTest {
                         .content("""
                                 {
                                   "username": "jane.doe",
-                                  "password": "Password123!"
+                                  "email": "jane@example.com",
+                                  "password": "Password123!",
+                                  "role": "CANDIDATE"
                                 }
                                 """))
                 .andExpect(status().isCreated());
@@ -138,14 +140,17 @@ class AuthControllerTest {
 
     @Test
     void shouldReturnUserProfileWhenUserExists() throws Exception {
-        doReturn(new UserResponse(7L, "jane.doe"))
+        doReturn(new UserResponse(7L, "jane.doe", "jane@example.com", com.smart_hire.auth.domain.UserRole.CANDIDATE, true))
                 .when(authService)
                 .getUserById(7L);
 
         mockMvc.perform(get("/api/auth/users/7"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(7))
-                .andExpect(jsonPath("$.username").value("jane.doe"));
+                .andExpect(jsonPath("$.username").value("jane.doe"))
+                .andExpect(jsonPath("$.email").value("jane@example.com"))
+                .andExpect(jsonPath("$.role").value("CANDIDATE"))
+                .andExpect(jsonPath("$.active").value(true));
 
         verify(authService).getUserById(7L);
     }
@@ -153,8 +158,8 @@ class AuthControllerTest {
     @Test
     void shouldReturnAllUsers() throws Exception {
         doReturn(List.of(
-                new UserResponse(7L, "jane.doe"),
-                new UserResponse(8L, "john.doe")
+                new UserResponse(7L, "jane.doe", "jane@example.com", com.smart_hire.auth.domain.UserRole.CANDIDATE, true),
+                new UserResponse(8L, "john.doe", "john@example.com", com.smart_hire.auth.domain.UserRole.RECRUITER, false)
         ))
                 .when(authService)
                 .getAllUsers();
@@ -163,31 +168,43 @@ class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(7))
                 .andExpect(jsonPath("$[0].username").value("jane.doe"))
+                .andExpect(jsonPath("$[0].email").value("jane@example.com"))
+                .andExpect(jsonPath("$[0].role").value("CANDIDATE"))
+                .andExpect(jsonPath("$[0].active").value(true))
                 .andExpect(jsonPath("$[1].id").value(8))
-                .andExpect(jsonPath("$[1].username").value("john.doe"));
+                .andExpect(jsonPath("$[1].username").value("john.doe"))
+                .andExpect(jsonPath("$[1].email").value("john@example.com"))
+                .andExpect(jsonPath("$[1].role").value("RECRUITER"))
+                .andExpect(jsonPath("$[1].active").value(false));
 
         verify(authService).getAllUsers();
     }
 
     @Test
     void shouldUpdateUsernameWhenAuthenticatedUserSendsValidPayload() throws Exception {
-        doReturn(new UserResponse(7L, "jane.updated"))
+        doReturn(new UserResponse(7L, "jane.updated", "jane.updated@example.com", com.smart_hire.auth.domain.UserRole.CANDIDATE, true))
                 .when(authService)
-                .updateUser(7L, new UpdateUserRequest("jane.updated"));
+                .updateUser(7L, new UpdateUserRequest("jane.updated", "jane.updated@example.com", com.smart_hire.auth.domain.UserRole.CANDIDATE, true));
 
         mockMvc.perform(put("/api/auth/users/7")
                         .with(user("jane.doe"))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
-                                  "username": "jane.updated"
+                                  "username": "jane.updated",
+                                  "email": "jane.updated@example.com",
+                                  "role": "CANDIDATE",
+                                  "active": true
                                 }
                                 """))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(7))
-                .andExpect(jsonPath("$.username").value("jane.updated"));
+                .andExpect(jsonPath("$.username").value("jane.updated"))
+                .andExpect(jsonPath("$.email").value("jane.updated@example.com"))
+                .andExpect(jsonPath("$.role").value("CANDIDATE"))
+                .andExpect(jsonPath("$.active").value(true));
 
-        verify(authService).updateUser(7L, new UpdateUserRequest("jane.updated"));
+        verify(authService).updateUser(7L, new UpdateUserRequest("jane.updated", "jane.updated@example.com", com.smart_hire.auth.domain.UserRole.CANDIDATE, true));
     }
 
     @Test

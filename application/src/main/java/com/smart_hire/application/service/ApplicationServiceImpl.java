@@ -23,23 +23,32 @@ public class ApplicationServiceImpl implements ApplicationService {
             "HIRED",
             "WITHDRAWN"
     );
+    private static final Set<String> ACTIVE_APPLICATION_STATUSES = Set.of(
+            "APPLIED",
+            "UNDER_REVIEW",
+            "SHORTLISTED"
+    );
 
     private final ApplicationRepository applicationRepository;
+    private final ApplicationAuthClient authClient;
     private final ApplicationDocumentClient documentClient;
     private final ApplicationJobClient jobClient;
 
     public ApplicationServiceImpl(
             ApplicationRepository applicationRepository,
+            ApplicationAuthClient authClient,
             ApplicationDocumentClient documentClient,
             ApplicationJobClient jobClient
     ) {
         this.applicationRepository = applicationRepository;
+        this.authClient = authClient;
         this.documentClient = documentClient;
         this.jobClient = jobClient;
     }
 
     @Override
     public void apply(CreateApplicationRequest request) {
+        validateCandidate(request.candidateId());
         validateOpenJob(request.jobId());
         validateNoDuplicate(request.jobId(), request.candidateId());
         validateCvDocument(request.candidateId(), request.cvDocumentId());
@@ -69,10 +78,20 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    public boolean hasApplicationsByJobId(Long jobId) {
+        return applicationRepository.existsByJobId(jobId);
+    }
+
+    @Override
     public List<ApplicationSummaryResponse> getApplicationsByCandidateId(Long candidateId) {
         return applicationRepository.findByCandidateIdOrderByAppliedAtDesc(candidateId).stream()
                 .map(this::toSummaryResponse)
                 .toList();
+    }
+
+    @Override
+    public boolean hasActiveApplicationsByDocumentId(String documentId) {
+        return applicationRepository.existsByCvDocumentIdAndStatusIn(documentId, ACTIVE_APPLICATION_STATUSES);
     }
 
     @Override
@@ -115,6 +134,16 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
     }
 
+    private void validateCandidate(Long candidateId) {
+        ApplicationAuthClient.CandidateSnapshot candidate = authClient.getCandidate(candidateId);
+        if (!candidate.active()) {
+            throw new InvalidCandidateException("Candidate is inactive: " + candidateId);
+        }
+        if (!"CANDIDATE".equalsIgnoreCase(candidate.role())) {
+            throw new InvalidCandidateException("User is not a candidate: " + candidateId);
+        }
+    }
+
     private void validateCvDocument(Long candidateId, String documentId) {
         ApplicationDocumentClient.DocumentMetadata metadata = documentClient.getDocumentMetadata(documentId);
         if (!String.valueOf(candidateId).equals(metadata.ownerId())) {
@@ -122,6 +151,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         if (!"CV".equalsIgnoreCase(metadata.type())) {
             throw new InvalidCvDocumentException("Document is not a CV: " + documentId);
+        }
+        if (!"ACTIVE".equalsIgnoreCase(metadata.status()) && !"REPROCESSED".equalsIgnoreCase(metadata.status())) {
+            throw new InvalidCvDocumentException("Document is not available for applications: " + documentId);
         }
 
         String documentContent = documentClient.getDocumentContent(documentId);

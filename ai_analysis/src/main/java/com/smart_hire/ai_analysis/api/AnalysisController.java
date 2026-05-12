@@ -46,6 +46,18 @@ public class AnalysisController {
                 .toList();
     }
 
+    @PutMapping("/invalidate/job/{jobId}")
+    public AnalysisResponse invalidateByJobId(@PathVariable String jobId) {
+        return AnalysisResponseMapper.toResponse(analysisService.invalidateByJobId(jobId));
+    }
+
+    @PutMapping("/invalidate/document/{documentId}")
+    public java.util.List<AnalysisResponse> invalidateByDocumentId(@PathVariable String documentId) {
+        return analysisService.invalidateByDocumentId(documentId).stream()
+                .map(AnalysisResponseMapper::toResponse)
+                .toList();
+    }
+
     @PutMapping("/{analysisId}")
     public AnalysisResponse updateAnalysis(
             @PathVariable String analysisId,

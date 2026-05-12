@@ -10,6 +10,8 @@ public record AnalysisRuntimeProperties(
         String storage,
         String redisKeyPrefix,
         Duration resultTtl,
+        String jobServiceBaseUrl,
+        String applicationServiceBaseUrl,
         String documentServiceBaseUrl,
         String ollamaModel,
         Double ollamaTemperature

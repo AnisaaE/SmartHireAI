@@ -27,12 +27,23 @@ class JobServiceImplTest {
     @Mock
     private JobRepository jobRepository;
 
+    @Mock
+    private JobAuthClient jobAuthClient;
+
+    @Mock
+    private JobApplicationClient jobApplicationClient;
+
+    @Mock
+    private JobAnalysisClient jobAnalysisClient;
+
     @InjectMocks
     private JobServiceImpl jobService;
 
     @Test
     void shouldCreateDraftJob() {
         when(jobRepository.save(any(JobEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(jobAuthClient.getRecruiter(5L))
+                .thenReturn(new JobAuthClient.RecruiterSnapshot(5L, "recruiter", "recruiter@test.com", "RECRUITER", true));
 
         jobService.createJob(new CreateJobRequest(5L, "Java Dev", "Build APIs", "Sofia", "FULL_TIME"));
 
@@ -40,6 +51,26 @@ class JobServiceImplTest {
         verify(jobRepository).save(captor.capture());
         assertThat(captor.getValue().getStatus()).isEqualTo("DRAFT");
         assertThat(captor.getValue().getRecruiterId()).isEqualTo(5L);
+    }
+
+    @Test
+    void shouldRejectInactiveRecruiter() {
+        when(jobAuthClient.getRecruiter(5L))
+                .thenReturn(new JobAuthClient.RecruiterSnapshot(5L, "recruiter", "recruiter@test.com", "RECRUITER", false));
+
+        assertThatThrownBy(() -> jobService.createJob(new CreateJobRequest(5L, "Java Dev", "Build APIs", "Sofia", "FULL_TIME")))
+                .isInstanceOf(InvalidRecruiterException.class)
+                .hasMessage("Recruiter is inactive: 5");
+    }
+
+    @Test
+    void shouldRejectNonRecruiterUser() {
+        when(jobAuthClient.getRecruiter(5L))
+                .thenReturn(new JobAuthClient.RecruiterSnapshot(5L, "candidate", "candidate@test.com", "CANDIDATE", true));
+
+        assertThatThrownBy(() -> jobService.createJob(new CreateJobRequest(5L, "Java Dev", "Build APIs", "Sofia", "FULL_TIME")))
+                .isInstanceOf(InvalidRecruiterException.class)
+                .hasMessage("User is not a recruiter: 5");
     }
 
     @Test
@@ -67,6 +98,7 @@ class JobServiceImplTest {
         assertThat(result.description()).isEqualTo("New desc");
         assertThat(result.location()).isEqualTo("Remote");
         assertThat(result.employmentType()).isEqualTo("CONTRACT");
+        verify(jobAnalysisClient).invalidateByJobId(1L);
     }
 
     @Test
@@ -77,6 +109,41 @@ class JobServiceImplTest {
         assertThatThrownBy(() -> jobService.updateJobStatus(1L, new UpdateJobStatusRequest("INVALID")))
                 .isInstanceOf(InvalidJobStatusException.class)
                 .hasMessage("Invalid job status: INVALID");
+    }
+
+    @Test
+    void shouldDeleteJobWhenNoApplicationsExist() {
+        JobEntity job = jobEntity(1L, 5L, "Java Dev", "DRAFT");
+        when(jobRepository.findById(1L)).thenReturn(Optional.of(job));
+        when(jobApplicationClient.hasApplications(1L)).thenReturn(false);
+
+        jobService.deleteJobById(1L);
+
+        verify(jobRepository).delete(job);
+    }
+
+    @Test
+    void shouldArchiveJobInsteadOfDeletingWhenApplicationsExistAndJobIsClosed() {
+        JobEntity job = jobEntity(1L, 5L, "Java Dev", "CLOSED");
+        when(jobRepository.findById(1L)).thenReturn(Optional.of(job));
+        when(jobApplicationClient.hasApplications(1L)).thenReturn(true);
+        when(jobRepository.save(any(JobEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        jobService.deleteJobById(1L);
+
+        verify(jobRepository).save(job);
+        assertThat(job.getStatus()).isEqualTo("ARCHIVED");
+    }
+
+    @Test
+    void shouldRejectDeletingOpenJobWhenApplicationsExist() {
+        JobEntity job = jobEntity(1L, 5L, "Java Dev", "OPEN");
+        when(jobRepository.findById(1L)).thenReturn(Optional.of(job));
+        when(jobApplicationClient.hasApplications(1L)).thenReturn(true);
+
+        assertThatThrownBy(() -> jobService.deleteJobById(1L))
+                .isInstanceOf(JobDeletionConflictException.class)
+                .hasMessage("Job cannot be deleted while applications exist unless it is CLOSED or ARCHIVED: 1");
     }
 
     private JobEntity jobEntity(Long id, Long recruiterId, String title, String status) {

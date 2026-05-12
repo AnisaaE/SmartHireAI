@@ -22,6 +22,12 @@ class DocumentServiceGetMetadataTest {
     @Mock
     private DocumentTextExtractor documentTextExtractor;
 
+    @Mock
+    private DocumentApplicationClient documentApplicationClient;
+
+    @Mock
+    private DocumentAnalysisClient documentAnalysisClient;
+
     @InjectMocks
     private DocumentServiceImpl documentService;
 

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface MongoDocumentRepository extends MongoRepository<DocumentEntity, String> {
 
-    List<DocumentEntity> findAllByOwnerId(String ownerId);
+    List<DocumentEntity> findAllByOwnerIdAndStatusNot(String ownerId, String status);
 
-    Optional<DocumentEntity> findFirstByOwnerIdAndTypeOrderByUpdatedAtDesc(String ownerId, String type);
+    Optional<DocumentEntity> findFirstByOwnerIdAndTypeAndStatusInOrderByUpdatedAtDesc(String ownerId, String type, List<String> statuses);
 }

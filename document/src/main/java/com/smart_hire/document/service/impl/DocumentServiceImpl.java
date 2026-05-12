@@ -1,5 +1,7 @@
 package com.smart_hire.document.service.impl;
 
+import com.smart_hire.document.service.DocumentApplicationClient;
+import com.smart_hire.document.service.DocumentAnalysisClient;
 import com.smart_hire.document.service.DocumentRecord;
 import com.smart_hire.document.service.DocumentRepository;
 import com.smart_hire.document.service.DocumentService;
@@ -17,6 +19,8 @@ import java.util.List;
 public class DocumentServiceImpl implements DocumentService {
 
     private final DocumentRepository documentRepository;
+    private final DocumentApplicationClient documentApplicationClient;
+    private final DocumentAnalysisClient documentAnalysisClient;
     private final DocumentTextExtractor documentTextExtractor;
 
     @Override
@@ -94,8 +98,9 @@ public class DocumentServiceImpl implements DocumentService {
                 existing.createdAt(),
                 Instant.now()
         );
-
-        return documentRepository.save(updated);
+        DocumentRecord saved = documentRepository.save(updated);
+        documentAnalysisClient.invalidateByDocumentId(id);
+        return saved;
     }
 
     @Override
@@ -118,13 +123,29 @@ public class DocumentServiceImpl implements DocumentService {
                 existing.createdAt(),
                 Instant.now()
         );
-
-        return documentRepository.save(updated);
+        DocumentRecord saved = documentRepository.save(updated);
+        documentAnalysisClient.invalidateByDocumentId(id);
+        return saved;
     }
 
     @Override
     public void deleteDocument(String id) {
-        documentRepository.deleteById(id);
+        DocumentRecord existing = getDocumentById(id);
+        String nextStatus = documentApplicationClient.hasActiveApplications(id) ? "MARKED_FOR_DELETION" : "DELETED";
+        DocumentRecord updated = new DocumentRecord(
+                existing.id(),
+                existing.ownerId(),
+                existing.type(),
+                existing.title(),
+                existing.fileName(),
+                existing.rawTextContent(),
+                existing.fileContent(),
+                nextStatus,
+                existing.createdAt(),
+                Instant.now()
+        );
+        documentRepository.save(updated);
+        documentAnalysisClient.invalidateByDocumentId(id);
     }
 
     private DocumentRecord getDocumentById(String id) {

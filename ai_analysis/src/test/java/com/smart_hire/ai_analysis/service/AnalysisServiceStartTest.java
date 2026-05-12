@@ -28,11 +28,30 @@ class AnalysisServiceStartTest {
                         "Good backend experience but limited cloud exposure"
                 )
         );
+        AnalysisJobClient jobClient = jobId -> new AnalysisJobClient.JobSnapshot(
+                jobId,
+                "Senior Java Developer",
+                "Need strong backend engineers with cloud experience",
+                "OPEN"
+        );
+        AnalysisApplicationClient applicationClient = applicationId -> switch (applicationId.intValue()) {
+            case 101 -> new AnalysisApplicationClient.ApplicationDetail(101L, 1L, 501L, "cv-101", "APPLIED");
+            case 102 -> new AnalysisApplicationClient.ApplicationDetail(102L, 1L, 502L, "cv-102", "APPLIED");
+            default -> throw new AnalysisReferenceNotFoundException("Application not found: " + applicationId);
+        };
+        DocumentTextClient documentTextClient = documentId -> "Sample CV text";
 
-        AnalysisService service = new AnalysisServiceImpl(repository, scoringEngine, Instant::now);
+        AnalysisService service = new AnalysisServiceImpl(
+                repository,
+                scoringEngine,
+                jobClient,
+                applicationClient,
+                documentTextClient,
+                Instant::now
+        );
 
         StartAnalysisCommand command = new StartAnalysisCommand(
-                "job-1",
+                "1",
                 "Senior Java Developer",
                 List.of(
                         new ApplicationSnapshot(101L, 501L, "cv-101", "Senior Java CV"),
@@ -45,7 +64,7 @@ class AnalysisServiceStartTest {
         AnalysisResult result = service.startAnalysis(command);
 
         assertNotNull(result.analysisId());
-        assertEquals("job-1", result.jobId());
+        assertEquals("1", result.jobId());
         assertEquals(List.of(101L, 102L), result.applicationIds());
         assertEquals("COMPLETED", result.status());
         assertEquals(91.5, result.applicationScores().get(101L));

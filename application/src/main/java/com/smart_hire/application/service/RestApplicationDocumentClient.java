@@ -28,7 +28,7 @@ public class RestApplicationDocumentClient implements ApplicationDocumentClient 
             if (payload == null) {
                 throw new InvalidCvDocumentException("CV document metadata is missing: " + documentId);
             }
-            return new DocumentMetadata(payload.id(), payload.ownerId(), payload.type(), payload.title());
+            return new DocumentMetadata(payload.id(), payload.ownerId(), payload.type(), payload.title(), payload.status());
         }
         catch (RestClientResponseException exception) {
             if (exception.getStatusCode() == HttpStatus.NOT_FOUND) {
@@ -62,7 +62,8 @@ public class RestApplicationDocumentClient implements ApplicationDocumentClient 
             String id,
             String ownerId,
             String type,
-            String title
+            String title,
+            String status
     ) {
     }
 

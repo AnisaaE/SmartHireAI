@@ -1,7 +1,9 @@
 package com.smart_hire.application.controller;
 
 import com.smart_hire.application.dto.ApplicationDetailResponse;
+import com.smart_hire.application.dto.ApplicationDependencyStatusResponse;
 import com.smart_hire.application.dto.ApplicationSummaryResponse;
+import com.smart_hire.application.dto.ActiveDocumentDependencyStatusResponse;
 import com.smart_hire.application.dto.CreateApplicationRequest;
 import com.smart_hire.application.dto.UpdateApplicationRequest;
 import com.smart_hire.application.dto.UpdateApplicationStatusRequest;
@@ -44,9 +46,19 @@ public class ApplicationController {
         return ResponseEntity.ok(applicationService.getApplicationsByJobId(jobId));
     }
 
+    @GetMapping(ApplicationApiPaths.APPLICATIONS_EXIST_BY_JOB_PATH)
+    public ResponseEntity<ApplicationDependencyStatusResponse> hasApplicationsByJobId(@PathVariable Long jobId) {
+        return ResponseEntity.ok(new ApplicationDependencyStatusResponse(applicationService.hasApplicationsByJobId(jobId)));
+    }
+
     @GetMapping(ApplicationApiPaths.APPLICATIONS_BY_CANDIDATE_PATH)
     public ResponseEntity<List<ApplicationSummaryResponse>> getApplicationsByCandidateId(@PathVariable Long candidateId) {
         return ResponseEntity.ok(applicationService.getApplicationsByCandidateId(candidateId));
+    }
+
+    @GetMapping(ApplicationApiPaths.ACTIVE_APPLICATIONS_EXIST_BY_DOCUMENT_PATH)
+    public ResponseEntity<ActiveDocumentDependencyStatusResponse> hasActiveApplicationsByDocumentId(@PathVariable String documentId) {
+        return ResponseEntity.ok(new ActiveDocumentDependencyStatusResponse(applicationService.hasActiveApplicationsByDocumentId(documentId)));
     }
 
     @PutMapping(ApplicationApiPaths.APPLICATION_BY_ID_PATH)

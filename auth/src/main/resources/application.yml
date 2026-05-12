@@ -22,3 +22,8 @@ security:
   jwt:
     secret: ${JWT_SECRET:change-this-secret-key-before-production-change-this-secret-key}
     access-token-expiration-ms: ${JWT_ACCESS_TOKEN_EXPIRATION_MS:3600000}
+
+auth:
+  integrations:
+    job-service:
+      base-url: ${AUTH_INTEGRATIONS_JOB_SERVICE_BASE_URL:http://localhost:8084}

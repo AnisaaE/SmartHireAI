@@ -93,6 +93,16 @@ class AnalysisControllerStartAndGetApiTest {
         }
 
         @Override
+        public AnalysisResult invalidateByJobId(String jobId) {
+            return sampleResult(jobId);
+        }
+
+        @Override
+        public List<AnalysisResult> invalidateByDocumentId(String documentId) {
+            return List.of(sampleResult("job-77"));
+        }
+
+        @Override
         public AnalysisResult updateAnalysis(String analysisId, UpdateAnalysisCommand command) {
             return sampleResult("job-77");
         }

@@ -5,5 +5,6 @@ public enum AnalysisStatus {
     RUNNING,
     COMPLETED,
     FAILED,
-    CANCELLED
+    CANCELLED,
+    INVALIDATED
 }

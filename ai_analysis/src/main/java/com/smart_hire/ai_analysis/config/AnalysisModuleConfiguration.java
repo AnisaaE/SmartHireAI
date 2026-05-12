@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smart_hire.ai_analysis.service.AnalysisRepository;
 import com.smart_hire.ai_analysis.service.AnalysisScoringEngine;
 import com.smart_hire.ai_analysis.service.AnalysisService;
+import com.smart_hire.ai_analysis.service.AnalysisApplicationClient;
+import com.smart_hire.ai_analysis.service.AnalysisJobClient;
 import com.smart_hire.ai_analysis.service.AnalysisServiceImpl;
 import com.smart_hire.ai_analysis.service.DocumentTextClient;
 import com.smart_hire.ai_analysis.service.HeuristicAnalysisScoringEngine;
@@ -12,6 +14,8 @@ import com.smart_hire.ai_analysis.service.LlmAnalysisResponseParser;
 import com.smart_hire.ai_analysis.service.LlmAnalysisScoringEngine;
 import com.smart_hire.ai_analysis.service.NoopDocumentTextClient;
 import com.smart_hire.ai_analysis.service.RedisAnalysisRepository;
+import com.smart_hire.ai_analysis.service.RestAnalysisApplicationClient;
+import com.smart_hire.ai_analysis.service.RestAnalysisJobClient;
 import com.smart_hire.ai_analysis.service.RestDocumentTextClient;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
@@ -19,6 +23,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.web.client.RestClient;
 
 import java.time.Instant;
 
@@ -63,6 +68,16 @@ public class AnalysisModuleConfiguration {
     }
 
     @Bean
+    AnalysisJobClient analysisJobClient(AnalysisRuntimeProperties properties) {
+        return new RestAnalysisJobClient(RestClient.builder(), properties.jobServiceBaseUrl());
+    }
+
+    @Bean
+    AnalysisApplicationClient analysisApplicationClient(AnalysisRuntimeProperties properties) {
+        return new RestAnalysisApplicationClient(RestClient.builder(), properties.applicationServiceBaseUrl());
+    }
+
+    @Bean
     LlmAnalysisResponseParser llmAnalysisResponseParser(ObjectMapper objectMapper) {
         return new LlmAnalysisResponseParser(objectMapper);
     }
@@ -91,7 +106,20 @@ public class AnalysisModuleConfiguration {
     }
 
     @Bean
-    AnalysisService analysisService(AnalysisRepository repository, AnalysisScoringEngine scoringEngine) {
-        return new AnalysisServiceImpl(repository, scoringEngine, Instant::now);
+    AnalysisService analysisService(
+            AnalysisRepository repository,
+            AnalysisScoringEngine scoringEngine,
+            AnalysisJobClient analysisJobClient,
+            AnalysisApplicationClient analysisApplicationClient,
+            DocumentTextClient documentTextClient
+    ) {
+        return new AnalysisServiceImpl(
+                repository,
+                scoringEngine,
+                analysisJobClient,
+                analysisApplicationClient,
+                documentTextClient,
+                Instant::now
+        );
     }
 }

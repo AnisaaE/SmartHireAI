@@ -12,6 +12,4 @@ public interface DocumentRepository {
     List<DocumentRecord> findByOwnerId(String ownerId);
 
     Optional<DocumentRecord> findActiveCv(String ownerId);
-
-    void deleteById(String id);
 }

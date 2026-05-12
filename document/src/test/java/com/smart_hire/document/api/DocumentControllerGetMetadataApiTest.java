@@ -51,6 +51,7 @@ class DocumentControllerGetMetadataApiTest {
                 .andExpect(jsonPath("$.id").value("doc-1"))
                 .andExpect(jsonPath("$.ownerId").value("candidate-1"))
                 .andExpect(jsonPath("$.type").value("CV"))
-                .andExpect(jsonPath("$.title").value("Java Developer CV"));
+                .andExpect(jsonPath("$.title").value("Java Developer CV"))
+                .andExpect(jsonPath("$.status").value("ACTIVE"));
     }
 }

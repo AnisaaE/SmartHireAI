@@ -29,6 +29,11 @@ public class InMemoryAnalysisRepository implements AnalysisRepository {
     }
 
     @Override
+    public java.util.List<AnalysisResult> findAll() {
+        return storage.values().stream().toList();
+    }
+
+    @Override
     public void saveCommand(String analysisId, StartAnalysisCommand command) {
         commands.put(analysisId, command);
     }

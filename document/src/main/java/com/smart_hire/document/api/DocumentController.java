@@ -88,6 +88,6 @@ public class DocumentController {
     }
 
     private DocumentMetadataResponse toMetadataResponse(DocumentRecord document) {
-        return new DocumentMetadataResponse(document.id(), document.ownerId(), document.type(), document.title());
+        return new DocumentMetadataResponse(document.id(), document.ownerId(), document.type(), document.title(), document.status());
     }
 }

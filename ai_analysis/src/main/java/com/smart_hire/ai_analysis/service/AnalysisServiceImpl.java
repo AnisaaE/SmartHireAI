@@ -4,7 +4,9 @@ import java.time.Instant;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.UUID;
 
@@ -12,22 +14,32 @@ public class AnalysisServiceImpl implements AnalysisService {
 
     private final AnalysisRepository analysisRepository;
     private final AnalysisScoringEngine scoringEngine;
+    private final AnalysisJobClient jobClient;
+    private final AnalysisApplicationClient applicationClient;
+    private final DocumentTextClient documentTextClient;
     private final Supplier<Instant> nowSupplier;
 
     public AnalysisServiceImpl(
             AnalysisRepository analysisRepository,
             AnalysisScoringEngine scoringEngine,
+            AnalysisJobClient jobClient,
+            AnalysisApplicationClient applicationClient,
+            DocumentTextClient documentTextClient,
             Supplier<Instant> nowSupplier
     ) {
         this.analysisRepository = analysisRepository;
         this.scoringEngine = scoringEngine;
+        this.jobClient = jobClient;
+        this.applicationClient = applicationClient;
+        this.documentTextClient = documentTextClient;
         this.nowSupplier = nowSupplier;
     }
 
     @Override
     public AnalysisResult startAnalysis(StartAnalysisCommand command) {
-        AnalysisResult result = createResult(UUID.randomUUID().toString(), command, nowSupplier.get());
-        analysisRepository.saveCommand(result.analysisId(), command);
+        StartAnalysisCommand validatedCommand = validateAndHydrate(command);
+        AnalysisResult result = createResult(UUID.randomUUID().toString(), validatedCommand, nowSupplier.get());
+        analysisRepository.saveCommand(result.analysisId(), validatedCommand);
         return analysisRepository.save(result);
     }
 
@@ -37,7 +49,7 @@ public class AnalysisServiceImpl implements AnalysisService {
         if (result == null) {
             throw new AnalysisNotFoundException(analysisId);
         }
-        return result;
+        return refreshInvalidationState(result);
     }
 
     @Override
@@ -46,12 +58,35 @@ public class AnalysisServiceImpl implements AnalysisService {
         if (result == null) {
             throw new AnalysisNotFoundException(jobId);
         }
-        return result;
+        return refreshInvalidationState(result);
     }
 
     @Override
     public List<CandidateAnalysis> getCandidates(String analysisId) {
         return getAnalysis(analysisId).toCandidateAnalyses();
+    }
+
+    @Override
+    public AnalysisResult invalidateByJobId(String jobId) {
+        AnalysisResult result = analysisRepository.findByJobId(jobId);
+        if (result == null) {
+            throw new AnalysisNotFoundException(jobId);
+        }
+        return invalidate(result, "Job content changed for " + jobId);
+    }
+
+    @Override
+    public List<AnalysisResult> invalidateByDocumentId(String documentId) {
+        List<AnalysisResult> matches = analysisRepository.findAll().stream()
+                .filter(result -> {
+                    StartAnalysisCommand command = analysisRepository.findCommandById(result.analysisId());
+                    return command != null && command.applications().stream()
+                            .anyMatch(application -> documentId.equals(application.cvDocumentId()));
+                })
+                .toList();
+        return matches.stream()
+                .map(result -> invalidate(result, "Document content changed for " + documentId))
+                .toList();
     }
 
     @Override
@@ -65,7 +100,8 @@ public class AnalysisServiceImpl implements AnalysisService {
                 command.configuration(),
                 existingCommand.jobDescription()
         );
-        analysisRepository.saveCommand(analysisId, updatedCommand);
+        StartAnalysisCommand validatedCommand = validateAndHydrate(updatedCommand);
+        analysisRepository.saveCommand(analysisId, validatedCommand);
         AnalysisResult updated = copyResult(
                 existing,
                 existing.analysisId(),
@@ -79,7 +115,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Override
     public AnalysisResult restartAnalysis(String analysisId) {
         getAnalysis(analysisId);
-        StartAnalysisCommand command = getStoredCommand(analysisId);
+        StartAnalysisCommand command = validateAndHydrate(getStoredCommand(analysisId));
         Instant now = nowSupplier.get();
         String restartedAnalysisId = analysisId + "-restarted";
         AnalysisResult restarted = createResult(restartedAnalysisId, command, now);
@@ -104,6 +140,84 @@ public class AnalysisServiceImpl implements AnalysisService {
     public void deleteAnalysis(String analysisId) {
         getAnalysis(analysisId);
         analysisRepository.deleteById(analysisId);
+    }
+
+    private StartAnalysisCommand validateAndHydrate(StartAnalysisCommand command) {
+        AnalysisJobClient.JobSnapshot job = jobClient.getJob(command.jobId());
+        List<ApplicationSnapshot> validatedApplications = command.applications().stream()
+                .map(application -> validateApplication(job.id(), application))
+                .toList();
+        return new StartAnalysisCommand(
+                job.id(),
+                job.title(),
+                validatedApplications,
+                command.configuration(),
+                job.description()
+        );
+    }
+
+    private ApplicationSnapshot validateApplication(String jobId, ApplicationSnapshot requestedApplication) {
+        AnalysisApplicationClient.ApplicationDetail application = applicationClient.getApplication(requestedApplication.applicationId());
+        if (!Objects.equals(String.valueOf(application.jobId()), jobId)) {
+            throw new AnalysisReferenceValidationException(
+                    "Application %d is not linked to job %s".formatted(requestedApplication.applicationId(), jobId)
+            );
+        }
+        if (!Objects.equals(application.candidateId(), requestedApplication.candidateId())) {
+            throw new AnalysisReferenceValidationException(
+                    "Application %d is not linked to candidate %d".formatted(
+                            requestedApplication.applicationId(),
+                            requestedApplication.candidateId()
+                    )
+            );
+        }
+        if (!Objects.equals(application.cvDocumentId(), requestedApplication.cvDocumentId())) {
+            throw new AnalysisReferenceValidationException(
+                    "Application %d CV reference does not match document %s".formatted(
+                            requestedApplication.applicationId(),
+                            requestedApplication.cvDocumentId()
+                    )
+            );
+        }
+        String documentText = documentTextClient.getDocumentText(application.cvDocumentId());
+        if (documentText == null || documentText.isBlank()) {
+            throw new AnalysisReferenceValidationException("CV text is not available for document: " + application.cvDocumentId());
+        }
+        return requestedApplication;
+    }
+
+    private AnalysisResult refreshInvalidationState(AnalysisResult result) {
+        if (AnalysisStatus.INVALIDATED.name().equals(result.status())) {
+            return result;
+        }
+
+        try {
+            StartAnalysisCommand storedCommand = getStoredCommand(result.analysisId());
+            StartAnalysisCommand validatedCommand = validateAndHydrate(storedCommand);
+            if (!Objects.equals(storedCommand.jobTitle(), validatedCommand.jobTitle())
+                    || !Objects.equals(storedCommand.jobDescription(), validatedCommand.jobDescription())) {
+                return invalidate(result, "Job content changed for " + result.jobId());
+            }
+            return result;
+        }
+        catch (AnalysisReferenceNotFoundException | AnalysisReferenceValidationException exception) {
+            return invalidate(result, exception.getMessage());
+        }
+    }
+
+    private AnalysisResult invalidate(AnalysisResult existing, String reason) {
+        AnalysisResult invalidated = new AnalysisResult(
+                existing.analysisId(),
+                existing.jobId(),
+                existing.applicationIds(),
+                existing.applicationScores(),
+                existing.applicationReasoning(),
+                AnalysisStatus.INVALIDATED.name(),
+                "Analysis invalidated: " + reason,
+                existing.createdAt(),
+                nowSupplier.get()
+        );
+        return analysisRepository.save(invalidated);
     }
 
     private AnalysisResult createResult(String analysisId, StartAnalysisCommand command, Instant now) {
@@ -174,7 +288,11 @@ public class AnalysisServiceImpl implements AnalysisService {
         }
 
         CandidateAnalysis topCandidate = rankedCandidates.getFirst();
-        return "Top candidate: application %d with score %.2f"
-                .formatted(topCandidate.applicationId(), topCandidate.score());
+        return String.format(
+                Locale.ROOT,
+                "Top candidate: application %d with score %.2f",
+                topCandidate.applicationId(),
+                topCandidate.score()
+        );
     }
 }

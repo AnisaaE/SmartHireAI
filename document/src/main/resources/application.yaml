@@ -3,7 +3,14 @@ spring:
     name: document
   data:
     mongodb:
-      uri: ${MONGODB_URI:mongodb://localhost:27017/smarthire_document}
+      uri: ${SPRING_DATA_MONGODB_URI:${MONGODB_URI:mongodb://localhost:27017/smarthire_document}}
+
+document:
+  integrations:
+    application-service:
+      base-url: ${DOCUMENT_INTEGRATIONS_APPLICATION_SERVICE_BASE_URL:http://localhost:8085}
+    ai-analysis-service:
+      base-url: ${DOCUMENT_INTEGRATIONS_AI_ANALYSIS_SERVICE_BASE_URL:http://localhost:8083}
 
 server:
   port: 8082

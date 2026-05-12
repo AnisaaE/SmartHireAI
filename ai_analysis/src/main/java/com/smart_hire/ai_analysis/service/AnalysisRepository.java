@@ -8,6 +8,8 @@ public interface AnalysisRepository {
 
     AnalysisResult findByJobId(String jobId);
 
+    java.util.List<AnalysisResult> findAll();
+
     void saveCommand(String analysisId, StartAnalysisCommand command);
 
     StartAnalysisCommand findCommandById(String analysisId);

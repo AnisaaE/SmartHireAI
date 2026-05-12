@@ -72,6 +72,16 @@ class AnalysisControllerStatusAndDeleteApiTest {
         }
 
         @Override
+        public AnalysisResult invalidateByJobId(String jobId) {
+            return sampleResult("INVALIDATED");
+        }
+
+        @Override
+        public List<AnalysisResult> invalidateByDocumentId(String documentId) {
+            return List.of(sampleResult("INVALIDATED"));
+        }
+
+        @Override
         public AnalysisResult updateAnalysis(String analysisId, UpdateAnalysisCommand command) {
             return sampleResult("COMPLETED");
         }

@@ -20,6 +20,8 @@ server:
 
 application:
   integrations:
+    auth-service:
+      base-url: ${APPLICATION_INTEGRATIONS_AUTH_SERVICE_BASE_URL:http://localhost:8081}
     document-service:
       base-url: ${APPLICATION_INTEGRATIONS_DOCUMENT_SERVICE_BASE_URL:http://localhost:8082}
     job-service:

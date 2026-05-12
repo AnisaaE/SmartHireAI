@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 public class RedisAnalysisRepository implements AnalysisRepository {
 
@@ -41,6 +44,18 @@ public class RedisAnalysisRepository implements AnalysisRepository {
     public AnalysisResult findByJobId(String jobId) {
         String analysisId = redisTemplate.opsForValue().get(jobKey(jobId));
         return analysisId == null ? null : findById(analysisId);
+    }
+
+    @Override
+    public List<AnalysisResult> findAll() {
+        Set<String> keys = redisTemplate.keys(keyPrefix + ":result:*");
+        if (keys == null || keys.isEmpty()) {
+            return List.of();
+        }
+        return keys.stream()
+                .map(key -> readJson(key, AnalysisResult.class))
+                .filter(Objects::nonNull)
+                .toList();
     }
 
     @Override

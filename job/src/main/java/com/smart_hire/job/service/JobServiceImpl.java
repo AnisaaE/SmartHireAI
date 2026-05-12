@@ -18,13 +18,25 @@ public class JobServiceImpl implements JobService {
     private static final Set<String> ALLOWED_STATUSES = Set.of("DRAFT", "OPEN", "CLOSED", "ARCHIVED");
 
     private final JobRepository jobRepository;
+    private final JobAuthClient jobAuthClient;
+    private final JobApplicationClient jobApplicationClient;
+    private final JobAnalysisClient jobAnalysisClient;
 
-    public JobServiceImpl(JobRepository jobRepository) {
+    public JobServiceImpl(
+            JobRepository jobRepository,
+            JobAuthClient jobAuthClient,
+            JobApplicationClient jobApplicationClient,
+            JobAnalysisClient jobAnalysisClient
+    ) {
         this.jobRepository = jobRepository;
+        this.jobAuthClient = jobAuthClient;
+        this.jobApplicationClient = jobApplicationClient;
+        this.jobAnalysisClient = jobAnalysisClient;
     }
 
     @Override
     public void createJob(CreateJobRequest request) {
+        validateRecruiter(request.recruiterId());
         Instant now = Instant.now();
 
         JobEntity entity = new JobEntity();
@@ -38,6 +50,16 @@ public class JobServiceImpl implements JobService {
         entity.setUpdatedAt(now);
 
         jobRepository.save(entity);
+    }
+
+    private void validateRecruiter(Long recruiterId) {
+        JobAuthClient.RecruiterSnapshot recruiter = jobAuthClient.getRecruiter(recruiterId);
+        if (!recruiter.active()) {
+            throw new InvalidRecruiterException("Recruiter is inactive: " + recruiterId);
+        }
+        if (!"RECRUITER".equalsIgnoreCase(recruiter.role())) {
+            throw new InvalidRecruiterException("User is not a recruiter: " + recruiterId);
+        }
     }
 
     @Override
@@ -62,12 +84,17 @@ public class JobServiceImpl implements JobService {
     @Override
     public JobDetailResponse updateJob(Long id, UpdateJobRequest request) {
         JobEntity entity = getExistingJob(id);
+        boolean descriptionChanged = !entity.getDescription().equals(request.description());
         entity.setTitle(request.title());
         entity.setDescription(request.description());
         entity.setLocation(request.location());
         entity.setEmploymentType(request.employmentType());
         entity.setUpdatedAt(Instant.now());
-        return toDetailResponse(jobRepository.save(entity));
+        JobEntity updated = jobRepository.save(entity);
+        if (descriptionChanged) {
+            jobAnalysisClient.invalidateByJobId(updated.getId());
+        }
+        return toDetailResponse(updated);
     }
 
     @Override
@@ -80,7 +107,17 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public void deleteJobById(Long id) {
-        jobRepository.delete(getExistingJob(id));
+        JobEntity entity = getExistingJob(id);
+        if (!jobApplicationClient.hasApplications(id)) {
+            jobRepository.delete(entity);
+            return;
+        }
+        if (!"CLOSED".equalsIgnoreCase(entity.getStatus()) && !"ARCHIVED".equalsIgnoreCase(entity.getStatus())) {
+            throw new JobDeletionConflictException(id);
+        }
+        entity.setStatus("ARCHIVED");
+        entity.setUpdatedAt(Instant.now());
+        jobRepository.save(entity);
     }
 
     private JobEntity getExistingJob(Long id) {

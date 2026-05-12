@@ -16,7 +16,11 @@ public interface ApplicationService {
 
     List<ApplicationSummaryResponse> getApplicationsByJobId(Long jobId);
 
+    boolean hasApplicationsByJobId(Long jobId);
+
     List<ApplicationSummaryResponse> getApplicationsByCandidateId(Long candidateId);
+
+    boolean hasActiveApplicationsByDocumentId(String documentId);
 
     ApplicationDetailResponse updateApplication(Long id, UpdateApplicationRequest request);
 
