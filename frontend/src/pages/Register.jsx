@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Mail, Lock, User, Zap } from 'lucide-react';
+import { Mail, Lock, User, Zap, Sun, Moon } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 import toast from 'react-hot-toast';
@@ -12,12 +13,13 @@ export default function Register() {
   const [errors, setErrors] = useState({});
   const { register, loading } = useAuth();
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
   const validate = () => {
     const e = {};
     if (!form.username || form.username.length < 3) e.username = 'Username must be at least 3 characters';
     if (!form.email || !/\S+@\S+\.\S+/.test(form.email)) e.email = 'Valid email is required';
-    if (!form.password || form.password.length < 6) e.password = 'Password must be at least 6 characters';
+    if (!form.password || form.password.length < 8) e.password = 'Password must be at least 8 characters';
     if (form.password !== form.confirmPassword) e.confirmPassword = 'Passwords do not match';
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -43,6 +45,9 @@ export default function Register() {
 
   return (
     <div className="auth-page">
+      <button className="auth-theme-toggle" onClick={toggleTheme} title="Toggle theme">
+        {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+      </button>
       <div className="auth-bg-effects">
         <div className="auth-orb auth-orb-1" />
         <div className="auth-orb auth-orb-2" />
@@ -59,7 +64,7 @@ export default function Register() {
             value={form.username} onChange={handleChange('username')} error={errors.username} />
           <Input label="Email" type="email" placeholder="you@example.com" icon={Mail}
             value={form.email} onChange={handleChange('email')} error={errors.email} />
-          <Input label="Password" type="password" placeholder="Min. 6 characters" icon={Lock}
+          <Input label="Password" type="password" placeholder="Min. 8 characters" icon={Lock}
             value={form.password} onChange={handleChange('password')} error={errors.password} />
           <Input label="Confirm Password" type="password" placeholder="Repeat password" icon={Lock}
             value={form.confirmPassword} onChange={handleChange('confirmPassword')} error={errors.confirmPassword} />

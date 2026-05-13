@@ -1,21 +1,23 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Mail, Lock, Zap } from 'lucide-react';
+import { User, Lock, Zap, Sun, Moon } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 import toast from 'react-hot-toast';
 import './Auth.css';
 
 export default function Login() {
-  const [form, setForm] = useState({ email: '', password: '' });
+  const [form, setForm] = useState({ username: '', password: '' });
   const [errors, setErrors] = useState({});
   const { login, loading } = useAuth();
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
   const validate = () => {
     const e = {};
-    if (!form.email) e.email = 'Email is required';
+    if (!form.username) e.username = 'Username is required';
     if (!form.password) e.password = 'Password is required';
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -40,6 +42,9 @@ export default function Login() {
 
   return (
     <div className="auth-page">
+      <button className="auth-theme-toggle" onClick={toggleTheme} title="Toggle theme">
+        {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+      </button>
       <div className="auth-bg-effects">
         <div className="auth-orb auth-orb-1" />
         <div className="auth-orb auth-orb-2" />
@@ -52,8 +57,8 @@ export default function Login() {
           <p className="auth-subtitle">Sign in to SmartHireAI to continue</p>
         </div>
         <form onSubmit={handleSubmit} className="auth-form">
-          <Input label="Email" type="email" placeholder="you@example.com" icon={Mail}
-            value={form.email} onChange={handleChange('email')} error={errors.email} />
+          <Input label="Username" placeholder="Enter your username" icon={User}
+            value={form.username} onChange={handleChange('username')} error={errors.username} />
           <Input label="Password" type="password" placeholder="Enter your password" icon={Lock}
             value={form.password} onChange={handleChange('password')} error={errors.password} />
           <Button type="submit" fullWidth loading={loading} size="lg">Sign In</Button>
