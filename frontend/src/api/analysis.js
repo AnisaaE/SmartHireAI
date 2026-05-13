@@ -1,7 +1,7 @@
 import API from './client';
 
 export const analysisAPI = {
-  start: (jobId) => API.post('/api/analysis/start', { jobId }),
+  start: (payload) => API.post('/api/analysis/start', payload),
   getById: (analysisId) => API.get(`/api/analysis/${analysisId}`),
   getReport: (jobId) => API.get(`/api/analysis/report/${jobId}`),
   getCandidates: (analysisId) => API.get(`/api/analysis/${analysisId}/candidates`),

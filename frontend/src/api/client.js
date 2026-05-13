@@ -2,12 +2,16 @@ import axios from 'axios';
 
 const API = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL ?? '',
-  headers: { 'Content-Type': 'application/json' },
   timeout: 30000,
 });
 
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem('smarthire_token');
+  if (config.data instanceof FormData) {
+    delete config.headers['Content-Type'];
+  } else if (!config.headers['Content-Type']) {
+    config.headers['Content-Type'] = 'application/json';
+  }
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

@@ -26,7 +26,8 @@ services:
     healthcheck:
       test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 10s
-      timeout: 5s
+      timeout: 30s
+      start_period: 20s
       retries: 5
 
   redis:
@@ -56,7 +57,7 @@ services:
       SERVER_PORT: 8081
       AUTH_INTEGRATIONS_JOB_SERVICE_BASE_URL: http://job-service:8084
     ports:
-      - "8081:8081"
+      - "18081:8081"
     depends_on:
       postgres:
         condition: service_healthy
@@ -66,11 +67,11 @@ services:
       context: ./document
     container_name: smarthire-document-service
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/smarthire_document
+      SPRING_MONGODB_URI: mongodb://mongo:27017/smarthire_document
       DOCUMENT_INTEGRATIONS_APPLICATION_SERVICE_BASE_URL: http://application-service:8085
       DOCUMENT_INTEGRATIONS_AI_ANALYSIS_SERVICE_BASE_URL: http://ai-analysis-service:8083
     ports:
-      - "8082:8082"
+      - "18082:8082"
     depends_on:
       mongo:
         condition: service_healthy
@@ -85,7 +86,7 @@ services:
       REDIS_PORT: 6379
       OLLAMA_BASE_URL: http://host.docker.internal:11434
       OLLAMA_MODEL: llama3.2
-      ANALYSIS_ENGINE: llm
+      ANALYSIS_ENGINE: heuristic
       ANALYSIS_STORAGE: redis
       JOB_SERVICE_BASE_URL: http://job-service:8084
       APPLICATION_SERVICE_BASE_URL: http://application-service:8085
@@ -93,7 +94,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
-      - "8083:8083"
+      - "18083:8083"
     depends_on:
       redis:
         condition: service_healthy
@@ -102,6 +103,7 @@ services:
     build:
       context: ./job
     container_name: smarthire-job-service
+    restart: unless-stopped
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/smarthire_jobs
       SPRING_DATASOURCE_USERNAME: postgres
@@ -112,7 +114,7 @@ services:
       JOB_INTEGRATIONS_APPLICATION_SERVICE_BASE_URL: http://application-service:8085
       JOB_INTEGRATIONS_AUTH_SERVICE_BASE_URL: http://auth-service:8081
     ports:
-      - "8084:8084"
+      - "18084:8084"
     depends_on:
       postgres:
         condition: service_healthy
@@ -135,7 +137,7 @@ services:
       APPLICATION_INTEGRATIONS_DOCUMENT_SERVICE_BASE_URL: http://document-service:8082
       APPLICATION_INTEGRATIONS_JOB_SERVICE_BASE_URL: http://job-service:8084
     ports:
-      - "8085:8085"
+      - "18085:8085"
     depends_on:
       postgres:
         condition: service_healthy

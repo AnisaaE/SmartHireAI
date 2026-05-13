@@ -4,12 +4,12 @@ export const documentsAPI = {
   upload: (file, ownerId, type, title) => {
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('ownerId', ownerId);
-    formData.append('type', type);
-    if (title) formData.append('title', title);
-    return API.post('/api/documents/upload', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+    const params = new URLSearchParams({
+      ownerId: String(ownerId),
+      type: String(type),
+      title: title || file.name,
     });
+    return API.post(`/api/documents/upload?${params.toString()}`, formData);
   },
   getById: (id) => API.get(`/api/documents/${id}`),
   getByOwner: (userId) => API.get(`/api/documents/owner/${userId}`),

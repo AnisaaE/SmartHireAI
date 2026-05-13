@@ -13,6 +13,15 @@ import toast from 'react-hot-toast';
 import '../Dashboard.css';
 
 const statusVariant = (s) => ({ OPEN:'success', DRAFT:'default', CLOSED:'danger', ARCHIVED:'warning', APPLIED:'info', UNDER_REVIEW:'warning', SHORTLISTED:'accent', REJECTED:'danger', HIRED:'success', WITHDRAWN:'default' }[s] || 'default');
+const defaultAnalysisConfiguration = {
+  scoringWeights: {
+    skills: 0.4,
+    experience: 0.35,
+    education: 0.15,
+    keywords: 0.1,
+  },
+  evaluationCriteria: ['skills', 'experience', 'education', 'keywords'],
+};
 
 export default function JobDetail() {
   const { id } = useParams();
@@ -55,7 +64,31 @@ export default function JobDetail() {
 
   const handleStartAnalysis = async () => {
     setAnalysisLoading(true);
-    try { const { data } = await analysisAPI.start(id); toast.success('Analysis started!'); setReport(data); } catch (e) { toast.error(e.response?.data?.message || 'Analysis failed'); }
+    try {
+      const applicationDetails = await Promise.all(
+        apps.map(async (app) => {
+          const { data } = await applicationsAPI.getById(app.id);
+          return {
+            applicationId: data.id,
+            candidateId: data.candidateId,
+            cvDocumentId: data.cvDocumentId,
+            candidateLabel: `Candidate #${data.candidateId}`,
+          };
+        })
+      );
+
+      const payload = {
+        jobId: String(id),
+        jobTitle: job.title || '',
+        jobDescription: job.description || '',
+        applications: applicationDetails,
+        configuration: defaultAnalysisConfiguration,
+      };
+
+      const { data } = await analysisAPI.start(payload);
+      toast.success('Analysis started!');
+      setReport(data);
+    } catch (e) { toast.error(e.response?.data?.message || 'Analysis failed'); }
     setAnalysisLoading(false);
   };
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { analysisAPI } from '../../api/analysis';
+import { applicationsAPI } from '../../api/applications';
 import { jobsAPI } from '../../api/jobs';
 import { Brain, Play, RefreshCw, Trash2 } from 'lucide-react';
 import Button from '../../components/common/Button';
@@ -11,6 +12,15 @@ import toast from 'react-hot-toast';
 import '../Dashboard.css';
 
 const sv = (s) => ({ QUEUED:'info', RUNNING:'warning', COMPLETED:'success', FAILED:'danger', CANCELLED:'default' }[s] || 'default');
+const defaultAnalysisConfiguration = {
+  scoringWeights: {
+    skills: 0.4,
+    experience: 0.35,
+    education: 0.15,
+    keywords: 0.1,
+  },
+  evaluationCriteria: ['skills', 'experience', 'education', 'keywords'],
+};
 
 export default function RecruiterAnalysis() {
   const { user } = useAuth();
@@ -30,7 +40,32 @@ export default function RecruiterAnalysis() {
   const start = async () => {
     if (!selectedJob) return toast.error('Select a job first');
     setStarting(true);
-    try { const { data } = await analysisAPI.start(selectedJob); setReport(data); toast.success('Analysis started!'); } catch (e) { toast.error(e.response?.data?.message || 'Failed'); }
+    try {
+      const selectedJobRecord = jobs.find(j => String(j.id) === String(selectedJob));
+      const { data: jobDetail } = await jobsAPI.getById(selectedJob);
+      const { data: applications } = await applicationsAPI.getByJob(selectedJob);
+      const applicationDetails = await Promise.all(
+        (applications || []).map(async (app) => {
+          const { data: detail } = await applicationsAPI.getById(app.id);
+          return {
+            applicationId: detail.id,
+            candidateId: detail.candidateId,
+            cvDocumentId: detail.cvDocumentId,
+            candidateLabel: `Candidate #${detail.candidateId}`,
+          };
+        })
+      );
+      const payload = {
+        jobId: String(selectedJob),
+        jobTitle: selectedJobRecord?.title || jobDetail?.title || '',
+        jobDescription: jobDetail?.description || '',
+        applications: applicationDetails,
+        configuration: defaultAnalysisConfiguration,
+      };
+      const { data } = await analysisAPI.start(payload);
+      setReport(data);
+      toast.success('Analysis started!');
+    } catch (e) { toast.error(e.response?.data?.message || 'Failed'); }
     setStarting(false);
   };
 
