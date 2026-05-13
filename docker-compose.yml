@@ -1,19 +1,43 @@
-version: "3.9"
-
 services:
-  auth-db:
+  postgres:
     image: postgres:16
-    container_name: smarthire-auth-db
+    container_name: smarthire-postgres
     environment:
-      POSTGRES_DB: smarthire_auth
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
     volumes:
-      - auth_postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init/01-create-databases.sql:/docker-entrypoint-initdb.d/01-create-databases.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d smarthire_auth"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mongo:
+    image: mongo:7
+    container_name: smarthire-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: smarthire-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -23,18 +47,141 @@ services:
       context: ./auth
     container_name: smarthire-auth-service
     environment:
-      DB_URL: jdbc:postgresql://auth-db:5432/smarthire_auth
+      DB_URL: jdbc:postgresql://postgres:5432/smarthire_auth
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
       DDL_AUTO: update
       JWT_SECRET: change-this-secret-key-before-production-change-this-secret-key
       JWT_ACCESS_TOKEN_EXPIRATION_MS: 3600000
       SERVER_PORT: 8081
+      AUTH_INTEGRATIONS_JOB_SERVICE_BASE_URL: http://job-service:8084
     ports:
       - "8081:8081"
     depends_on:
-      auth-db:
+      postgres:
         condition: service_healthy
 
+  document-service:
+    build:
+      context: ./document
+    container_name: smarthire-document-service
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/smarthire_document
+      DOCUMENT_INTEGRATIONS_APPLICATION_SERVICE_BASE_URL: http://application-service:8085
+      DOCUMENT_INTEGRATIONS_AI_ANALYSIS_SERVICE_BASE_URL: http://ai-analysis-service:8083
+    ports:
+      - "8082:8082"
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  ai-analysis-service:
+    build:
+      context: ./ai_analysis
+    container_name: smarthire-ai-analysis-service
+    environment:
+      SERVER_PORT: 8083
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      OLLAMA_MODEL: llama3.2
+      ANALYSIS_ENGINE: llm
+      ANALYSIS_STORAGE: redis
+      JOB_SERVICE_BASE_URL: http://job-service:8084
+      APPLICATION_SERVICE_BASE_URL: http://application-service:8085
+      DOCUMENT_SERVICE_BASE_URL: http://document-service:8082
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "8083:8083"
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  job-service:
+    build:
+      context: ./job
+    container_name: smarthire-job-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/smarthire_jobs
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SERVER_PORT: 8084
+      JOB_INTEGRATIONS_AI_ANALYSIS_SERVICE_BASE_URL: http://ai-analysis-service:8083
+      JOB_INTEGRATIONS_APPLICATION_SERVICE_BASE_URL: http://application-service:8085
+      JOB_INTEGRATIONS_AUTH_SERVICE_BASE_URL: http://auth-service:8081
+    ports:
+      - "8084:8084"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      auth-service:
+        condition: service_started
+      ai-analysis-service:
+        condition: service_started
+
+  application-service:
+    build:
+      context: ./application
+    container_name: smarthire-application-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/smarthire_application
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SERVER_PORT: 8085
+      APPLICATION_INTEGRATIONS_AUTH_SERVICE_BASE_URL: http://auth-service:8081
+      APPLICATION_INTEGRATIONS_DOCUMENT_SERVICE_BASE_URL: http://document-service:8082
+      APPLICATION_INTEGRATIONS_JOB_SERVICE_BASE_URL: http://job-service:8084
+    ports:
+      - "8085:8085"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      auth-service:
+        condition: service_started
+      document-service:
+        condition: service_started
+      job-service:
+        condition: service_started
+
+  dispatcher-service:
+    build:
+      context: ./dispatcher
+    container_name: smarthire-dispatcher-service
+    environment:
+      SERVER_PORT: 8080
+      DISPATCHER_SERVICES_AUTH_URL: http://auth-service:8081
+      DISPATCHER_SERVICES_DOCUMENT_URL: http://document-service:8082
+      DISPATCHER_SERVICES_JOB_URL: http://job-service:8084
+      DISPATCHER_SERVICES_APPLICATION_URL: http://application-service:8085
+      DISPATCHER_SERVICES_ANALYSIS_URL: http://ai-analysis-service:8083
+    ports:
+      - "8080:8080"
+    depends_on:
+      auth-service:
+        condition: service_started
+      document-service:
+        condition: service_started
+      job-service:
+        condition: service_started
+      application-service:
+        condition: service_started
+      ai-analysis-service:
+        condition: service_started
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: smarthire-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      dispatcher-service:
+        condition: service_started
+
 volumes:
-  auth_postgres_data:
+  postgres_data:
+  mongo_data:
+  redis_data:

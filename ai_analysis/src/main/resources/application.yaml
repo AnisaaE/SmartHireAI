@@ -12,7 +12,7 @@ spring:
       base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
       chat:
         options:
-          model: ${OLLAMA_MODEL:llama3}
+          model: ${OLLAMA_MODEL:llama3.2}
           temperature: ${OLLAMA_TEMPERATURE:0.2}
 server:
   port: 8083
@@ -25,5 +25,5 @@ analysis:
   job-service-base-url: ${JOB_SERVICE_BASE_URL:http://localhost:8084}
   application-service-base-url: ${APPLICATION_SERVICE_BASE_URL:http://localhost:8085}
   document-service-base-url: ${DOCUMENT_SERVICE_BASE_URL:http://localhost:8082}
-  ollama-model: ${OLLAMA_MODEL:llama3}
+  ollama-model: ${OLLAMA_MODEL:llama3.2}
   ollama-temperature: ${OLLAMA_TEMPERATURE:0.2}

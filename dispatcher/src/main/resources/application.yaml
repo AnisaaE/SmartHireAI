@@ -1,3 +1,13 @@
 spring:
   application:
     name: dispatcher
+server:
+  port: ${SERVER_PORT:8080}
+
+dispatcher:
+  services:
+    auth-url: ${DISPATCHER_SERVICES_AUTH_URL:http://auth-service:8081}
+    document-url: ${DISPATCHER_SERVICES_DOCUMENT_URL:http://document-service:8082}
+    job-url: ${DISPATCHER_SERVICES_JOB_URL:http://job-service:8084}
+    application-url: ${DISPATCHER_SERVICES_APPLICATION_URL:http://application-service:8085}
+    analysis-url: ${DISPATCHER_SERVICES_ANALYSIS_URL:http://ai-analysis-service:8083}

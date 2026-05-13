@@ -29,7 +29,7 @@ export default function RecruiterDocuments() {
   const handleUpload = async () => {
     if (!file) return;
     setUploading(true);
-    try { await documentsAPI.upload(file, 'JOB', file.name); toast.success('Uploaded!'); setShowUpload(false); setFile(null); load(); }
+    try { await documentsAPI.upload(file, user.id, 'JOB', file.name); toast.success('Uploaded!'); setShowUpload(false); setFile(null); load(); }
     catch { toast.error('Upload failed'); }
     setUploading(false);
   };

@@ -24,12 +24,37 @@ class SecurityGuardFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-        if (request.getRequestURI().startsWith("/api/documents/")
-                && !requestAuthorizationSupport.hasBearerToken(request)) {
+        if (requiresBearerToken(request) && !requestAuthorizationSupport.hasBearerToken(request)) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private boolean requiresBearerToken(HttpServletRequest request) {
+        String uri = request.getRequestURI();
+
+        if (!uri.startsWith("/api/")) {
+            return false;
+        }
+
+        if (isPublicAuthEndpoint(uri) || isPublicJobRead(request, uri)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isPublicAuthEndpoint(String uri) {
+        return "/api/auth/register".equals(uri) || "/api/auth/login".equals(uri);
+    }
+
+    private boolean isPublicJobRead(HttpServletRequest request, String uri) {
+        if (!"GET".equalsIgnoreCase(request.getMethod())) {
+            return false;
+        }
+
+        return "/api/jobs".equals(uri) || uri.matches("^/api/jobs/[^/]+$");
     }
 }

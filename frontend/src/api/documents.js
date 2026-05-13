@@ -1,9 +1,10 @@
 import API from './client';
 
 export const documentsAPI = {
-  upload: (file, type, title) => {
+  upload: (file, ownerId, type, title) => {
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('ownerId', ownerId);
     formData.append('type', type);
     if (title) formData.append('title', title);
     return API.post('/api/documents/upload', formData, {

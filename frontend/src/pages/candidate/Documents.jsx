@@ -29,7 +29,7 @@ export default function CandidateDocuments() {
   const handleUpload = async () => {
     if (!file) return;
     setUploading(true);
-    try { await documentsAPI.upload(file, 'CV', file.name); toast.success('CV uploaded!'); setShowUpload(false); setFile(null); load(); }
+    try { await documentsAPI.upload(file, user.id, 'CV', file.name); toast.success('CV uploaded!'); setShowUpload(false); setFile(null); load(); }
     catch { toast.error('Upload failed'); }
     setUploading(false);
   };

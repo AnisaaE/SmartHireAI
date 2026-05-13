@@ -11,7 +11,7 @@ SmartHireAI is a microservices-based recruitment platform that uses local LLMs t
 | Dispatcher | Spring Cloud Gateway | - | 8080 |
 | Auth Service | Spring Security 6, JWT | PostgreSQL | 8081 |
 | Document Service | Spring AI, Apache Tika | MongoDB | 8082 |
-| AI Analysis Service | Spring AI, Ollama (Llama3/Mistral) | Redis | 8083 |
+| AI Analysis Service | Spring AI, Ollama (Llama3.2/Mistral) | Redis | 8083 |
 
 ---
 

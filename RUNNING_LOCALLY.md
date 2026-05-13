@@ -20,7 +20,7 @@ Make sure Ollama is already running locally and the model exists:
 
 ```powershell
 ollama list
-ollama pull llama3
+ollama pull llama3.2
 ```
 
 The current runtime expects Ollama on `http://localhost:11434`.
@@ -58,7 +58,7 @@ Runtime defaults:
 
 - `ANALYSIS_ENGINE=llm`
 - `ANALYSIS_STORAGE=redis`
-- `OLLAMA_MODEL=llama3`
+- `OLLAMA_MODEL=llama3.2`
 - `DOCUMENT_SERVICE_BASE_URL=http://localhost:8082`
 
 Example overrides:
@@ -66,7 +66,7 @@ Example overrides:
 ```powershell
 $env:ANALYSIS_ENGINE="llm"
 $env:ANALYSIS_STORAGE="redis"
-$env:OLLAMA_MODEL="llama3"
+$env:OLLAMA_MODEL="llama3.2"
 $env:DOCUMENT_SERVICE_BASE_URL="http://localhost:8082"
 ```
 
