@@ -4,8 +4,10 @@ import com.smart_hire.ai_analysis.config.AnalysisRuntimeProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestClientResponseException;
 
 public class RestDocumentTextClient implements DocumentTextClient {
 
@@ -34,11 +36,38 @@ public class RestDocumentTextClient implements DocumentTextClient {
 
             return payload == null || payload.rawTextContent() == null ? "" : payload.rawTextContent();
         }
+        catch (RestClientResponseException exception) {
+            if (exception.getStatusCode() == HttpStatus.NOT_FOUND) {
+                throw new AnalysisReferenceNotFoundException("Document not found: " + documentId);
+            }
+            LOGGER.warn("Falling back to empty document text for {} because document-service returned status {}: {}",
+                    documentId,
+                    exception.getStatusCode(),
+                    exception.getMessage());
+            return "";
+        }
         catch (RestClientException exception) {
             LOGGER.warn("Falling back to empty document text for {} because document-service call failed: {}",
                     documentId,
                     exception.getMessage());
             return "";
+        }
+    }
+
+    @Override
+    public void reprocessDocument(String documentId) {
+        if (documentId == null || documentId.isBlank()) {
+            return;
+        }
+
+        try {
+            restClient.put()
+                    .uri("/api/documents/{id}/reprocess", documentId)
+                    .retrieve()
+                    .toBodilessEntity();
+        }
+        catch (RestClientException exception) {
+            LOGGER.warn("Failed to reprocess document {} before analysis: {}", documentId, exception.getMessage());
         }
     }
 

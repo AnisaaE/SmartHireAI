@@ -1,6 +1,8 @@
 package com.smart_hire.ai_analysis.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.smart_hire.ai_analysis.service.AnalysisRepository;
 import com.smart_hire.ai_analysis.service.AnalysisScoringEngine;
 import com.smart_hire.ai_analysis.service.AnalysisService;
@@ -12,7 +14,6 @@ import com.smart_hire.ai_analysis.service.HeuristicAnalysisScoringEngine;
 import com.smart_hire.ai_analysis.service.InMemoryAnalysisRepository;
 import com.smart_hire.ai_analysis.service.LlmAnalysisResponseParser;
 import com.smart_hire.ai_analysis.service.LlmAnalysisScoringEngine;
-import com.smart_hire.ai_analysis.service.NoopDocumentTextClient;
 import com.smart_hire.ai_analysis.service.RedisAnalysisRepository;
 import com.smart_hire.ai_analysis.service.RestAnalysisApplicationClient;
 import com.smart_hire.ai_analysis.service.RestAnalysisJobClient;
@@ -32,7 +33,9 @@ public class AnalysisModuleConfiguration {
 
     @Bean
     ObjectMapper objectMapper() {
-        return new ObjectMapper();
+        return new ObjectMapper()
+                .registerModule(new JavaTimeModule())
+                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
 
     @Bean
@@ -60,11 +63,7 @@ public class AnalysisModuleConfiguration {
 
     @Bean
     DocumentTextClient documentTextClient(AnalysisRuntimeProperties properties) {
-        if ("llm".equalsIgnoreCase(properties.engine())) {
-            return new RestDocumentTextClient(properties);
-        }
-
-        return new NoopDocumentTextClient();
+        return new RestDocumentTextClient(properties);
     }
 
     @Bean

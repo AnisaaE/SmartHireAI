@@ -179,11 +179,18 @@ public class AnalysisServiceImpl implements AnalysisService {
                     )
             );
         }
-        String documentText = documentTextClient.getDocumentText(application.cvDocumentId());
-        if (documentText == null || documentText.isBlank()) {
-            throw new AnalysisReferenceValidationException("CV text is not available for document: " + application.cvDocumentId());
-        }
+        requireDocumentText(application.cvDocumentId());
         return requestedApplication;
+    }
+
+    private String requireDocumentText(String documentId) {
+        String documentText = documentTextClient.getDocumentText(documentId);
+        if (documentText != null && !documentText.isBlank()) {
+            return documentText;
+        }
+
+        documentTextClient.reprocessDocument(documentId);
+        return documentTextClient.getDocumentText(documentId);
     }
 
     private AnalysisResult refreshInvalidationState(AnalysisResult result) {
