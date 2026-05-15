@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { jobsAPI } from '../../api/jobs';
 import { applicationsAPI } from '../../api/applications';
+import { analysisAPI } from '../../api/analysis';
 import { Briefcase, Users, Brain, TrendingUp, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Button from '../../components/common/Button';
@@ -14,15 +15,56 @@ export default function RecruiterDashboard() {
   const [recentJobs, setRecentJobs] = useState([]);
 
   useEffect(() => {
+    let cancelled = false;
+
     const load = async () => {
       try {
         const { data: jobs } = await jobsAPI.getByRecruiter(user.id);
-        const activeJobs = jobs?.filter(j => j.status === 'OPEN') || [];
-        setRecentJobs((jobs || []).slice(0, 5));
-        setStats({ jobs: jobs?.length || 0, applications: 0, analyses: 0, active: activeJobs.length });
+        const recruiterJobs = jobs || [];
+        const activeJobs = recruiterJobs.filter(j => j.status === 'OPEN');
+
+        const [applicationResults, analysisResults] = await Promise.all([
+          Promise.allSettled(
+            recruiterJobs.map(job => applicationsAPI.getByJob(job.id))
+          ),
+          Promise.allSettled(
+            recruiterJobs.map(job => analysisAPI.getReport(job.id))
+          ),
+        ]);
+
+        const applicationCount = applicationResults.reduce((total, result) => {
+          if (result.status !== 'fulfilled') {
+            return total;
+          }
+          return total + (result.value.data?.length || 0);
+        }, 0);
+
+        const analysisCount = analysisResults.reduce((total, result) => {
+          if (result.status !== 'fulfilled' || !result.value.data?.analysisId) {
+            return total;
+          }
+          return total + 1;
+        }, 0);
+
+        if (cancelled) {
+          return;
+        }
+
+        setRecentJobs(recruiterJobs.slice(0, 5));
+        setStats({
+          jobs: recruiterJobs.length,
+          applications: applicationCount,
+          analyses: analysisCount,
+          active: activeJobs.length,
+        });
       } catch { /* backend may not be running */ }
     };
+
     load();
+
+    return () => {
+      cancelled = true;
+    };
   }, [user.id]);
 
   const statusVariant = (s) => {
