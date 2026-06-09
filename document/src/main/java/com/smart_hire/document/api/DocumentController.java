@@ -2,7 +2,6 @@ package com.smart_hire.document.api;
 
 import com.smart_hire.document.service.DocumentRecord;
 import com.smart_hire.document.service.DocumentService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,14 +16,24 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/documents")
-@RequiredArgsConstructor
 public class DocumentController {
 
     private final DocumentService documentService;
+    private final ViewMapper<DocumentRecord, DocumentMetadataResponse> documentMetadataMapper;
+    private final ViewMapper<DocumentRecord, DocumentContentResponse> documentContentMapper;
+
+    public DocumentController(
+            DocumentService documentService,
+            ViewMapper<DocumentRecord, DocumentMetadataResponse> documentMetadataMapper,
+            ViewMapper<DocumentRecord, DocumentContentResponse> documentContentMapper
+    ) {
+        this.documentService = documentService;
+        this.documentMetadataMapper = documentMetadataMapper;
+        this.documentContentMapper = documentContentMapper;
+    }
 
     @PostMapping("/upload")
     @ResponseStatus(HttpStatus.CREATED)
@@ -35,29 +44,33 @@ public class DocumentController {
             @RequestParam MultipartFile file
     ) {
         DocumentRecord document = documentService.uploadDocument(ownerId, type, title, file);
-        return toMetadataResponse(document);
+        return documentMetadataMapper.map(document);
     }
 
     @GetMapping("/{id}")
     public DocumentMetadataResponse getDocumentMetadata(@PathVariable String id) {
-        return toMetadataResponse(documentService.getDocumentMetadata(id));
+        return documentMetadataMapper.map(documentService.getDocumentMetadata(id));
     }
 
     @GetMapping("/owner/{userId}")
     public List<DocumentMetadataResponse> listDocumentsByOwner(@PathVariable String userId) {
-        return documentService.listDocumentsByOwner(userId).stream()
-                .map(this::toMetadataResponse)
-                .collect(Collectors.toList());
+        return documentMetadataMapper.mapAll(documentService.listDocumentsByOwner(userId));
+    }
+
+    @GetMapping("/owner/{userId}/collection")
+    public CollectionResponse<DocumentMetadataResponse> listDocumentsByOwnerAsCollection(@PathVariable String userId) {
+        List<DocumentMetadataResponse> items = documentMetadataMapper.mapAll(documentService.listDocumentsByOwner(userId));
+        return new CollectionResponse<>(items, items.size());
     }
 
     @GetMapping("/cv/{candidateId}")
     public DocumentMetadataResponse getActiveCv(@PathVariable String candidateId) {
-        return toMetadataResponse(documentService.getActiveCv(candidateId));
+        return documentMetadataMapper.map(documentService.getActiveCv(candidateId));
     }
 
     @GetMapping("/content/{id}")
     public DocumentContentResponse getDocumentContent(@PathVariable String id) {
-        return new DocumentContentResponse(id, documentService.getDocumentContent(id));
+        return documentContentMapper.map(documentService.getDocumentMetadata(id));
     }
 
     @PutMapping("/{id}")
@@ -65,7 +78,7 @@ public class DocumentController {
             @PathVariable String id,
             @RequestBody UpdateDocumentMetadataRequest request
     ) {
-        return toMetadataResponse(documentService.updateDocumentMetadata(id, request.title(), request.type()));
+        return documentMetadataMapper.map(documentService.updateDocumentMetadata(id, request.title(), request.type()));
     }
 
     @PutMapping("/{id}/content")
@@ -73,7 +86,7 @@ public class DocumentController {
             @PathVariable String id,
             @RequestBody UpdateDocumentContentRequest request
     ) {
-        return new DocumentContentResponse(id, documentService.updateDocumentContent(id, request.rawTextContent()).rawTextContent());
+        return documentContentMapper.map(documentService.updateDocumentContent(id, request.rawTextContent()));
     }
 
     @PutMapping("/{id}/reprocess")
@@ -85,9 +98,5 @@ public class DocumentController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDocument(@PathVariable String id) {
         documentService.deleteDocument(id);
-    }
-
-    private DocumentMetadataResponse toMetadataResponse(DocumentRecord document) {
-        return new DocumentMetadataResponse(document.id(), document.ownerId(), document.type(), document.title(), document.status());
     }
 }

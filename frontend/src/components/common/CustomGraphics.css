@@ -1,0 +1,80 @@
+.custom-graphics {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.custom-graphics-svg {
+  width: 100%;
+  height: 100%;
+  opacity: 0.88;
+}
+
+.cg-grid line {
+  stroke: rgba(71, 103, 144, 0.16);
+  stroke-width: 1;
+}
+
+.cg-wave {
+  fill: none;
+  stroke: url(#gridGlow);
+  stroke-linecap: round;
+  stroke-width: 4;
+  stroke-dasharray: 14 14;
+  animation: cgDrift 18s linear infinite;
+}
+
+.cg-wave-secondary {
+  stroke-width: 3;
+  opacity: 0.58;
+  animation-duration: 24s;
+}
+
+.cg-node {
+  fill: #dffaf5;
+  stroke: rgba(94, 234, 212, 0.5);
+  stroke-width: 8;
+  filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.5));
+}
+
+.cg-pulse {
+  animation: cgPulse 5s ease-in-out infinite;
+}
+
+.cg-panels path {
+  fill: rgba(10, 18, 31, 0.46);
+  stroke: rgba(94, 234, 212, 0.24);
+  stroke-width: 2;
+}
+
+.custom-graphics-overlay {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.26;
+}
+
+.custom-graphics-overlay-a {
+  width: 28rem;
+  height: 28rem;
+  right: -8rem;
+  top: -8rem;
+  background: rgba(56, 189, 248, 0.26);
+}
+
+.custom-graphics-overlay-b {
+  width: 22rem;
+  height: 22rem;
+  left: -6rem;
+  bottom: -6rem;
+  background: rgba(245, 158, 11, 0.22);
+}
+
+.custom-graphics-auth .custom-graphics-svg {
+  opacity: 0.95;
+}
+
+.custom-graphics-dashboard .custom-graphics-svg {
+  opacity: 0.72;
+}

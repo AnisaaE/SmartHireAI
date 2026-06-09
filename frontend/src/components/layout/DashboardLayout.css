@@ -1,7 +1,61 @@
-.dashboard-layout { min-height: 100vh; }
+.dashboard-layout {
+  min-height: 100vh;
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(6, 16, 29, 0.96), rgba(6, 16, 29, 0.86)),
+    radial-gradient(circle at top right, rgba(56, 189, 248, 0.10), transparent 30%);
+}
+
+.dashboard-shell-graphics {
+  position: fixed;
+  inset: 0;
+}
+
 .dashboard-main {
   margin-left: var(--sidebar-width); margin-top: var(--navbar-height);
   padding: 32px; min-height: calc(100vh - var(--navbar-height));
   animation: fadeIn 0.3s ease;
+  position: relative;
+  z-index: 2;
 }
-@media (max-width: 768px) { .dashboard-main { margin-left: 0; padding: 20px 16px; } }
+
+.dashboard-frame {
+  position: relative;
+  min-height: calc(100vh - var(--navbar-height) - 64px);
+  padding: 34px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background:
+    linear-gradient(180deg, rgba(8, 18, 31, 0.88), rgba(7, 15, 26, 0.76)),
+    repeating-linear-gradient(90deg, rgba(94, 234, 212, 0.03) 0 1px, transparent 1px 48px),
+    repeating-linear-gradient(180deg, rgba(56, 189, 248, 0.03) 0 1px, transparent 1px 48px);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.dashboard-frame::before {
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border: 1px solid rgba(148, 184, 216, 0.10);
+  border-radius: calc(var(--radius-xl) - 10px);
+  pointer-events: none;
+}
+
+.dashboard-frame-corner {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  border-color: rgba(94, 234, 212, 0.62);
+  border-style: solid;
+}
+
+.dashboard-frame-corner-tl { top: 14px; left: 14px; border-width: 2px 0 0 2px; border-top-left-radius: 12px; }
+.dashboard-frame-corner-tr { top: 14px; right: 14px; border-width: 2px 2px 0 0; border-top-right-radius: 12px; }
+.dashboard-frame-corner-bl { bottom: 14px; left: 14px; border-width: 0 0 2px 2px; border-bottom-left-radius: 12px; }
+.dashboard-frame-corner-br { bottom: 14px; right: 14px; border-width: 0 2px 2px 0; border-bottom-right-radius: 12px; }
+
+@media (max-width: 768px) {
+  .dashboard-main { margin-left: 0; padding: 20px 16px; }
+  .dashboard-frame { padding: 22px 18px; min-height: auto; }
+}

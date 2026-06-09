@@ -1,27 +1,59 @@
 .sidebar {
   position: fixed; top: var(--navbar-height); left: 0; bottom: 0;
-  width: var(--sidebar-width); background: var(--bg-secondary);
-  border-right: 1px solid var(--border); padding: 20px 12px;
+  width: var(--sidebar-width); background: rgba(7, 16, 29, 0.9);
+  border-right: 1px solid var(--border); padding: 20px 14px;
   overflow-y: auto; z-index: 50; transition: all var(--transition-base);
 }
-.sidebar-nav { display: flex; flex-direction: column; gap: 2px; }
+.sidebar-nav {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgba(11, 22, 37, 0.96), rgba(10, 18, 31, 0.84));
+}
 .sidebar-section-label {
   font-size: 0.6875rem; font-weight: 600; color: var(--text-muted);
   text-transform: uppercase; letter-spacing: 0.08em; padding: 8px 12px 12px; margin-bottom: 4px;
 }
+.sidebar-panel-caption {
+  margin: -6px 12px 8px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
 .sidebar-link {
   display: flex; align-items: center; gap: 12px; padding: 10px 14px;
-  border-radius: var(--radius-md); color: var(--text-secondary);
+  border-radius: 14px; color: var(--text-secondary);
   font-size: 0.875rem; font-weight: 500; text-decoration: none;
   transition: all var(--transition-fast);
+  position: relative;
+  border: 1px solid transparent;
 }
-.sidebar-link:hover { background: var(--bg-glass-hover); color: var(--text-primary); }
+.sidebar-link:hover { background: var(--bg-glass-hover); color: var(--text-primary); border-color: rgba(148, 184, 216, 0.14); }
 .sidebar-link.active {
-  background: var(--accent-muted); color: var(--accent); font-weight: 600;
+  background: linear-gradient(90deg, rgba(94, 234, 212, 0.12), rgba(56, 189, 248, 0.06)); color: var(--accent); font-weight: 600;
+  border-color: rgba(94, 234, 212, 0.24);
 }
 .sidebar-link.active::before {
   content: ''; position: absolute; left: 0; width: 3px; height: 24px;
   background: var(--accent); border-radius: 0 4px 4px 0;
+}
+
+.sidebar-footer-panel {
+  margin-top: 16px;
+  padding: 14px 16px 0;
+  color: var(--text-muted);
+}
+
+.sidebar-footer-line {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(94, 234, 212, 0), rgba(94, 234, 212, 0.5), rgba(94, 234, 212, 0));
+  margin-bottom: 12px;
+}
+
+.sidebar-footer-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
 }
 
 @media (max-width: 768px) {

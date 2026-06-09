@@ -2,9 +2,10 @@
 .input-label { font-size: 0.8125rem; font-weight: 500; color: var(--text-secondary); }
 .input-wrapper { position: relative; display: flex; align-items: center; }
 .input-field {
-  width: 100%; padding: 11px 14px; background: var(--input-bg); color: var(--text-primary);
+  width: 100%; padding: 13px 14px; background: var(--input-bg); color: var(--text-primary);
   border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 0.875rem;
   transition: all var(--transition-fast); outline: none;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
 }
 .input-field.has-icon { padding-left: 40px; }
 .input-field:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-muted); }

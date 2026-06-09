@@ -31,6 +31,7 @@ export default function Sidebar() {
     <aside className="sidebar">
       <nav className="sidebar-nav">
         <div className="sidebar-section-label">{isRecruiter ? 'Recruiter' : 'Candidate'}</div>
+        <div className="sidebar-panel-caption">Navigation Matrix</div>
         {links.map(({ to, icon: Icon, label }) => (
           <NavLink key={to} to={to} className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
             <Icon size={18} />
@@ -38,6 +39,10 @@ export default function Sidebar() {
           </NavLink>
         ))}
       </nav>
+      <div className="sidebar-footer-panel">
+        <div className="sidebar-footer-line" />
+        <div className="sidebar-footer-label">Custom Graphics UI Layer</div>
+      </div>
     </aside>
   );
 }

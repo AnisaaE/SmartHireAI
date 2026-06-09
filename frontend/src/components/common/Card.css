@@ -1,5 +1,5 @@
 .card {
-  background: var(--bg-secondary); border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(12, 24, 39, 0.94), rgba(10, 19, 31, 0.82)); border: 1px solid var(--border);
   border-radius: var(--radius-lg); transition: all var(--transition-base);
 }
 .card-p-sm { padding: 16px; }

@@ -1,80 +1,80 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /* ===== DESIGN TOKENS ===== */
 :root {
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 20px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 30px;
   --radius-full: 9999px;
   --transition-fast: 0.15s ease;
   --transition-base: 0.25s ease;
   --transition-slow: 0.4s ease;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
-  --shadow-lg: 0 8px 30px rgba(0,0,0,0.2);
-  --sidebar-width: 260px;
-  --navbar-height: 64px;
+  --shadow-sm: 0 8px 24px rgba(4, 10, 20, 0.12);
+  --shadow-md: 0 18px 48px rgba(3, 10, 24, 0.26);
+  --shadow-lg: 0 36px 72px rgba(2, 6, 18, 0.34);
+  --sidebar-width: 292px;
+  --navbar-height: 82px;
 }
 
 /* ===== DARK THEME (default) ===== */
 [data-theme="dark"] {
-  --bg-primary: #07070d;
-  --bg-secondary: #0f0f1a;
-  --bg-tertiary: #16162a;
-  --bg-elevated: #1c1c35;
-  --bg-glass: rgba(255,255,255,0.03);
-  --bg-glass-hover: rgba(255,255,255,0.06);
-  --accent: #7c6bf0;
-  --accent-hover: #9485ff;
-  --accent-muted: rgba(124,107,240,0.15);
-  --accent-secondary: #00d2c6;
-  --accent-secondary-muted: rgba(0,210,198,0.12);
-  --gradient-primary: linear-gradient(135deg, #7c6bf0, #b44dff);
-  --gradient-accent: linear-gradient(135deg, #7c6bf0, #00d2c6);
-  --text-primary: #eeeef5;
-  --text-secondary: #9494b0;
-  --text-muted: #5e5e78;
-  --text-inverse: #07070d;
-  --border: rgba(255,255,255,0.07);
-  --border-hover: rgba(255,255,255,0.14);
+  --bg-primary: #06101d;
+  --bg-secondary: rgba(10, 21, 37, 0.88);
+  --bg-tertiary: rgba(14, 28, 49, 0.92);
+  --bg-elevated: rgba(16, 35, 60, 0.96);
+  --bg-glass: rgba(160, 213, 255, 0.06);
+  --bg-glass-hover: rgba(160, 213, 255, 0.11);
+  --accent: #5eead4;
+  --accent-hover: #93f6e7;
+  --accent-muted: rgba(94, 234, 212, 0.14);
+  --accent-secondary: #38bdf8;
+  --accent-secondary-muted: rgba(56, 189, 248, 0.14);
+  --gradient-primary: linear-gradient(135deg, #38bdf8, #5eead4 55%, #f59e0b);
+  --gradient-accent: linear-gradient(135deg, #0f172a, #154d68 50%, #1a6f63);
+  --text-primary: #eef8ff;
+  --text-secondary: #94acc5;
+  --text-muted: #57708b;
+  --text-inverse: #04111c;
+  --border: rgba(148, 184, 216, 0.16);
+  --border-hover: rgba(148, 184, 216, 0.30);
   --success: #34d399;
-  --success-muted: rgba(52,211,153,0.12);
+  --success-muted: rgba(52, 211, 153, 0.16);
   --warning: #fbbf24;
-  --warning-muted: rgba(251,191,36,0.12);
+  --warning-muted: rgba(251, 191, 36, 0.16);
   --danger: #f87171;
-  --danger-muted: rgba(248,113,113,0.12);
-  --info: #60a5fa;
-  --info-muted: rgba(96,165,250,0.12);
-  --shadow-glow: 0 0 40px rgba(124,107,240,0.1);
-  --input-bg: rgba(255,255,255,0.04);
-  --scrollbar-track: #0f0f1a;
-  --scrollbar-thumb: #2a2a45;
+  --danger-muted: rgba(248, 113, 113, 0.16);
+  --info: #7dd3fc;
+  --info-muted: rgba(125, 211, 252, 0.16);
+  --shadow-glow: 0 0 40px rgba(56, 189, 248, 0.12);
+  --input-bg: rgba(7, 19, 34, 0.9);
+  --scrollbar-track: #08111f;
+  --scrollbar-thumb: #18314f;
 }
 
 /* ===== LIGHT THEME ===== */
 [data-theme="light"] {
-  --bg-primary: #f8f9fc;
-  --bg-secondary: #ffffff;
-  --bg-tertiary: #f0f1f5;
+  --bg-primary: #edf5f8;
+  --bg-secondary: rgba(255,255,255,0.86);
+  --bg-tertiary: #deebf2;
   --bg-elevated: #ffffff;
-  --bg-glass: rgba(255,255,255,0.7);
-  --bg-glass-hover: rgba(255,255,255,0.9);
-  --accent: #6c5ce7;
-  --accent-hover: #5a48d5;
-  --accent-muted: rgba(108,92,231,0.1);
-  --accent-secondary: #00b5a6;
-  --accent-secondary-muted: rgba(0,181,166,0.08);
-  --gradient-primary: linear-gradient(135deg, #6c5ce7, #a855f7);
-  --gradient-accent: linear-gradient(135deg, #6c5ce7, #00b5a6);
-  --text-primary: #1a1a2e;
-  --text-secondary: #6b7085;
-  --text-muted: #a0a4b8;
+  --bg-glass: rgba(255,255,255,0.74);
+  --bg-glass-hover: rgba(255,255,255,0.94);
+  --accent: #0f766e;
+  --accent-hover: #0c5d57;
+  --accent-muted: rgba(15,118,110,0.1);
+  --accent-secondary: #0284c7;
+  --accent-secondary-muted: rgba(2,132,199,0.08);
+  --gradient-primary: linear-gradient(135deg, #0284c7, #0f766e 58%, #f59e0b);
+  --gradient-accent: linear-gradient(135deg, #d8eef7, #f8fdfd);
+  --text-primary: #0f172a;
+  --text-secondary: #526277;
+  --text-muted: #7f8ea3;
   --text-inverse: #ffffff;
-  --border: rgba(0,0,0,0.08);
-  --border-hover: rgba(0,0,0,0.15);
+  --border: rgba(15, 23, 42, 0.08);
+  --border-hover: rgba(15, 23, 42, 0.16);
   --success: #10b981;
   --success-muted: rgba(16,185,129,0.08);
   --warning: #f59e0b;
@@ -83,10 +83,10 @@
   --danger-muted: rgba(239,68,68,0.08);
   --info: #3b82f6;
   --info-muted: rgba(59,130,246,0.08);
-  --shadow-glow: 0 0 40px rgba(108,92,231,0.06);
-  --input-bg: rgba(0,0,0,0.03);
-  --scrollbar-track: #f0f1f5;
-  --scrollbar-thumb: #ccc;
+  --shadow-glow: 0 0 40px rgba(2, 132, 199, 0.08);
+  --input-bg: rgba(238, 246, 249, 0.94);
+  --scrollbar-track: #dfeaf0;
+  --scrollbar-thumb: #aac2cf;
 }
 
 /* ===== RESET & BASE ===== */
@@ -100,6 +100,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background var(--transition-base), color var(--transition-base);
+  background-image:
+    radial-gradient(circle at top right, rgba(56, 189, 248, 0.12), transparent 30%),
+    radial-gradient(circle at bottom left, rgba(245, 158, 11, 0.08), transparent 24%);
 }
 a { color: var(--accent); text-decoration: none; transition: color var(--transition-fast); }
 a:hover { color: var(--accent-hover); }
@@ -147,6 +150,8 @@ ul, ol { list-style: none; }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes cgPulse { 0%, 100% { opacity: 0.42; transform: scale(1); } 50% { opacity: 0.86; transform: scale(1.08); } }
+@keyframes cgDrift { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 160; } }
 .animate-fade { animation: fadeIn 0.4s ease both; }
 .animate-slide-left { animation: slideInLeft 0.3s ease both; }
 .animate-slide-right { animation: slideInRight 0.3s ease both; }

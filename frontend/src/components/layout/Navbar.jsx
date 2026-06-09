@@ -16,9 +16,16 @@ export default function Navbar() {
       <div className="navbar-inner">
         <Link to="/" className="navbar-brand">
           <div className="navbar-logo"><Zap size={20} /></div>
-          <span className="navbar-brand-text">SmartHire<span className="navbar-brand-ai">AI</span></span>
+          <div className="navbar-brand-copy">
+            <span className="navbar-brand-text">SmartHire<span className="navbar-brand-ai">AI</span></span>
+            <span className="navbar-brand-subtitle">Talent Operations Interface</span>
+          </div>
         </Link>
         <div className="navbar-actions">
+          <div className="navbar-system-pill">
+            <span className="navbar-system-dot" />
+            <span>Live Session</span>
+          </div>
           <button className="navbar-icon-btn" onClick={toggleTheme} title="Toggle theme">
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>

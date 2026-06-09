@@ -5,6 +5,7 @@ import { User, Lock, Zap, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
+import CustomGraphics from '../components/common/CustomGraphics';
 import toast from 'react-hot-toast';
 import './Auth.css';
 
@@ -45,27 +46,39 @@ export default function Login() {
       <button className="auth-theme-toggle" onClick={toggleTheme} title="Toggle theme">
         {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
       </button>
-      <div className="auth-bg-effects">
-        <div className="auth-orb auth-orb-1" />
-        <div className="auth-orb auth-orb-2" />
-        <div className="auth-orb auth-orb-3" />
-      </div>
-      <div className="auth-card animate-scale">
-        <div className="auth-header">
-          <div className="auth-logo"><Zap size={24} /></div>
-          <h1 className="auth-title">Welcome Back</h1>
-          <p className="auth-subtitle">Sign in to SmartHireAI to continue</p>
+      <div className="auth-shell">
+        <div className="auth-hero">
+          <CustomGraphics variant="auth" className="custom-graphics-auth" />
+          <div className="auth-hero-content">
+            <div className="auth-hero-kicker">Interactive Hiring Console</div>
+            <h1 className="auth-hero-title">Track talent flow through a custom graphics driven interface.</h1>
+            <p className="auth-hero-copy">
+              Same SmartHire workflow, redesigned as a richer control surface with layered visuals and dashboard framing.
+            </p>
+            <div className="auth-hero-metrics">
+              <div className="auth-metric"><span className="auth-metric-value">01</span><span className="auth-metric-label">Login</span></div>
+              <div className="auth-metric"><span className="auth-metric-value">02</span><span className="auth-metric-label">Route</span></div>
+              <div className="auth-metric"><span className="auth-metric-value">03</span><span className="auth-metric-label">Operate</span></div>
+            </div>
+          </div>
         </div>
-        <form onSubmit={handleSubmit} className="auth-form">
-          <Input label="Username" placeholder="Enter your username" icon={User}
-            value={form.username} onChange={handleChange('username')} error={errors.username} />
-          <Input label="Password" type="password" placeholder="Enter your password" icon={Lock}
-            value={form.password} onChange={handleChange('password')} error={errors.password} />
-          <Button type="submit" fullWidth loading={loading} size="lg">Sign In</Button>
-        </form>
-        <p className="auth-footer">
-          Don't have an account? <Link to="/register">Create one</Link>
-        </p>
+        <div className="auth-card animate-scale">
+          <div className="auth-header">
+            <div className="auth-logo"><Zap size={24} /></div>
+            <h1 className="auth-title">Welcome Back</h1>
+            <p className="auth-subtitle">Sign in to SmartHireAI to continue</p>
+          </div>
+          <form onSubmit={handleSubmit} className="auth-form">
+            <Input label="Username" placeholder="Enter your username" icon={User}
+              value={form.username} onChange={handleChange('username')} error={errors.username} />
+            <Input label="Password" type="password" placeholder="Enter your password" icon={Lock}
+              value={form.password} onChange={handleChange('password')} error={errors.password} />
+            <Button type="submit" fullWidth loading={loading} size="lg">Sign In</Button>
+          </form>
+          <p className="auth-footer">
+            Don't have an account? <Link to="/register">Create one</Link>
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -2,8 +2,9 @@
   border: 2px dashed var(--border); border-radius: var(--radius-lg); padding: 40px 24px;
   display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;
   transition: all var(--transition-fast); text-align: center;
+  background: rgba(255,255,255,0.02);
 }
-.file-drop:hover, .file-drop-active { border-color: var(--accent); background: var(--accent-muted); }
+.file-drop:hover, .file-drop-active { border-color: var(--accent); background: var(--accent-muted); box-shadow: var(--shadow-sm); }
 .file-drop-icon { color: var(--text-muted); }
 .file-drop-active .file-drop-icon { color: var(--accent); }
 .file-drop-label { font-size: 0.875rem; color: var(--text-secondary); }
