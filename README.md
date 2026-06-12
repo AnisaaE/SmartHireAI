@@ -114,30 +114,20 @@ It returns the extracted raw text of a document, which is then used by the AI an
 
 ## Screenshots
 
-You can add application screenshots here later.
+### Screen 1
+![Application screenshot 1](./document/img/Screenshot%202026-06-12%20160623.png)
 
-Example structure:
+### Screen 2
+![Application screenshot 2](./document/img/Screenshot%202026-06-12%20162027.png)
 
-```md
-## Screenshots
+### Screen 3
+![Application screenshot 3](./document/img/Screenshot%202026-06-12%20162311.png)
 
-### Login
-![Login screen](./docs/screenshots/login.png)
+### Screen 4
+![Application screenshot 4](./document/img/Screenshot%202026-06-12%20162350.png)
 
-### Recruiter Dashboard
-![Recruiter dashboard](./docs/screenshots/recruiter-dashboard.png)
-
-### Candidate Flow
-![Candidate flow](./docs/screenshots/candidate-flow.png)
-```
-
-If you want, you can create a folder such as:
-
-```text
-docs/screenshots/
-```
-
-and keep all images there.
+### Screen 5
+![Application screenshot 5](./document/img/Screenshot%202026-06-12%20162451.png)
 
 ## Useful Files
 
