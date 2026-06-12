@@ -2,6 +2,23 @@
 
 SmartHireAI is a microservices-based recruitment platform that uses local LLMs through Ollama to support CV screening and candidate-to-job matching. The system is split into independent services responsible for authentication, document processing, job management, applications, and AI analysis.
 
+## Screenshots
+
+### Screen 1
+![Application screenshot 1](./document/img/Screenshot%202026-06-12%20160623.png)
+
+### Screen 2
+![Application screenshot 2](./document/img/Screenshot%202026-06-12%20162027.png)
+
+### Screen 3
+![Application screenshot 3](./document/img/Screenshot%202026-06-12%20162311.png)
+
+### Screen 4
+![Application screenshot 4](./document/img/Screenshot%202026-06-12%20162350.png)
+
+### Screen 5
+![Application screenshot 5](./document/img/Screenshot%202026-06-12%20162451.png)
+
 ## Overview
 
 The platform supports:
@@ -185,23 +202,6 @@ Scenario durations and p95 latencies:
 - Analysis Starts - `45s`, `48.21 ms` p95
 
 The `4.82%` failure figure in the mixed-load run comes from expected `409 Conflict` business-rule collisions during repeated apply attempts, not from backend instability.
-
-## Screenshots
-
-### Screen 1
-![Application screenshot 1](./document/img/Screenshot%202026-06-12%20160623.png)
-
-### Screen 2
-![Application screenshot 2](./document/img/Screenshot%202026-06-12%20162027.png)
-
-### Screen 3
-![Application screenshot 3](./document/img/Screenshot%202026-06-12%20162311.png)
-
-### Screen 4
-![Application screenshot 4](./document/img/Screenshot%202026-06-12%20162350.png)
-
-### Screen 5
-![Application screenshot 5](./document/img/Screenshot%202026-06-12%20162451.png)
 
 ## Useful Files
 
