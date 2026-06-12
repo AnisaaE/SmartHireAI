@@ -26,7 +26,11 @@ class DocumentControllerGetActiveCvApiTest {
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
-        DocumentController documentController = new DocumentController(documentService);
+        DocumentController documentController = new DocumentController(
+                documentService,
+                new DocumentMetadataMapper(),
+                new DocumentContentMapper()
+        );
         mockMvc = MockMvcBuilders.standaloneSetup(documentController).build();
     }
 
